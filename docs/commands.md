@@ -16,6 +16,9 @@ php bin/console cache:clear
 #show route lists \
 php bin/console debug:router
 
+#drop all tables in database \
+php bin/console doctrine:schema:drop --full-database --force
+
 php bin/console doctrine:migrations:status
 
 php bin/console doctrine:migrations:generate 
