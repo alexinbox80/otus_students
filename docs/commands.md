@@ -15,3 +15,9 @@ php bin/console cache:clear
 
 #show route lists \
 php bin/console debug:router
+
+php bin/console doctrine:migrations:status
+
+php bin/console doctrine:migrations:generate 
+
+php bin/console doctrine:schema:validate
