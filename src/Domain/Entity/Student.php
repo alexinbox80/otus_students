@@ -12,9 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'student')]
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Index(name: 'student__user_id__ind', columns: ['user_id'])]
 #[ORM\Index(name: 'student__last_name__first_name__middle_name__ind', columns: ['last_name', 'first_name', 'middle_name'])]
 #[ORM\Index(name: 'student__first_name__last_name__middle_name__ind', columns: ['first_name', 'last_name', 'middle_name'])]
+#[ORM\UniqueConstraint(name: 'student__user_id__uniq', fields: ['user'])]
 class Student implements EntityInterface, HasMetaTimestampsInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;

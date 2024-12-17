@@ -34,9 +34,6 @@ class User implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\Column(name: 'isActive', type: 'boolean', options: ['default' => true])]
     private bool $isActive;
 
-    #[ORM\OneToOne(targetEntity: Student::class)]
-    private Collection $student;
-
     public function __construct()
     {
         $this->user = new ArrayCollection();
