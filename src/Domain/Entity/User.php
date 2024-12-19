@@ -25,7 +25,7 @@ class User implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\Column(name: 'login', type: 'string', length: 32, unique: true, nullable: false)]
     private string $login;
 
-    #[ORM\Column(name: 'password', type: 'string', length: 32, nullable: false)]
+    #[ORM\Column(name: 'password', type: 'string', length: 64, nullable: false)]
     private string $password;
 
     #[ORM\Column(name: 'roles', type: 'json')]

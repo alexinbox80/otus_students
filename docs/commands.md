@@ -25,6 +25,8 @@ php bin/console doctrine:migrations:status
 #generate migration \
 php bin/console doctrine:migrations:generate 
 
+#Validate the mapping files \
 php bin/console doctrine:schema:validate
 
+#Executes (or dumps) the SQL needed to update the database schema to match the current mapping metadata \
 php bin/console doctrine:schema:update --dump-sql
