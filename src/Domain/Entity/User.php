@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'user__login__uniq', fields: ['login'])]
-class User implements EntityInterface, HasMetaTimestampsInterface
+class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 
@@ -93,6 +93,11 @@ class User implements EntityInterface, HasMetaTimestampsInterface
     {
         return [
             'id' => $this->id,
+            'login' => $this->login,
+            'isActive' => $this->isActive,
+            'roles' => $this->roles,
+            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
         ];
     }
 }

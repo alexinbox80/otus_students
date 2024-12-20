@@ -40,9 +40,9 @@ final class Version20241219175553 extends AbstractMigration
         $this->addSql('INSERT INTO achievement (id, name, description, created_at, updated_at) VALUES (2, \'доля оценок выше 9 больше 90%\', \'доля оценок за задания\', NOW(), NOW());');
         $this->addSql('INSERT INTO achievement (id, name, description, created_at, updated_at) VALUES (3, \'все задания сданы досрочно\', \'достижение за досрочную сдачу заданий\', NOW(), NOW());');
 
-        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (1, \'ivanov\', \'$2a$15$h336rWce.PCPYKltaTA0G.c.c5abLMZlntW3Q/ZQusCtTDU9Rblca\', \'{}\', true,  NOW(), NOW());');
-        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (2, \'petrov\', \'$2a$15$h336rWce.PCPYKltaTA0G.c.c5abLMZlntW3Q/ZQusCtTDU9Rblca\', \'{}\', true,  NOW(), NOW());');
-        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (3, \'sergeev\', \'$2a$15$h336rWce.PCPYKltaTA0G.c.c5abLMZlntW3Q/ZQusCtTDU9Rblca\', \'{}\', true,  NOW(), NOW());');
+        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (1, \'ivanov\', \'$2a$15$h336rWce.PCPYKltaTA0G.c.c5abLMZlntW3Q/ZQusCtTDU9Rblca\', \'[]\', true,  NOW(), NOW());');
+        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (2, \'petrov\', \'$2a$15$h336rWce.PCPYKltaTA0G.c.c5abLMZlntW3Q/ZQusCtTDU9Rblca\', \'[]\', true,  NOW(), NOW());');
+        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (3, \'sergeev\', \'$2a$15$h336rWce.PCPYKltaTA0G.c.c5abLMZlntW3Q/ZQusCtTDU9Rblca\', \'[]\', true,  NOW(), NOW());');
 
         $this->addSql('INSERT INTO student (id, user_id, last_name, first_name, middle_name, created_at, updated_at) VALUES (1, 1, \'Иванов\', \'Иван\', \'Иванович\', NOW(), NOW());');
         $this->addSql('INSERT INTO student (id, user_id, last_name, first_name, middle_name, created_at, updated_at) VALUES (2, 2, \'Петров\', \'Петр\', \'Петрович\', NOW(), NOW());');
@@ -63,6 +63,20 @@ final class Version20241219175553 extends AbstractMigration
         $this->addSql('INSERT INTO unlocked_achievement (id, student_id, achievement_id, created_at, updated_at) VALUES (1, 1, 1, NOW(), NOW());');
         $this->addSql('INSERT INTO unlocked_achievement (id, student_id, achievement_id, created_at, updated_at) VALUES (2, 2, 2, NOW(), NOW());');
         $this->addSql('INSERT INTO unlocked_achievement (id, student_id, achievement_id, created_at, updated_at) VALUES (3, 3, 3, NOW(), NOW());');
+
+        $this->addSql('SELECT setval(pg_get_serial_sequence(\'unlocked_achievement\', \'id\'), max(id)) FROM unlocked_achievement;');
+        $this->addSql('SELECT setval(pg_get_serial_sequence(\'subscription\', \'id\'), max(id)) FROM subscription;');
+        $this->addSql('SELECT setval(pg_get_serial_sequence(\'percentage\', \'id\'), max(id)) FROM percentage;');
+        $this->addSql('SELECT setval(pg_get_serial_sequence(\'completed_task\', \'id\'), max(id)) FROM completed_task;');
+
+        $this->addSql('SELECT setval(pg_get_serial_sequence(\'student\', \'id\'), max(id)) FROM student;');
+        $this->addSql('SELECT setval(pg_get_serial_sequence(\'user\', \'id\'), max(id)) FROM "user";');
+
+        $this->addSql('SELECT setval(pg_get_serial_sequence(\'task\', \'id\'), max(id)) FROM task;');
+        $this->addSql('SELECT setval(pg_get_serial_sequence(\'lesson\', \'id\'), max(id)) FROM lesson;');
+        $this->addSql('SELECT setval(pg_get_serial_sequence(\'course\', \'id\'), max(id)) FROM course;');
+        $this->addSql('SELECT setval(pg_get_serial_sequence(\'skill\', \'id\'), max(id)) FROM skill;');
+        $this->addSql('SELECT setval(pg_get_serial_sequence(\'achievement\', \'id\'), max(id)) FROM achievement;');
     }
 
     public function down(Schema $schema): void
