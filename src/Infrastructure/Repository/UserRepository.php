@@ -27,6 +27,7 @@ class UserRepository extends AbstractRepository
     }
 
     /**
+     * @param string $name
      * @return User[]
      */
     public function findUsersByLogin(string $name): array

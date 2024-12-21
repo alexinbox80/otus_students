@@ -40,6 +40,8 @@ final class Version20241217054006 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS student__user_id__uniq ON student (user_id)');
         $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS student__last_name__first_name__middle_name__ind ON student (last_name, first_name, middle_name)');
         $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS student__first_name__last_name__middle_name__ind ON student (first_name, last_name, middle_name)');
+        $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS student__phone__ind ON student (phone)');
+        $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS student__email__ind ON student (email)');
         $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS subscription__student_id__ind ON subscription (student_id)');
         $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS subscription__course_id__ind ON subscription (course_id)');
         $this->addSql('CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS subscription__student__course__uniq ON subscription (student_id, course_id)');
@@ -69,6 +71,8 @@ final class Version20241217054006 extends AbstractMigration
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS student__user_id__uniq');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS student__last_name__first_name__middle_name__ind');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS student__first_name__last_name__middle_name__ind');
+        $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS student__phone__ind');
+        $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS student__email__ind');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS subscription__student_id__ind');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS subscription__course_id__ind');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS subscription__student__course__uniq');

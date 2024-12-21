@@ -44,9 +44,9 @@ final class Version20241219175553 extends AbstractMigration
         $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (2, \'petrov\', \'$2a$15$h336rWce.PCPYKltaTA0G.c.c5abLMZlntW3Q/ZQusCtTDU9Rblca\', \'[]\', true,  NOW(), NOW());');
         $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (3, \'sergeev\', \'$2a$15$h336rWce.PCPYKltaTA0G.c.c5abLMZlntW3Q/ZQusCtTDU9Rblca\', \'[]\', true,  NOW(), NOW());');
 
-        $this->addSql('INSERT INTO student (id, user_id, last_name, first_name, middle_name, created_at, updated_at) VALUES (1, 1, \'Иванов\', \'Иван\', \'Иванович\', NOW(), NOW());');
-        $this->addSql('INSERT INTO student (id, user_id, last_name, first_name, middle_name, created_at, updated_at) VALUES (2, 2, \'Петров\', \'Петр\', \'Петрович\', NOW(), NOW());');
-        $this->addSql('INSERT INTO student (id, user_id, last_name, first_name, middle_name, created_at, updated_at) VALUES (3, 3, \'Сергеев\', \'Сергей\', \'Сергеевич\', NOW(), NOW());');
+        $this->addSql('INSERT INTO student (id, user_id, last_name, first_name, middle_name, phone, email, created_at, updated_at) VALUES (1, 1, \'Иванов\', \'Иван\', \'Иванович\', \'79215556677\', \'ivan@mail.ru\', NOW(), NOW());');
+        $this->addSql('INSERT INTO student (id, user_id, last_name, first_name, middle_name, phone, email, created_at, updated_at) VALUES (2, 2, \'Петров\', \'Петр\', \'Петрович\', \'79215556688\', \'petr@mail.ru\', NOW(), NOW());');
+        $this->addSql('INSERT INTO student (id, user_id, last_name, first_name, middle_name, phone, email, created_at, updated_at) VALUES (3, 3, \'Сергеев\', \'Сергей\', \'Сергеевич\', \'79215556699\', \'serj@mail.ru\', NOW(), NOW());');
 
         $this->addSql('INSERT INTO completed_task (id, student_id, task_id, grade, description, created_at, updated_at, finished_at) VALUES (1, 1, 1, 10, \'оценка за выполненое задание\', NOW(), NOW(), NOW());');
         $this->addSql('INSERT INTO completed_task (id, student_id, task_id, grade, description, created_at, updated_at, finished_at) VALUES (2, 2, 2, 9, \'оценка за выполненое задание\', NOW(), NOW(), NOW());');

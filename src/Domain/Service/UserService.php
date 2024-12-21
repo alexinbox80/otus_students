@@ -21,6 +21,7 @@ class UserService
     }
 
     /**
+     * @param string $login
      * @return User[]
      */
     public function findUsersByLogin(string $login): array
@@ -28,7 +29,11 @@ class UserService
         return $this->userRepository->findUsersByLogin($login);
     }
 
-
+    /**
+     * @param string $login
+     * @param string $password
+     * @return User
+     */
     public function create(string $login, string $password): User
     {
         $user = new User();
@@ -40,6 +45,10 @@ class UserService
         return $user;
     }
 
+    /**
+     * @param int $userId
+     * @return void
+     */
     public function removeById(int $userId): void
     {
         $user = $this->userRepository->find($userId);
