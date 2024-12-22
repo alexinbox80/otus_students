@@ -28,7 +28,6 @@ class TaskRepository extends AbstractRepository
         return $this->entityManager->getRepository(Task::class)->findAll();
     }
 
-
     /**
      * @param string $name
      * @return Task[]

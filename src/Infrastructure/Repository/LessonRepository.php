@@ -28,7 +28,6 @@ class LessonRepository extends AbstractRepository
         return $this->entityManager->getRepository(Lesson::class)->findAll();
     }
 
-
     /**
      * @param string $name
      * @return Lesson[]
