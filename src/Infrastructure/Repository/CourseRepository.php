@@ -21,6 +21,15 @@ class CourseRepository extends AbstractRepository
     }
 
     /**
+     * @return Course[]
+     */
+    public function findAll(): array
+    {
+        return $this->entityManager->getRepository(Course::class)->findAll();
+    }
+
+
+    /**
      * @param string $name
      * @return Course[]
      */
@@ -37,6 +46,19 @@ class CourseRepository extends AbstractRepository
     {
         $criteria = Criteria::create();
         $criteria->andWhere(Criteria::expr()?->contains('name', $name));
+        $repository = $this->entityManager->getRepository(Course::class);
+
+        return $repository->matching($criteria)->toArray();
+    }
+
+    /**
+     * @param string $description
+     * @return Course[]
+     */
+    public function findCoursesByDescriptionWithCriteria(string $description): array
+    {
+        $criteria = Criteria::create();
+        $criteria->andWhere(Criteria::expr()?->contains('description', $description));
         $repository = $this->entityManager->getRepository(Course::class);
 
         return $repository->matching($criteria)->toArray();

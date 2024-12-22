@@ -3,10 +3,6 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\Student;
-use DateInterval;
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @extends AbstractRepository<Student>
@@ -24,6 +20,14 @@ class StudentRepository extends AbstractRepository
         $student = $repository->find($studentId);
 
         return $student;
+    }
+
+    /**
+     * @return Student[]
+     */
+    public function findAll(): array
+    {
+        return $this->entityManager->getRepository(Student::class)->findAll();
     }
 
     /**

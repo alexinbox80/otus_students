@@ -22,6 +22,14 @@ class StudentService
     }
 
     /**
+     * @return Student[]
+     */
+    public function findAll(): array
+    {
+        return $this->studentRepository->findAll();
+    }
+
+    /**
      * @param string $lastName
      * @return Student[]
      */

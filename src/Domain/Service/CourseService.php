@@ -23,12 +23,29 @@ class CourseService
     }
 
     /**
+     * @return Course[]
+     */
+    public function findAll(): array
+    {
+        return $this->courseRepository->findAll();
+    }
+
+    /**
      * @param string $name
      * @return Course[]
      */
     public function findCourseByName(string $name): array
     {
         return $this->courseRepository->findCoursesByNameWithCriteria($name);
+    }
+
+    /**
+     * @param string $description
+     * @return Course[]
+     */
+    public function findCourseByDescription(string $description): array
+    {
+        return $this->courseRepository->findCoursesByDescriptionWithCriteria($description);
     }
 
     /**

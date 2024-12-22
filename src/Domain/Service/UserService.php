@@ -21,6 +21,14 @@ class UserService
     }
 
     /**
+     * @return User[]
+     */
+    public function findAll(): array
+    {
+        return $this->userRepository->findAll();
+    }
+
+    /**
      * @param string $login
      * @return User[]
      */
