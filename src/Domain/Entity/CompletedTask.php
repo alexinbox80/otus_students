@@ -58,9 +58,16 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface
         return $this->finishedAt;
     }
 
-    public function setFinishedAt(?DateTime $finishedAt): void
+    public function setFinishedAt(): void
     {
-        $this->finishedAt = $finishedAt;
+        if ($this->finishedAt === null) {
+            $this->finishedAt = new DateTime();
+        }
+    }
+
+    public function updateFinishedAt(DateTime $finishedAt): void
+    {
+            $this->finishedAt = $finishedAt;
     }
 
     public function getDescription(): string
