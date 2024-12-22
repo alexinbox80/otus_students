@@ -34,10 +34,8 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\Column(name: 'isActive', type: 'boolean', options: ['default' => true])]
     private bool $isActive;
 
-    public function __construct()
-    {
-        $this->user = new ArrayCollection();
-    }
+    #[ORM\OneToOne(targetEntity: Student::class, mappedBy: 'user')]
+    private Student $student;
 
     public function getId(): int
     {
@@ -97,7 +95,15 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
             'isActive' => $this->isActive,
             'roles' => $this->roles,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
+            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
+            'student' => [
+                'id' => $this->student->getId(),
+                'lastName' => $this->student->getLastName(),
+                'firstName' => $this->student->getFirstName(),
+                'middleName' => $this->student->getMiddleName(),
+                'email' => $this->student->getEmail(),
+                'phone' => $this->student->getPhone(),
+            ],
         ];
     }
 }

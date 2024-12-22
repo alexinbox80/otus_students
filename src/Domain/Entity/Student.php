@@ -26,15 +26,6 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
-//    #[ORM\Column(name: 'last_name', type: 'string', length: 64, nullable: false)]
-//    private string $lastName;
-//
-//    #[ORM\Column(name: 'first_name', type: 'string', length: 64, nullable: false)]
-//    private string $firstName;
-//
-//    #[ORM\Column(name: 'middle_name', type: 'string', length: 64, nullable: false)]
-//    private string $middleName;
-
     #[ORM\OneToOne(targetEntity: User::class)]
     private User $user;
 
@@ -68,15 +59,14 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user->getId(),
-            'login' => $this->user->getLogin(),
             'lastName' => $this->getLastName(),
             'firstName' => $this->getFirstName(),
             'middleName' => $this->getMiddleName(),
             'email' => $this->getEmail(),
             'phone' => $this->getPhone(),
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
+            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
+            'user' => $this->user->toArray(),
         ];
     }
 }
