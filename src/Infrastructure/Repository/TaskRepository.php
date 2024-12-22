@@ -14,7 +14,7 @@ class TaskRepository extends AbstractRepository
     public function find(int $taskId): ?Task
     {
         $repository = $this->entityManager->getRepository(Task::class);
-        /** @var Task|null $course */
+        /** @var Task|null $task */
         $task = $repository->find($taskId);
 
         return $task;
