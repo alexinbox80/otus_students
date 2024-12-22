@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Domain\Entity\Course;
 use App\Domain\Entity\Person;
 use App\Domain\Entity\User;
+use App\Domain\Service\CourseService;
 use App\Domain\Service\StudentService;
 use App\Domain\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,8 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class WebController extends AbstractController
 {
     public function __construct(
-        private readonly UserService $userService,
-        private readonly StudentService $studentService
+        private readonly UserService    $userService,
+        private readonly StudentService $studentService, private readonly CourseService $courseService
     ) {
     }
 
@@ -43,8 +45,15 @@ class WebController extends AbstractController
 
 //        return $this->json($student->toArray());
 
-        $studentById = $this->studentService->find(1);
+//        $studentById = $this->studentService->find(1);
+//
+//        return $this->json(['student' => $studentById->toArray()]);
 
-        return $this->json(['student' => $studentById->toArray()]);
+        //$courseById = $this->courceService->find(1);
+        $courses = $this->courseService->findCourseByName('д');
+
+        return $this->json(['courses' => array_map(static fn (Course $course) => $course->toArray(), $courses)]);
+
+        //return $this->json(['course' => $courseById[0]->toArray()]);
     }
 }

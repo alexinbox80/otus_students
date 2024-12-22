@@ -89,4 +89,15 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
     {
         $this->lessons = $lessons;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
+        ];
+    }
 }

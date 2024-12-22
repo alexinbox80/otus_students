@@ -27,12 +27,12 @@ class UserRepository extends AbstractRepository
     }
 
     /**
-     * @param string $name
+     * @param string $login
      * @return User[]
      */
-    public function findUsersByLogin(string $name): array
+    public function findUsersByLogin(string $login): array
     {
-        return $this->entityManager->getRepository(User::class)->findBy(['login' => $name]);
+        return $this->entityManager->getRepository(User::class)->findBy(['login' => $login]);
     }
 
     /**
