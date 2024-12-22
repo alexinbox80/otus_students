@@ -38,6 +38,22 @@ class UserService
     }
 
     /**
+     * @param int $userId
+     * @param string $login
+     * @return User|null
+     */
+    public function updateUserLogin(int $userId, string $login): ?User
+    {
+        $user = $this->userRepository->find($userId);
+        if (!($user instanceof User)) {
+            return null;
+        }
+        $this->userRepository->updateLogin($user, $login);
+
+        return $user;
+    }
+
+    /**
      * @param string $login
      * @param string $password
      * @return User

@@ -45,6 +45,17 @@ class UserRepository extends AbstractRepository
 
     /**
      * @param User $user
+     * @param string $login
+     * @return void
+     */
+    public function updateLogin(User $user, string $login): void
+    {
+        $user->setLogin($login);
+        $this->flush();
+    }
+
+    /**
+     * @param User $user
      * @return int
      */
     public function create(User $user): int
