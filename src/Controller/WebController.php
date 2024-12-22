@@ -15,8 +15,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class WebController extends AbstractController
 {
     public function __construct(
-        private readonly UserService    $userService,
-        private readonly StudentService $studentService, private readonly CourseService $courseService
+        private readonly UserService $userService,
+        private readonly StudentService $studentService,
+        private readonly CourseService $courseService
     ) {
     }
 
@@ -50,7 +51,7 @@ class WebController extends AbstractController
 //        return $this->json(['student' => $studentById->toArray()]);
 
         //$courseById = $this->courceService->find(1);
-        $courses = $this->courseService->findCourseByName('д');
+        $courses = $this->courseService->findCoursesByName('д');
 
         return $this->json(['courses' => array_map(static fn (Course $course) => $course->toArray(), $courses)]);
 

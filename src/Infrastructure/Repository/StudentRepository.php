@@ -59,6 +59,61 @@ class StudentRepository extends AbstractRepository
 
     /**
      * @param Student $student
+     * @param string $lastName
+     * @return void
+     */
+    public function updateLastName(Student $student, string $lastName): void
+    {
+        $student->setLastName($lastName);
+        $this->flush();
+    }
+
+    /**
+     * @param Student $student
+     * @param string $firstName
+     * @return void
+     */
+    public function updateFirstName(Student $student, string $firstName): void
+    {
+        $student->setFirstName($firstName);
+        $this->flush();
+    }
+
+    /**
+     * @param Student $student
+     * @param string $middleName
+     * @return void
+     */
+    public function updateMiddleName(Student $student, string $middleName): void
+    {
+        $student->setMiddleName($middleName);
+        $this->flush();
+    }
+
+    /**
+     * @param Student $student
+     * @param string $phone
+     * @return void
+     */
+    public function updatePhone(Student $student, string $phone): void
+    {
+        $student->setPhone($phone);
+        $this->flush();
+    }
+
+    /**
+     * @param Student $student
+     * @param string $email
+     * @return void
+     */
+    public function updateEmail(Student $student, string $email): void
+    {
+        $student->setEmail($email);
+        $this->flush();
+    }
+
+    /**
+     * @param Student $student
      * @return int
      */
     public function create(Student $student): int

@@ -66,6 +66,28 @@ class CourseRepository extends AbstractRepository
 
     /**
      * @param Course $course
+     * @param string $name
+     * @return void
+     */
+    public function updateName(Course $course, string $name): void
+    {
+        $course->setName($name);
+        $this->flush();
+    }
+
+    /**
+     * @param Course $course
+     * @param string $description
+     * @return void
+     */
+    public function updateDescription(Course $course, string $description): void
+    {
+        $course->setDescription($description);
+        $this->flush();
+    }
+
+    /**
+     * @param Course $course
      * @return int
      */
     public function create(Course $course): int

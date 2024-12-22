@@ -34,7 +34,7 @@ class CourseService
      * @param string $name
      * @return Course[]
      */
-    public function findCourseByName(string $name): array
+    public function findCoursesByName(string $name): array
     {
         return $this->courseRepository->findCoursesByNameWithCriteria($name);
     }
@@ -43,9 +43,41 @@ class CourseService
      * @param string $description
      * @return Course[]
      */
-    public function findCourseByDescription(string $description): array
+    public function findCoursesByDescription(string $description): array
     {
         return $this->courseRepository->findCoursesByDescriptionWithCriteria($description);
+    }
+
+    /**
+     * @param int $courseId
+     * @param string $name
+     * @return Course|null
+     */
+    public function updateName(int $courseId, string $name): ?Course
+    {
+        $course = $this->courseRepository->find($courseId);
+        if (!($course instanceof Course)) {
+            return null;
+        }
+        $this->courseRepository->updateName($course, $name);
+
+        return $course;
+    }
+
+    /**
+     * @param int $courseId
+     * @param string $description
+     * @return Course|null
+     */
+    public function updateDescription(int $courseId, string $description): ?Course
+    {
+        $course = $this->courseRepository->find($courseId);
+        if (!($course instanceof Course)) {
+            return null;
+        }
+        $this->courseRepository->updateDescription($course, $description);
+
+        return $course;
     }
 
     /**
