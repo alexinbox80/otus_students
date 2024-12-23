@@ -26,7 +26,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'student')]
     private User $user;
 
     #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'student')]
