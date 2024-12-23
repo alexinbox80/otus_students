@@ -2,6 +2,7 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\Entity\Lesson;
 use App\Domain\Entity\Task;
 use App\Infrastructure\Repository\TaskRepository;
 
@@ -81,16 +82,32 @@ class TaskService
     }
 
     /**
+     * @param Lesson $lesson
      * @param string $name
      * @param string $description
      * @return Task
      */
-    public function create(string $name, string $description): Task
+    public function create(Lesson $lesson, string $name, string $description): Task
     {
         $task = new Task();
         $task->setName($name);
         $task->setDescription($description);
+        $lesson->addTask($task);
         $this->taskRepository->create($task);
+
+        return $task;
+    }
+
+    /**
+     * @param Task $task
+     * @param Lesson $lesson
+     * @return Task
+     */
+    public function changeLesson(Task $task, Lesson $lesson): Task
+    {
+        $task->getLesson()->removeTask($task);
+        $task->removeLesson()->setLesson($lesson);
+        $this->taskRepository->flush();
 
         return $task;
     }

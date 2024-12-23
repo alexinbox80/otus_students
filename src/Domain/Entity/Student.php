@@ -45,16 +45,119 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         $this->unlockedAchievements = new ArrayCollection();
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @param int|null $id
+     * @return void
+     */
     public function setId(?int $id): void
     {
         $this->id = $id;
     }
 
+    /**
+     * @return Collection
+     */
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
+    }
+
+    /**
+     * @param Subscription $subscription
+     * @return self
+     */
+    public function addSubscription(Subscription $subscription): self
+    {
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions->add($subscription);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Subscription $subscription
+     * @return self
+     */
+    public function removeSubscription(Subscription $subscription): self
+    {
+        $this->subscriptions->removeElement($subscription);
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCompletedTasks(): Collection
+    {
+        return $this->completedTasks;
+    }
+
+    /**
+     * @param CompletedTask $completedTask
+     * @return self
+     */
+    public function addCompletedTask(CompletedTask $completedTask): self
+    {
+        if (!$this->completedTasks->contains($completedTask)) {
+            $this->completedTasks->add($completedTask);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param CompletedTask $completedTask
+     * @return self
+     */
+    public function removeCompletedTask(CompletedTask $completedTask): self
+    {
+        $this->completedTasks->removeElement($completedTask);
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getUnlockedAchievements(): Collection
+    {
+        return $this->unlockedAchievements;
+    }
+
+    /**
+     * @param UnlockedAchievement $unlockedAchievement
+     * @return self
+     */
+    public function addUnlockedAchievement(UnlockedAchievement $unlockedAchievement): self
+    {
+        if (!$this->unlockedAchievements->contains($unlockedAchievement)) {
+            $this->unlockedAchievements->add($unlockedAchievement);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param UnlockedAchievement $unlockedAchievement
+     * @return self
+     */
+    public function removeUnlockedAchievement(UnlockedAchievement $unlockedAchievement): self
+    {
+        $this->unlockedAchievements->removeElement($unlockedAchievement);
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         return [
@@ -67,6 +170,23 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
             'user' => $this->user->toArray(),
+            'courses' => array_map(
+                static fn(Subscription $subscription) => [
+                    'id' => $subscription->getCourse()->getId(),
+                    'name' => $subscription->getCourse()->getName(),
+                    'description' => $subscription->getCourse()->getDescription()
+                ],
+                $this->getSubscriptions()->toArray()
+            ),
+            'unlockedAchievements' => array_map(
+                static fn(UnlockedAchievement $unlockedAchievement) => [
+                    'id' => $unlockedAchievement->getAchievement()->getId(),
+                    'name' => $unlockedAchievement->getAchievement()->getName(),
+                    'description' => $unlockedAchievement->getAchievement()->getDescription(),
+                    'createdAt' => $unlockedAchievement->getCreatedAt(),
+                ],
+                $this->getUnlockedAchievements()->toArray()
+            )
         ];
     }
 }

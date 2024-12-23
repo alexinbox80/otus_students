@@ -86,6 +86,14 @@ class TaskRepository extends AbstractRepository
     }
 
     /**
+     * @return void
+     */
+    public function flush(): void
+    {
+        $this->flush();
+    }
+
+    /**
      * @param Task $task
      * @return int
      */

@@ -30,33 +30,68 @@ class Subscription implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'id')]
     private Course $course;
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @param int|null $id
+     * @return void
+     */
     public function setId(?int $id): void
     {
         $this->id = $id;
     }
 
+    /**
+     * @return Student
+     */
     public function getStudent(): Student
     {
         return $this->student;
     }
 
+    /**
+     * @param Student $student
+     * @return void
+     */
     public function setStudent(Student $student): void
     {
         $this->student = $student;
     }
 
+    /**
+     * @return Course
+     */
     public function getCourse(): Course
     {
         return $this->course;
     }
 
+    /**
+     * @param Course $course
+     * @return void
+     */
     public function setCourse(Course $course): void
     {
         $this->course = $course;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'student' => $this->getStudent()->toArray(),
+            'course' => $this->getCourse()->toArray(),
+            'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
+        ];
     }
 }

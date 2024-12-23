@@ -3,7 +3,10 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\Percentage;
+use App\Domain\Entity\Skill;
+use App\Domain\Entity\Task;
 use App\Infrastructure\Repository\PercentageRepository;
+use Exception;
 
 class PercentageService
 {
@@ -81,15 +84,20 @@ class PercentageService
     }
 
     /**
+     * @param Task $task
+     * @param Skill $skill
      * @param float $percent
      * @param string $description
      * @return Percentage
+     * @throws Exception
      */
-    public function create(float $percent, string $description): Percentage
+    public function create(Task $task, Skill $skill, float $percent, string $description): Percentage
     {
         $percentage = new Percentage();
         $percentage->setPercent($percent);
         $percentage->setDescription($description);
+        $task->addPercentage($percentage);
+        $skill->addPercentage($percentage);
         $this->percentageRepository->create($percentage);
 
         return $percentage;

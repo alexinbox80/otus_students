@@ -41,53 +41,143 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
         $this->tasks = new ArrayCollection();
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @param int|null $id
+     * @return void
+     */
     public function setId(?int $id): void
     {
         $this->id = $id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return void
+     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     * @return void
+     */
     public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
+    /**
+     * @return Course|null
+     */
     public function getCourse(): ?Course
     {
         return $this->course;
     }
 
+    /**
+     * @param Course|null $course
+     * @return void
+     */
     public function setCourse(?Course $course): void
     {
         $this->course = $course;
     }
 
+    /**
+     * @return Collection
+     */
     public function getTasks(): Collection
     {
         return $this->tasks;
     }
 
+    /**
+     * @param Collection $tasks
+     * @return void
+     */
     public function setTasks(Collection $tasks): void
     {
         $this->tasks = $tasks;
+    }
+
+    /**
+     * @param Task $task
+     * @return Lesson
+     */
+    public function addTask(Task $task): Lesson
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks->add($task);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Task $task
+     * @return Lesson
+     */
+    public function removeTask(Task $task): Lesson
+    {
+        $this->tasks->removeElement($task);
+        return $this;
+    }
+
+    /**
+     * @return Lesson
+     */
+    public function removeCourse(): Lesson
+    {
+        $this->course = null;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'course' => $this->getCourse()->toArray(),
+            'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
+            'tasks' => array_map(
+                static fn(Task $task) => [
+                    'id' => $task->getId(),
+                    'name' => $task->getName(),
+                    'description' => $task->getDescription(),
+                ],
+                $this->getTasks()->toArray()
+            )
+        ];
     }
 }

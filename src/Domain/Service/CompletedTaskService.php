@@ -2,6 +2,7 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\Entity\Student;
 use DateTime;
 use App\Domain\Entity\CompletedTask;
 use App\Infrastructure\Repository\CompletedTaskRepository;
@@ -107,15 +108,19 @@ class CompletedTaskService
     }
 
     /**
+     * @param Student $student
      * @param int $grade
      * @param string $description
      * @return CompletedTask
      */
-    public function create(int $grade, string $description): CompletedTask
+    public function create(Student $student, int $grade, string $description): CompletedTask
     {
         $completedTask = new CompletedTask();
         $completedTask->setGrade($grade);
         $completedTask->setDescription($description);
+
+        $student->addCompletedTask($completedTask);
+
         $this->completedTaskRepository->create($completedTask);
 
         return $completedTask;

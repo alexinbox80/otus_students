@@ -2,6 +2,7 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\Entity\Course;
 use App\Domain\Entity\Lesson;
 use App\Infrastructure\Repository\LessonRepository;
 
@@ -81,16 +82,32 @@ class LessonService
     }
 
     /**
+     * @param Course $course
      * @param string $name
      * @param string $description
      * @return Lesson
      */
-    public function create(string $name, string $description): Lesson
+    public function create(Course $course, string $name, string $description): Lesson
     {
         $lesson = new Lesson();
         $lesson->setName($name);
         $lesson->setDescription($description);
+        $course->addLesson($lesson);
         $this->lessonRepository->create($lesson);
+
+        return $lesson;
+    }
+
+    /**
+     * @param Lesson $lesson
+     * @param Course $course
+     * @return Lesson
+     */
+    public function changeCourse(Lesson $lesson, Course $course): Lesson
+    {
+        $lesson->getCourse()->removeLesson($lesson);
+        $lesson->removeCourse()->setCourse($course);
+        $this->lessonRepository->flush();
 
         return $lesson;
     }

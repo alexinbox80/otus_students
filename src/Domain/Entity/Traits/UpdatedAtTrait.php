@@ -10,7 +10,7 @@ trait UpdatedAtTrait
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: false)]
     private DateTime $updatedAt;
 
-    public function getUpdateAt(): DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }

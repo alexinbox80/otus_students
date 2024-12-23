@@ -95,6 +95,14 @@ class LessonRepository extends AbstractRepository
     }
 
     /**
+     * @return void
+     */
+    public function flush(): void
+    {
+        $this->flush();
+    }
+
+    /**
      * @param Lesson $lesson
      * @return void
      */

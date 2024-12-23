@@ -36,43 +36,108 @@ class Skill implements EntityInterface, HasMetaTimestampsInterface
         $this->percentages = new ArrayCollection();
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @param int|null $id
+     * @return void
+     */
     public function setId(?int $id): void
     {
         $this->id = $id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return void
+     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     * @return void
+     */
     public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
+    /**
+     * @return Collection
+     */
     public function getPercentages(): Collection
     {
         return $this->percentages;
     }
 
+    /**
+     * @param Collection $percentages
+     * @return void
+     */
     public function setPercentages(Collection $percentages): void
     {
         $this->percentages = $percentages;
+    }
+
+    /**
+     * @param Percentage $percentage
+     * @return Skill
+     */
+    public function addPercentage(Percentage $percentage): Skill
+    {
+        if (!$this->percentages->contains($percentage)) {
+            $this->percentages->add($percentage);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Percentage $percentage
+     * @return Skill
+     */
+    public function removePercentage(Percentage $percentage): Skill
+    {
+        $this->percentages->removeElement($percentage);
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s')
+        ];
     }
 }
