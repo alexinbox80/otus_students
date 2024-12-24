@@ -47,15 +47,6 @@ class Percentage implements EntityInterface, HasMetaTimestampsInterface
     }
 
     /**
-     * @param int|null $id
-     * @return void
-     */
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return float
      */
     public function getPercent(): float
@@ -131,11 +122,11 @@ class Percentage implements EntityInterface, HasMetaTimestampsInterface
         return [
             'id' => $this->getId(),
             'description' => $this->getDescription(),
-            'task' => $this->getTask()->toArray(),
-            'skill' => $this->getSkill()->toArray(),
             'percent' => $this->getPercent(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s')
+            'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
+            'task' => $this->getTask()->toArray(),
+            'skill' => $this->getSkill()->toArray()
         ];
     }
 }

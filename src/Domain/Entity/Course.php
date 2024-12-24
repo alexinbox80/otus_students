@@ -49,15 +49,6 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
     }
 
     /**
-     * @param int|null $id
-     * @return void
-     */
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return string
      */
     public function getName(): string
@@ -186,7 +177,9 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
                 static fn(Lesson $lesson) => [
                     'id' => $lesson->getId(),
                     'name' =>  $lesson->getName(),
-                    'description' =>  $lesson->getDescription()
+                    'description' => $lesson->getDescription(),
+                    'createdAt' => $lesson->getCreatedAt()->format('Y-m-d H:i:s'),
+                    'updatedAt' => $lesson->getUpdatedAt()->format('Y-m-d H:i:s'),
                 ],
                 $this->getLessons()->toArray()
             )

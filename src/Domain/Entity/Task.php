@@ -55,15 +55,6 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
     }
 
     /**
-     * @param int|null $id
-     * @return void
-     */
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return string
      */
     public function getName(): string
@@ -234,7 +225,9 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
                     'id' => $percentage->getSkill()->getId(),
                     'name' => $percentage->getSkill()->getName(),
                     'description' => $percentage->getSkill()->getDescription(),
-                    'percent' => $percentage->getPercent()
+                    'percent' => $percentage->getPercent(),
+                    'createdAt' => $percentage->getCreatedAt()->format('Y-m-d H:i:s'),
+                    'updatedAt' => $percentage->getUpdatedAt()->format('Y-m-d H:i:s'),
                 ],
                 $this->getPercentages()->toArray()
             )

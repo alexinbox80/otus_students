@@ -46,15 +46,6 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     }
 
     /**
-     * @param int|null $id
-     * @return void
-     */
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return string
      */
     public function getLogin(): string
@@ -141,6 +132,8 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
                 'middleName' => $this->student->getMiddleName(),
                 'email' => $this->student->getEmail(),
                 'phone' => $this->student->getPhone(),
+                'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+                'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
             ],
         ];
     }

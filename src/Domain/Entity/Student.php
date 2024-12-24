@@ -54,15 +54,6 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     }
 
     /**
-     * @param int|null $id
-     * @return void
-     */
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return Collection
      */
     public function getSubscriptions(): Collection
@@ -174,7 +165,9 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
                 static fn(Subscription $subscription) => [
                     'id' => $subscription->getCourse()->getId(),
                     'name' => $subscription->getCourse()->getName(),
-                    'description' => $subscription->getCourse()->getDescription()
+                    'description' => $subscription->getCourse()->getDescription(),
+                    'createdAt' => $subscription->getCreatedAt()->format('Y-m-d H:i:s'),
+                    'updatedAt' => $subscription->getUpdatedAt()->format('Y-m-d H:i:s'),
                 ],
                 $this->getSubscriptions()->toArray()
             ),
@@ -183,7 +176,8 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
                     'id' => $unlockedAchievement->getAchievement()->getId(),
                     'name' => $unlockedAchievement->getAchievement()->getName(),
                     'description' => $unlockedAchievement->getAchievement()->getDescription(),
-                    'createdAt' => $unlockedAchievement->getCreatedAt(),
+                    'createdAt' => $unlockedAchievement->getCreatedAt()->format('Y-m-d H:i:s'),
+                    'updatedAt' => $unlockedAchievement->getUpdatedAt()->format('Y-m-d H:i:s'),
                 ],
                 $this->getUnlockedAchievements()->toArray()
             )

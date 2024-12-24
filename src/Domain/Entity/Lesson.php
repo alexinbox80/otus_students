@@ -50,15 +50,6 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
     }
 
     /**
-     * @param int|null $id
-     * @return void
-     */
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return string
      */
     public function getName(): string
@@ -167,14 +158,16 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
             'id' => $this->getId(),
             'name' => $this->getName(),
             'description' => $this->getDescription(),
-            'course' => $this->getCourse()->toArray(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
+            'course' => $this->getCourse()->toArray(),
             'tasks' => array_map(
                 static fn(Task $task) => [
                     'id' => $task->getId(),
                     'name' => $task->getName(),
                     'description' => $task->getDescription(),
+                    'createdAt' => $task->getCreatedAt()->format('Y-m-d H:i:s'),
+                    'updatedAt' => $task->getUpdatedAt()->format('Y-m-d H:i:s'),
                 ],
                 $this->getTasks()->toArray()
             )

@@ -39,15 +39,6 @@ class UnlockedAchievement implements EntityInterface, HasMetaTimestampsInterface
     }
 
     /**
-     * @param int|null $id
-     * @return void
-     */
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return Student
      */
     public function getStudent(): Student
