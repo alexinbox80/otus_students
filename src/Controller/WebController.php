@@ -47,40 +47,6 @@ class WebController extends AbstractController
 
     public function index(): Response
     {
-//        $user = $this->userService->create('J.R.R. Tolkien 1', 'password');
-//
-//        return $this->json($user->toArray());
-
-//        $user = $this->userService->create('Jack London 1 ', 'password');
-//        $this->userService->removeById($user->getId());
-//        $usersByLogin = $this->userService->findUsersByLogin($user->getLogin());
-//
-//        return $this->json(['users' => array_map(static fn (User $user) => $user->toArray(), $usersByLogin)]);
-
-//        $this->userService->removeById(1);
-//        $userById = $this->userService->find(1);
-//
-//        return $this->json(['user' => $userById->toArray()]);
-
-//        $person = new Person();
-//        $person->setFirstName('John');
-//        $person->setLastName('Doe');
-//        $person->setMiddleName('Johnovich');
-//        $student = $this->studentService->create($person);
-
-//        return $this->json($student->toArray());
-
-//        $studentById = $this->studentService->find(1);
-//
-//        return $this->json(['student' => $studentById->toArray()]);
-
-        //$courseById = $this->courceService->find(1);
-//        $courses = $this->courseService->findCoursesByName('д');
-//
-//        return $this->json(['courses' => array_map(static fn (Course $course) => $course->toArray(), $courses)]);
-
-        //return $this->json(['course' => $courseById[0]->toArray()]);
-
 //        $user = $this->userService->findAll();
 //        return $this->json([
 //            'user' => array_map(static fn (User $user) => $user->toArray(), $user)
