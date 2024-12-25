@@ -37,85 +37,51 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\OneToOne(targetEntity: Student::class, mappedBy: 'user')]
     private Student $student;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getLogin(): string
     {
         return $this->login;
     }
 
-    /**
-     * @param string $login
-     * @return void
-     */
     public function setLogin(string $login): void
     {
         $this->login = $login;
     }
 
-    /**
-     * @return string
-     */
     public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     * @return void
-     */
     public function setPassword(string $password): void
     {
         $this->password = $password;
     }
 
-    /**
-     * @return array
-     */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
-    /**
-     * @param array $roles
-     * @return void
-     */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
 
-    /**
-     * @return bool
-     */
     public function isActive(): bool
     {
         return $this->isActive;
     }
 
-    /**
-     * @param bool $isActive
-     * @return void
-     */
     public function setIsActive(bool $isActive): void
     {
         $this->isActive = $isActive;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return [

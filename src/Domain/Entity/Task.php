@@ -46,104 +46,61 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         $this->completedTasks = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return void
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return void
-     */
     public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return Lesson|null
-     */
     public function getLesson(): ?Lesson
     {
         return $this->lesson;
     }
 
-    /**
-     * @param Lesson|null $lesson
-     * @return void
-     */
     public function setLesson(?Lesson $lesson): void
     {
         $this->lesson = $lesson;
     }
 
-    /**
-     * @return Collection
-     */
     public function getPercentages(): Collection
     {
         return $this->percentages;
     }
 
-    /**
-     * @param Collection $percentages
-     * @return void
-     */
     public function setPercentages(Collection $percentages): void
     {
         $this->percentages = $percentages;
     }
 
-    /**
-     * @return Collection]
-     */
     public function getCompletedTasks(): Collection
     {
         return $this->completedTasks;
     }
 
-    /**
-     * @param Collection $completedTasks
-     * @return void
-     */
     public function setCompletedTasks(Collection $completedTasks): void
     {
         $this->completedTasks = $completedTasks;
     }
 
-    /**
-     * @param Percentage $percentage
-     * @return Task
-     * @throws Exception
-     */
     public function addPercentage(Percentage $percentage): Task
     {
         if (!$this->percentages->contains($percentage)) {
@@ -166,20 +123,12 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    /**
-     * @param Percentage $percentage
-     * @return Task
-     */
     public function removePercentage(Percentage $percentage): Task
     {
         $this->percentages->removeElement($percentage);
         return $this;
     }
 
-    /**
-     * @param CompletedTask $completedTask
-     * @return Task
-     */
     public function addCompletedTask(CompletedTask $completedTask): Task
     {
         if (!$this->completedTasks->contains($completedTask)) {
@@ -189,28 +138,18 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    /**
-     * @param CompletedTask $completedTask
-     * @return Task
-     */
     public function removeCompletedTask(CompletedTask $completedTask): Task
     {
         $this->completedTasks->removeElement($completedTask);
         return $this;
     }
 
-    /**
-     * @return Task
-     */
     public function removeLesson(): Task
     {
         $this->lesson = null;
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return [

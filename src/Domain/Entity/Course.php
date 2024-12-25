@@ -40,86 +40,51 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
         $this->lessons = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return void
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return void
-     */
     public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return Collection
-     */
     public function getSubscriptions(): Collection
     {
         return $this->subscriptions;
     }
 
-    /**
-     * @param Collection $subscriptions
-     * @return void
-     */
     public function setSubscriptions(Collection $subscriptions): void
     {
         $this->subscriptions = $subscriptions;
     }
 
-    /**
-     * @return Collection
-     */
     public function getLessons(): Collection
     {
         return $this->lessons;
     }
 
-    /**
-     * @param Collection $lessons
-     * @return void
-     */
     public function setLessons(Collection $lessons): void
     {
         $this->lessons = $lessons;
     }
 
-    /**
-     * @param Subscription $subscription
-     * @return self
-     */
     public function addSubscription(Subscription $subscription): self
     {
         if (!$this->subscriptions->contains($subscription)) {
@@ -129,20 +94,12 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    /**
-     * @param Subscription $subscription
-     * @return self
-     */
     public function removeSubscription(Subscription $subscription): self
     {
         $this->subscriptions->removeElement($subscription);
         return $this;
     }
 
-    /**
-     * @param Lesson $lesson
-     * @return self
-     */
     public function addLesson(Lesson $lesson): self
     {
         if (!$this->lessons->contains($lesson)) {
@@ -152,19 +109,12 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    /**
-     * @param Lesson $lesson
-     * @return Course
-     */
     public function removeLesson(Lesson $lesson): Course
     {
         $this->lessons->removeElement($lesson);
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return [

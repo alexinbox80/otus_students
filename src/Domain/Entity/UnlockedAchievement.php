@@ -30,51 +30,31 @@ class UnlockedAchievement implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\JoinColumn(name: 'achievement_id', referencedColumnName: 'id')]
     private Achievement $achievement;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Student
-     */
     public function getStudent(): Student
     {
         return $this->student;
     }
 
-    /**
-     * @param Student $student
-     * @return void
-     */
     public function setStudent(Student $student): void
     {
         $this->student = $student;
     }
 
-    /**
-     * @return Achievement
-     */
     public function getAchievement(): Achievement
     {
         return $this->achievement;
     }
 
-    /**
-     * @param Achievement $achievement
-     * @return void
-     */
     public function setAchievement(Achievement $achievement): void
     {
         $this->achievement = $achievement;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return [

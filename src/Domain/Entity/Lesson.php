@@ -41,86 +41,51 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
         $this->tasks = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return void
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return void
-     */
     public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return Course|null
-     */
     public function getCourse(): ?Course
     {
         return $this->course;
     }
 
-    /**
-     * @param Course|null $course
-     * @return void
-     */
     public function setCourse(?Course $course): void
     {
         $this->course = $course;
     }
 
-    /**
-     * @return Collection
-     */
     public function getTasks(): Collection
     {
         return $this->tasks;
     }
 
-    /**
-     * @param Collection $tasks
-     * @return void
-     */
     public function setTasks(Collection $tasks): void
     {
         $this->tasks = $tasks;
     }
 
-    /**
-     * @param Task $task
-     * @return Lesson
-     */
     public function addTask(Task $task): Lesson
     {
         if (!$this->tasks->contains($task)) {
@@ -130,28 +95,18 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    /**
-     * @param Task $task
-     * @return Lesson
-     */
     public function removeTask(Task $task): Lesson
     {
         $this->tasks->removeElement($task);
         return $this;
     }
 
-    /**
-     * @return Lesson
-     */
     public function removeCourse(): Lesson
     {
         $this->course = null;
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return [

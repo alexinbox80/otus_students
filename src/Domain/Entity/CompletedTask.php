@@ -43,25 +43,16 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\JoinColumn(name: 'task_id', referencedColumnName: 'id')]
     private Task $task;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return DateTime|null
-     */
     public function getFinishedAt(): ?DateTime
     {
         return $this->finishedAt;
     }
 
-    /**
-     * @return void
-     */
     public function setFinishedAt(): void
     {
         if ($this->finishedAt === null) {
@@ -69,86 +60,51 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface
         }
     }
 
-    /**
-     * @param DateTime $finishedAt
-     * @return void
-     */
     public function updateFinishedAt(DateTime $finishedAt): void
     {
             $this->finishedAt = $finishedAt;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return void
-     */
     public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return int|null
-     */
     public function getGrade(): ?int
     {
         return $this->grade;
     }
 
-    /**
-     * @param int|null $grade
-     * @return void
-     */
     public function setGrade(?int $grade): void
     {
         $this->grade = $grade;
     }
 
-    /**
-     * @return Student
-     */
     public function getStudent(): Student
     {
         return $this->student;
     }
 
-    /**
-     * @param Student $student
-     * @return void
-     */
     public function setStudent(Student $student): void
     {
         $this->student = $student;
     }
 
-    /**
-     * @return Task
-     */
     public function getTask(): Task
     {
         return $this->task;
     }
 
-    /**
-     * @param Task $task
-     * @return void
-     */
     public function setTask(Task $task): void
     {
         $this->task = $task;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return [
