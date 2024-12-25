@@ -84,6 +84,9 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
         $this->course = $course;
     }
 
+    /**
+     * @return Collection<array-key,Task>
+     */
     public function getTasks(): Collection
     {
         return $this->tasks;

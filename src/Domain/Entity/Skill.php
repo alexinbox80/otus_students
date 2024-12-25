@@ -69,6 +69,9 @@ class Skill implements EntityInterface, HasMetaTimestampsInterface
         $this->description = $description;
     }
 
+    /**
+     * @return Collection<array-key,Percentage>
+     */
     public function getPercentages(): Collection
     {
         return $this->percentages;

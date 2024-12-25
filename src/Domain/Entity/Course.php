@@ -73,6 +73,9 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
         $this->description = $description;
     }
 
+    /**
+     * @return Collection<array-key,Subscription>
+     */
     public function getSubscriptions(): Collection
     {
         return $this->subscriptions;
@@ -83,6 +86,9 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
         $this->subscriptions = $subscriptions;
     }
 
+    /**
+     * @return Collection<array-key,Lesson>
+     */
     public function getLessons(): Collection
     {
         return $this->lessons;

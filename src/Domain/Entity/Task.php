@@ -88,6 +88,9 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         $this->lesson = $lesson;
     }
 
+    /**
+     * @return Collection<array-key,Percentage>
+     */
     public function getPercentages(): Collection
     {
         return $this->percentages;
@@ -98,6 +101,9 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         $this->percentages = $percentages;
     }
 
+    /**
+     * @return Collection<array-key,CompletedTask>
+     */
     public function getCompletedTasks(): Collection
     {
         return $this->completedTasks;

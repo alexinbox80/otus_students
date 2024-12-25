@@ -69,6 +69,9 @@ class Achievement implements EntityInterface, HasMetaTimestampsInterface
         $this->description = $description;
     }
 
+    /**
+     * @return Collection<array-key,UnlockedAchievement>
+     */
     public function getUnlockedAchievements(): Collection
     {
         return $this->unlockedAchievements;

@@ -58,6 +58,9 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         return $this->id;
     }
 
+    /**
+     * @return Collection<array-key,Subscription>
+     */
     public function getSubscriptions(): Collection
     {
         return $this->subscriptions;
@@ -78,6 +81,9 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         return $this;
     }
 
+    /**
+     * @return Collection<array-key,CompletedTask>
+     */
     public function getCompletedTasks(): Collection
     {
         return $this->completedTasks;
@@ -98,6 +104,9 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         return $this;
     }
 
+    /**
+     * @return Collection<array-key,UnlockedAchievement>
+     */
     public function getUnlockedAchievements(): Collection
     {
         return $this->unlockedAchievements;
