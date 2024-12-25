@@ -46,8 +46,15 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         $this->completedTasks = new ArrayCollection();
     }
 
+    /**
+     * @throws Exception
+     */
     public function getId(): int
     {
+        if (is_null($this->id)) {
+            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
+        }
+
         return $this->id;
     }
 

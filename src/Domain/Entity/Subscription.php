@@ -6,6 +6,7 @@ use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 #[ORM\Table(name: 'subscription')]
 #[ORM\Entity]
@@ -30,8 +31,15 @@ class Subscription implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'id')]
     private Course $course;
 
+    /**
+     * @throws Exception
+     */
     public function getId(): int
     {
+        if (is_null($this->id)) {
+            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
+        }
+
         return $this->id;
     }
 

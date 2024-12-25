@@ -8,6 +8,7 @@ use App\Domain\Entity\Traits\UpdatedAtTrait;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity]
@@ -37,8 +38,15 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\OneToOne(targetEntity: Student::class, mappedBy: 'user')]
     private Student $student;
 
+    /**
+     * @throws Exception
+     */
     public function getId(): int
     {
+        if (is_null($this->id)) {
+            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
+        }
+
         return $this->id;
     }
 

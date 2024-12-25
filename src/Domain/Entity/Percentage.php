@@ -5,6 +5,7 @@ namespace App\Domain\Entity;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
+use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -38,8 +39,15 @@ class Percentage implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\JoinColumn(name: 'skill_id', referencedColumnName: 'id')]
     private Skill $skill;
 
+    /**
+     * @throws Exception
+     */
     public function getId(): int
     {
+        if (is_null($this->id)) {
+            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
+        }
+
         return $this->id;
     }
 

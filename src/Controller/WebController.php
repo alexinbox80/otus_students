@@ -52,10 +52,10 @@ class WebController extends AbstractController
 //            'user' => array_map(static fn (User $user) => $user->toArray(), $user)
 //        ]);
 
-//        $student = $this->studentService->findAll();
-//        return $this->json([
-//            'student' => array_map(static fn (Student $student) => $student->toArray(), $student)
-//        ]);
+        $student = $this->studentService->findAll();
+        return $this->json([
+            'student' => array_map(static fn (Student $student) => $student->toArray(), $student)
+        ]);
 
 //        $achievement = $this->achievementService->findAll();
 //        return $this->json([
@@ -92,9 +92,9 @@ class WebController extends AbstractController
 //            'task' => array_map(static fn (Task $task) => $task->toArray(), $task)
 //        ]);
 
-        $unlockedAchievement = $this->unlockedAchievementService->findAll();
-        return $this->json([
-            'unlockedAchievement' => array_map(static fn (UnlockedAchievement $unlockedAchievement) => $unlockedAchievement->toArray(), $unlockedAchievement)
-        ]);
+//        $unlockedAchievement = $this->unlockedAchievementService->findAll();
+//        return $this->json([
+//            'unlockedAchievement' => array_map(static fn (UnlockedAchievement $unlockedAchievement) => $unlockedAchievement->toArray(), $unlockedAchievement)
+//        ]);
     }
 }

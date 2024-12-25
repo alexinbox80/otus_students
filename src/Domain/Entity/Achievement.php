@@ -8,6 +8,7 @@ use App\Domain\Entity\Traits\UpdatedAtTrait;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 #[ORM\Table(name: 'achievement')]
 #[ORM\Entity]
@@ -36,8 +37,15 @@ class Achievement implements EntityInterface, HasMetaTimestampsInterface
         $this->unlockedAchievements = new ArrayCollection();
     }
 
+    /**
+     * @throws Exception
+     */
     public function getId(): int
     {
+        if (is_null($this->id)) {
+            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
+        }
+
         return $this->id;
     }
 
