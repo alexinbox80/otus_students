@@ -143,6 +143,10 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
                         static fn(Subscription $subscription) => $subscription->toArray(),
                         $this->getSubscriptions()->toArray()
                     ),
+                    'completedTasks' => array_map(
+                        static fn(CompletedTask $completedTask) => $completedTask->toArray(),
+                        $this->getCompletedTasks()->toArray()
+                    ),
                     'unlockedAchievements' => array_map(
                         static fn(UnlockedAchievement $unlockedAchievement) => $unlockedAchievement->toArray(),
                         $this->getUnlockedAchievements()->toArray()

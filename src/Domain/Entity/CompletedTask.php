@@ -121,7 +121,6 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface
         return [
             'id' => $this->getId(),
             'grade' => $this->getGrade(),
-            'student' => $this->getStudent()->toArray(),
             'task' => $this->getTask()->toArray(),
             'description' => $this->getDescription(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
