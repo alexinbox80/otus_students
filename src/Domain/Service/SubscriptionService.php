@@ -48,12 +48,7 @@ class SubscriptionService
         return $subscription;
     }
 
-    /**
-     * @param Student $student
-     * @param Course $course
-     * @return Subscription
-     */
-    public function changeSubscribe(Student $student, Course $course): Subscription
+    public function changeSubscription(Student $student, Course $course): Subscription
     {
         $subscription = new Subscription();
         $subscription->setStudent($student);
