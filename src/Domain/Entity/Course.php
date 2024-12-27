@@ -129,6 +129,9 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
+    /**
+     * @throws Exception
+     */
     public function toArray(): array
     {
         return [

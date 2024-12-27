@@ -90,10 +90,13 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         $this->isActive = $isActive;
     }
 
+    /**
+     * @throws Exception
+     */
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
+            'id' => $this->getId(),
             'login' => $this->login,
             'isActive' => $this->isActive,
             'roles' => $this->roles,

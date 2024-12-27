@@ -59,7 +59,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     }
 
     /**
-     * @return Collection<array-key,Subscription>
+     * @return Collection<int,Subscription>
      */
     public function getSubscriptions(): Collection
     {
@@ -82,7 +82,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     }
 
     /**
-     * @return Collection<array-key,CompletedTask>
+     * @return Collection<int,CompletedTask>
      */
     public function getCompletedTasks(): Collection
     {
@@ -105,7 +105,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     }
 
     /**
-     * @return Collection<array-key,UnlockedAchievement>
+     * @return Collection<int,UnlockedAchievement>
      */
     public function getUnlockedAchievements(): Collection
     {
@@ -127,6 +127,9 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         return $this;
     }
 
+    /**
+     * @throws Exception
+     */
     public function toArray(): array
     {
         return

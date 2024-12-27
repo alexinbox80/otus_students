@@ -113,6 +113,9 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface
         $this->task = $task;
     }
 
+    /**
+     * @throws Exception
+     */
     public function toArray(): array
     {
         return [

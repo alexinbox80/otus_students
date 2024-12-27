@@ -67,6 +67,9 @@ class Subscription implements EntityInterface, HasMetaTimestampsInterface
         $this->course = $course;
     }
 
+    /**
+     * @throws Exception
+     */
     public function toArray(): array
     {
         return [

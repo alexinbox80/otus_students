@@ -89,7 +89,7 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
     }
 
     /**
-     * @return Collection<array-key,Percentage>
+     * @return Collection<int,Percentage>
      */
     public function getPercentages(): Collection
     {
@@ -102,7 +102,7 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
     }
 
     /**
-     * @return Collection<array-key,CompletedTask>
+     * @return Collection<int,CompletedTask>
      */
     public function getCompletedTasks(): Collection
     {
@@ -163,6 +163,9 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
+    /**
+     * @throws Exception
+     */
     public function toArray(): array
     {
         return [

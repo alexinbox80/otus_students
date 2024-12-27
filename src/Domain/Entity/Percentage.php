@@ -91,6 +91,9 @@ class Percentage implements EntityInterface, HasMetaTimestampsInterface
         $this->skill = $skill;
     }
 
+    /**
+     * @throws Exception
+     */
     public function toArray(): array
     {
         return [
