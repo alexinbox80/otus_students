@@ -31,6 +31,10 @@ class Subscription implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'id')]
     private Course $course;
 
+    public function __construct(Student $student, Course $course)
+    {
+    }
+
     /**
      * @throws Exception
      */
