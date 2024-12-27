@@ -67,8 +67,6 @@ class UnlockedAchievement implements EntityInterface, HasMetaTimestampsInterface
     {
         return [
             'id' => $this->getId(),
-            'student' => $this->getStudent()->toArray(),
-            'achievement' => $this->getAchievement()->toArray(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s')
         ];

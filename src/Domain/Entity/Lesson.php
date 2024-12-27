@@ -126,15 +126,8 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
             'description' => $this->getDescription(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
-            'course' => $this->getCourse()->toArray(),
             'tasks' => array_map(
-                static fn(Task $task) => [
-                    'id' => $task->getId(),
-                    'name' => $task->getName(),
-                    'description' => $task->getDescription(),
-                    'createdAt' => $task->getCreatedAt()->format('Y-m-d H:i:s'),
-                    'updatedAt' => $task->getUpdatedAt()->format('Y-m-d H:i:s'),
-                ],
+                static fn(Task $task) => $task->toArray(),
                 $this->getTasks()->toArray()
             )
         ];

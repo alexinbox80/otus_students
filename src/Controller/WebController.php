@@ -72,6 +72,11 @@ class WebController extends AbstractController
 //            'lesson' => array_map(static fn (Lesson $lesson) => $lesson->toArray(), $lesson)
 //        ]);
 
+//        $course = $this->courseService->findAll();
+//        return $this->json([
+//            'course' => array_map(static fn (Course $course) => $course->toArray(), $course)
+//        ]);
+
 //        $percentage = $this->percentageService->findAll();
 //        return $this->json([
 //            'percentage' => array_map(static fn (Percentage $percentage) => $percentage->toArray(), $percentage)

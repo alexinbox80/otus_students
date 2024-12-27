@@ -106,12 +106,7 @@ class Achievement implements EntityInterface, HasMetaTimestampsInterface
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
             'unlockedByStudents' => array_map(
-                static fn(UnlockedAchievement $unlockedAchievement) => [
-                    'id' => $unlockedAchievement->getStudent()->getId(),
-                    'lastName' => $unlockedAchievement->getStudent()->getLastName(),
-                    'firstName' => $unlockedAchievement->getStudent()->getFirstName(),
-                    'middleName' => $unlockedAchievement->getStudent()->getMiddleName(),
-                ],
+                static fn(UnlockedAchievement $unlockedAchievement) => $unlockedAchievement->toArray(),
                 $this->getUnlockedAchievements()->toArray()
             )
         ];

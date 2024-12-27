@@ -99,16 +99,7 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
             'roles' => $this->roles,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
-            'student' => [
-                'id' => $this->student->getId(),
-                'lastName' => $this->student->getLastName(),
-                'firstName' => $this->student->getFirstName(),
-                'middleName' => $this->student->getMiddleName(),
-                'email' => $this->student->getEmail(),
-                'phone' => $this->student->getPhone(),
-                'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-                'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
-            ],
+            'student' => $this->student->toArray(),
         ];
     }
 }

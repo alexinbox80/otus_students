@@ -171,16 +171,8 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
             'description' => $this->getDescription(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
-            'lesson' => $this->getLesson()->toArray(),
             'skills' => array_map(
-                static fn(Percentage $percentage) => [
-                    'id' => $percentage->getSkill()->getId(),
-                    'name' => $percentage->getSkill()->getName(),
-                    'description' => $percentage->getSkill()->getDescription(),
-                    'percent' => $percentage->getPercent(),
-                    'createdAt' => $percentage->getCreatedAt()->format('Y-m-d H:i:s'),
-                    'updatedAt' => $percentage->getUpdatedAt()->format('Y-m-d H:i:s'),
-                ],
+                static fn(Percentage $percentage) => $percentage->toArray(),
                 $this->getPercentages()->toArray()
             )
         ];

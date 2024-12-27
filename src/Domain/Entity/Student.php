@@ -129,36 +129,22 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
 
     public function toArray(): array
     {
-        return [
-            'id' => $this->id,
-            'lastName' => $this->getLastName(),
-            'firstName' => $this->getFirstName(),
-            'middleName' => $this->getMiddleName(),
-            'email' => $this->getEmail(),
-            'phone' => $this->getPhone(),
-            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
-            'user' => $this->user->toArray(),
-            'courses' => array_map(
-                static fn(Subscription $subscription) => [
-                    'id' => $subscription->getCourse()->getId(),
-                    'name' => $subscription->getCourse()->getName(),
-                    'description' => $subscription->getCourse()->getDescription(),
-                    'createdAt' => $subscription->getCreatedAt()->format('Y-m-d H:i:s'),
-                    'updatedAt' => $subscription->getUpdatedAt()->format('Y-m-d H:i:s'),
-                ],
-                $this->getSubscriptions()->toArray()
-            ),
-            'unlockedAchievements' => array_map(
-                static fn(UnlockedAchievement $unlockedAchievement) => [
-                    'id' => $unlockedAchievement->getAchievement()->getId(),
-                    'name' => $unlockedAchievement->getAchievement()->getName(),
-                    'description' => $unlockedAchievement->getAchievement()->getDescription(),
-                    'createdAt' => $unlockedAchievement->getCreatedAt()->format('Y-m-d H:i:s'),
-                    'updatedAt' => $unlockedAchievement->getUpdatedAt()->format('Y-m-d H:i:s'),
-                ],
-                $this->getUnlockedAchievements()->toArray()
-            )
-        ];
+        return
+            array_merge(
+                parent::toArray(),
+                [
+                    'id' => $this->id,
+                    'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+                    'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
+                    'courses' => array_map(
+                        static fn(Subscription $subscription) => $subscription->toArray(),
+                        $this->getSubscriptions()->toArray()
+                    ),
+                    'unlockedAchievements' => array_map(
+                        static fn(UnlockedAchievement $unlockedAchievement) => $unlockedAchievement->toArray(),
+                        $this->getUnlockedAchievements()->toArray()
+                    )
+                ]
+            );
     }
 }

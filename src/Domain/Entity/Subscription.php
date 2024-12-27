@@ -69,7 +69,6 @@ class Subscription implements EntityInterface, HasMetaTimestampsInterface
             'id' => $this->getId(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
-            'student' => $this->getStudent()->toArray(),
             'course' => $this->getCourse()->toArray(),
         ];
     }

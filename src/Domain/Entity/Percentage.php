@@ -99,8 +99,6 @@ class Percentage implements EntityInterface, HasMetaTimestampsInterface
             'percent' => $this->getPercent(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
-            'task' => $this->getTask()->toArray(),
-            'skill' => $this->getSkill()->toArray()
         ];
     }
 }
