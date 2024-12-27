@@ -31,31 +31,50 @@ use Symfony\Component\HttpFoundation\Response;
 class WebController extends AbstractController
 {
     public function __construct(
-        private readonly UserService $userService,
-        private readonly StudentService $studentService,
-        private readonly CourseService $courseService,
-        private readonly AchievementService $achievementService,
-        private readonly CompletedTaskService $completedTaskService,
-        private readonly LessonService $lessonService,
-        private readonly PercentageService $percentageService,
-        private readonly SkillService $skillService,
-        private readonly SubscriptionService $subscriptionService,
-        private readonly TaskService $taskService,
+        private readonly UserService                $userService,
+        private readonly StudentService             $studentService,
+        private readonly CourseService              $courseService,
+        private readonly AchievementService         $achievementService,
+        private readonly CompletedTaskService       $completedTaskService,
+        private readonly LessonService              $lessonService,
+        private readonly PercentageService          $percentageService,
+        private readonly SkillService               $skillService,
+        private readonly SubscriptionService        $subscriptionService,
+        private readonly TaskService                $taskService,
         private readonly UnlockedAchievementService $unlockedAchievementService,
-    ) {
+    )
+    {
     }
 
     public function index(): Response
     {
+//        $person = new Person(
+//            'Иванов1',
+//            'Иван1',
+//            'Иванович1',
+//            '71234567890',
+//            'mail@mail.ru'
+//        );
+
+        //$student = $this->studentService->create($person);
+
+        $student = $this->studentService->updateMiddleName(9, 'Петрович');
+        $student = $this->studentService->updatePhone(9, '999999');
+        $student = $this->studentService->updateEmail(9, 'mail@m.ru');
+
+        return $this->json([
+            'student' => $student->toArray(),
+        ]);
+
 //        $user = $this->userService->findAll();
 //        return $this->json([
 //            'user' => array_map(static fn (User $user) => $user->toArray(), $user)
 //        ]);
 
-        $student = $this->studentService->findAll();
-        return $this->json([
-            'student' => array_map(static fn (Student $student) => $student->toArray(), $student)
-        ]);
+//        $student = $this->studentService->findAll();
+//        return $this->json([
+//            'student' => array_map(static fn(Student $student) => $student->toArray(), $student)
+//        ]);
 
 //        $achievement = $this->achievementService->findAll();
 //        return $this->json([

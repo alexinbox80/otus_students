@@ -18,8 +18,8 @@ trait CreatedAtTrait
     #[ORM\PrePersist]
     public function setCreatedAt(): void
     {
-        if ($this->createdAt === null) {
+        //if ($this->createdAt === null) {
             $this->createdAt = new DateTime();
-        }
+        //}
     }
 }

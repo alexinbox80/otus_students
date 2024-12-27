@@ -143,9 +143,14 @@ class StudentService
     public function create(Person $person): Student
     {
         $student = new Student();
-        $student->setLastName($person->getLastName());
-        $student->setFirstName($person->getFirstName());
-        $student->setMiddleName($person->getMiddleName());
+        $student->changeName(
+            $person->getLastName(),
+            $person->getFirstName(),
+            $person->getMiddleName()
+        );
+//        $student->setLastName($person->getLastName());
+//        $student->setFirstName($person->getFirstName());
+//        $student->setMiddleName($person->getMiddleName());
         $student->setEmail($person->getEmail());
         $student->setPhone($person->getPhone());
 

@@ -64,7 +64,7 @@ class StudentRepository extends AbstractRepository
      */
     public function updateLastName(Student $student, string $lastName): void
     {
-        $student->setLastName($lastName);
+        $student->changeName(lastName: $lastName);
         $this->flush();
     }
 
@@ -75,7 +75,7 @@ class StudentRepository extends AbstractRepository
      */
     public function updateFirstName(Student $student, string $firstName): void
     {
-        $student->setFirstName($firstName);
+        $student->changeName(firstName: $firstName);
         $this->flush();
     }
 
@@ -86,7 +86,7 @@ class StudentRepository extends AbstractRepository
      */
     public function updateMiddleName(Student $student, string $middleName): void
     {
-        $student->setMiddleName($middleName);
+        $student->changeName(middleName: $middleName);
         $this->flush();
     }
 
@@ -97,7 +97,7 @@ class StudentRepository extends AbstractRepository
      */
     public function updatePhone(Student $student, string $phone): void
     {
-        $student->setPhone($phone);
+        $student->changeContacts(phone: $phone);
         $this->flush();
     }
 
@@ -108,7 +108,7 @@ class StudentRepository extends AbstractRepository
      */
     public function updateEmail(Student $student, string $email): void
     {
-        $student->setEmail($email);
+        $student->changeContacts(email: $email);
         $this->flush();
     }
 
