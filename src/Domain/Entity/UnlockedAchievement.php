@@ -27,8 +27,7 @@ class UnlockedAchievement implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\JoinColumn(name: 'student_id', referencedColumnName: 'id')]
     private Student $student;
 
-    #[ORM\ManyToOne(targetEntity: Achievement::class, inversedBy: 'unlockedAchievements')]
-    #[ORM\JoinColumn(name: 'achievement_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: Achievement::class)]
     private Achievement $achievement;
 
     /**
@@ -63,12 +62,16 @@ class UnlockedAchievement implements EntityInterface, HasMetaTimestampsInterface
         $this->achievement = $achievement;
     }
 
+    /**
+     * @throws Exception
+     */
     public function toArray(): array
     {
         return [
             'id' => $this->getId(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s')
+            'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
+            'achievements' => $this->getAchievement()->toArray(),
         ];
     }
 }

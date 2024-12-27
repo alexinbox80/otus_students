@@ -5,8 +5,6 @@ namespace App\Domain\Entity;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 
@@ -28,14 +26,6 @@ class Achievement implements EntityInterface, HasMetaTimestampsInterface
 
     #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
     private string $description;
-
-    #[ORM\OneToMany(targetEntity: UnlockedAchievement::class, mappedBy: 'achievement')]
-    private Collection $unlockedAchievements;
-
-    public function __construct()
-    {
-        $this->unlockedAchievements = new ArrayCollection();
-    }
 
     /**
      * @throws Exception
@@ -70,33 +60,8 @@ class Achievement implements EntityInterface, HasMetaTimestampsInterface
     }
 
     /**
-     * @return Collection<array-key,UnlockedAchievement>
+     * @throws Exception
      */
-    public function getUnlockedAchievements(): Collection
-    {
-        return $this->unlockedAchievements;
-    }
-
-    public function setUnlockedAchievements(Collection $unlockedAchievements): void
-    {
-        $this->unlockedAchievements = $unlockedAchievements;
-    }
-
-    public function addUnlockedAchievement(UnlockedAchievement $unlockedAchievement): self
-    {
-        if (!$this->unlockedAchievements->contains($unlockedAchievement)) {
-            $this->unlockedAchievements->add($unlockedAchievement);
-        }
-
-        return $this;
-    }
-
-    public function removeUnlockedAchievement(UnlockedAchievement $unlockedAchievement): self
-    {
-        $this->unlockedAchievements->removeElement($unlockedAchievement);
-        return $this;
-    }
-
     public function toArray(): array
     {
         return [
@@ -104,11 +69,7 @@ class Achievement implements EntityInterface, HasMetaTimestampsInterface
             'name' => $this->getName(),
             'description' => $this->getDescription(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
-            'unlockedByStudents' => array_map(
-                static fn(UnlockedAchievement $unlockedAchievement) => $unlockedAchievement->toArray(),
-                $this->getUnlockedAchievements()->toArray()
-            )
+            'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s')
         ];
     }
 }
