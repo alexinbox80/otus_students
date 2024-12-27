@@ -17,6 +17,8 @@ trait DeletedAtTrait
 
     public function setDeletedAt(): void
     {
-        $this->deletedAt = new DateTime();
+        if ($this->deletedAt === null) {
+            $this->deletedAt = new DateTime();
+        }
     }
 }
