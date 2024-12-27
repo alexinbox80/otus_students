@@ -97,7 +97,7 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
         $this->tasks = $tasks;
     }
 
-    public function addTask(Task $task): Lesson
+    public function addTask(Task $task): self
     {
         if (!$this->tasks->contains($task)) {
             $this->tasks->add($task);
@@ -106,13 +106,13 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    public function removeTask(Task $task): Lesson
+    public function removeTask(Task $task): self
     {
         $this->tasks->removeElement($task);
         return $this;
     }
 
-    public function removeCourse(): Lesson
+    public function removeCourse(): self
     {
         $this->course = null;
         return $this;

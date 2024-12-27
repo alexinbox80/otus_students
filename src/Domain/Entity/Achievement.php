@@ -82,7 +82,7 @@ class Achievement implements EntityInterface, HasMetaTimestampsInterface
         $this->unlockedAchievements = $unlockedAchievements;
     }
 
-    public function addUnlockedAchievement(UnlockedAchievement $unlockedAchievement): Achievement
+    public function addUnlockedAchievement(UnlockedAchievement $unlockedAchievement): self
     {
         if (!$this->unlockedAchievements->contains($unlockedAchievement)) {
             $this->unlockedAchievements->add($unlockedAchievement);
@@ -91,7 +91,7 @@ class Achievement implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    public function removeUnlockedAchievement(UnlockedAchievement $unlockedAchievement): Achievement
+    public function removeUnlockedAchievement(UnlockedAchievement $unlockedAchievement): self
     {
         $this->unlockedAchievements->removeElement($unlockedAchievement);
         return $this;

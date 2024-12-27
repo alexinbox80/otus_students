@@ -123,7 +123,7 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    public function removeLesson(Lesson $lesson): Course
+    public function removeLesson(Lesson $lesson): self
     {
         $this->lessons->removeElement($lesson);
         return $this;

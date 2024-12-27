@@ -82,7 +82,7 @@ class Skill implements EntityInterface, HasMetaTimestampsInterface
         $this->percentages = $percentages;
     }
 
-    public function addPercentage(Percentage $percentage): Skill
+    public function addPercentage(Percentage $percentage): self
     {
         if (!$this->percentages->contains($percentage)) {
             $this->percentages->add($percentage);
@@ -91,7 +91,7 @@ class Skill implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    public function removePercentage(Percentage $percentage): Skill
+    public function removePercentage(Percentage $percentage): self
     {
         $this->percentages->removeElement($percentage);
         return $this;

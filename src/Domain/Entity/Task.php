@@ -114,7 +114,7 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         $this->completedTasks = $completedTasks;
     }
 
-    public function addPercentage(Percentage $percentage): Task
+    public function addPercentage(Percentage $percentage): self
     {
         if (!$this->percentages->contains($percentage)) {
             $percents = 0;
@@ -136,13 +136,13 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    public function removePercentage(Percentage $percentage): Task
+    public function removePercentage(Percentage $percentage): self
     {
         $this->percentages->removeElement($percentage);
         return $this;
     }
 
-    public function addCompletedTask(CompletedTask $completedTask): Task
+    public function addCompletedTask(CompletedTask $completedTask): self
     {
         if (!$this->completedTasks->contains($completedTask)) {
             $this->completedTasks->add($completedTask);
@@ -151,13 +151,13 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    public function removeCompletedTask(CompletedTask $completedTask): Task
+    public function removeCompletedTask(CompletedTask $completedTask): self
     {
         $this->completedTasks->removeElement($completedTask);
         return $this;
     }
 
-    public function removeLesson(): Task
+    public function removeLesson(): self
     {
         $this->lesson = null;
         return $this;
