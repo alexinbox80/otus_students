@@ -3,7 +3,7 @@
 namespace App\Domain\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
+use InvalidArgumentException;
 
 #[ORM\MappedSuperclass]
 class Person
@@ -49,7 +49,7 @@ class Person
     }
 
     /**
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     private function lastNameValidate(string $lastName): bool
     {
@@ -57,13 +57,13 @@ class Person
         if (mb_strlen($lastName) >= 2 && mb_strlen($lastName) <= 64)
             $flag = true;
         else
-            throw new Exception('Last name must be a valid length of 2-64 letters.');
+            throw new InvalidArgumentException('Last name must be a valid length of 2-64 letters.');
 
         return $flag;
     }
 
     /**
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     private function firstNameValidate(string $firstName): bool
     {
@@ -71,13 +71,13 @@ class Person
         if (mb_strlen($firstName) >= 2 && mb_strlen($firstName) <= 64)
             $flag = true;
         else
-            throw new Exception('First name must be a valid length of 2-64 letters.');
+            throw new InvalidArgumentException('First name must be a valid length of 2-64 letters.');
 
         return $flag;
     }
 
     /**
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     private function middleNameValidate(?string $middleName = null): bool
     {
@@ -87,13 +87,13 @@ class Person
         elseif (mb_strlen($middleName) >= 2 && mb_strlen($middleName) <= 64)
             $flag = true;
         else
-            throw new Exception('Middle name must be a valid length of 2-64 letters.');
+            throw new InvalidArgumentException('Middle name must be a valid length of 2-64 letters.');
 
         return $flag;
     }
 
     /**
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     private function emailValidate(?string $email = null): bool
     {
@@ -101,13 +101,13 @@ class Person
         if (filter_var($email, FILTER_VALIDATE_EMAIL))
             $flag = true;
         else
-            throw new Exception('Wrong email address.');
+            throw new InvalidArgumentException('Wrong email address.');
 
         return $flag;
     }
 
     /**
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     private function phoneValidate(?string $phone = null): bool
     {
@@ -115,7 +115,7 @@ class Person
         if(is_numeric($phone))
             $flag = true;
         else
-            throw new Exception('Wrong phone number.');
+            throw new InvalidArgumentException('Wrong phone number.');
 
         return $flag;
     }
@@ -146,7 +146,7 @@ class Person
     }
 
     /**
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function changeName(
         ?string $lastName = null,
@@ -167,7 +167,7 @@ class Person
     }
 
     /**
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function changeContacts(
         ?string $email = null,
