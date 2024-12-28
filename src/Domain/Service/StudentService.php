@@ -90,10 +90,10 @@ class StudentService
 
     /**
      * @param int $studentId
-     * @param string $middleName
+     * @param ?string $middleName
      * @return Student|null
      */
-    public function updateMiddleName(int $studentId, string $middleName): ?Student
+    public function updateMiddleName(int $studentId, ?string $middleName): ?Student
     {
         $student = $this->studentRepository->find($studentId);
         if (!($student instanceof Student)) {

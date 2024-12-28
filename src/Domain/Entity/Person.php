@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entity;
 
+use Webmozart\Assert\Assert;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
@@ -23,101 +24,78 @@ class Person
     #[ORM\Column(name: 'email', type: 'string', length: 255, nullable: true)]
     private ?string $email;
 
-    /**
-     * @throws Exception
-     */
     public function __construct(
         string $lastName,
         string $firstName,
         ?string $middleName,
-        ?string $phone,
-        ?string $email
+        ?string $email,
+        ?string $phone
     )
     {
-        if ($this->lastNameValidate($lastName) &&
-            $this->firstNameValidate($firstName) &&
-            $this->middleNameValidate($middleName) &&
-            $this->phoneValidate($phone) &&
-            $this->emailValidate($email)) {
+        $this->lastName = $lastName;
+        $this->firstName = $firstName;
+        $this->middleName = $middleName;
+        $this->email = $email;
+        $this->phone = $phone;
 
-            $this->lastName = $lastName;
-            $this->firstName = $firstName;
-            $this->middleName = $middleName;
-            $this->phone = $phone;
-            $this->email = $email;
+        self::changeName($lastName, $firstName, $middleName);
+        self::changeContacts($email, $phone);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function lastNameValidate(string $lastName): void
+    {
+        Assert::stringNotEmpty($lastName, 'Last name should not be empty. Got: %s');
+        Assert::alpha($lastName, 'Last name should be in alphabet. Got: %s');
+        Assert::lengthBetween($lastName, 2, 64, 'The last name must be a string valid length of 2-64 letters. Got: %s');
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function firstNameValidate(string $firstName): void
+    {
+        Assert::stringNotEmpty($firstName, 'First name should not be empty. Got: %s');
+        Assert::alpha($firstName, 'First name should be in alphabet. Got: %s');
+        Assert::lengthBetween($firstName, 2, 64, 'The first name must be a string valid length of 2-64 letters. Got: %s');
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function middleNameValidate(?string $middleName = null): void
+    {
+        Assert::nullOrString($middleName, 'The middle name must be a string valid length of 2-64 letters or null. Got: %s');
+        if (!is_null($middleName))
+        {
+            Assert::alpha($middleName, 'Middle name should be in alphabet. Got: %s');
+            Assert::lengthBetween($middleName, 2, 64, 'The middle name must be a string valid length of 2-64 letters. Got: %s');
+        }
+
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function emailValidate(?string $email = null): void
+    {
+        if (!is_null($email)) {
+            Assert::maxLength($email, 255, 'The email must be a 255 chars length. Got: %s');
+            Assert::email($email, 'The email must be a valid email address. Got: %s');
         }
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    private function lastNameValidate(string $lastName): bool
+    private function phoneValidate(?string $phone = null): void
     {
-        $flag = false;
-        if (mb_strlen($lastName) >= 2 && mb_strlen($lastName) <= 64)
-            $flag = true;
-        else
-            throw new InvalidArgumentException('Last name must be a valid length of 2-64 letters.');
-
-        return $flag;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function firstNameValidate(string $firstName): bool
-    {
-        $flag = false;
-        if (mb_strlen($firstName) >= 2 && mb_strlen($firstName) <= 64)
-            $flag = true;
-        else
-            throw new InvalidArgumentException('First name must be a valid length of 2-64 letters.');
-
-        return $flag;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function middleNameValidate(?string $middleName = null): bool
-    {
-        $flag = false;
-        if($middleName === null)
-            $flag = true;
-        elseif (mb_strlen($middleName) >= 2 && mb_strlen($middleName) <= 64)
-            $flag = true;
-        else
-            throw new InvalidArgumentException('Middle name must be a valid length of 2-64 letters.');
-
-        return $flag;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function emailValidate(?string $email = null): bool
-    {
-        $flag = false;
-        if (filter_var($email, FILTER_VALIDATE_EMAIL))
-            $flag = true;
-        else
-            throw new InvalidArgumentException('Wrong email address.');
-
-        return $flag;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function phoneValidate(?string $phone = null): bool
-    {
-        $flag = false;
-        if(is_numeric($phone))
-            $flag = true;
-        else
-            throw new InvalidArgumentException('Wrong phone number.');
-
-        return $flag;
+        if (!is_null($phone)) {
+            Assert::maxLength($phone, 16, 'The email must be a 16 chars length. Got: %s');
+            Assert::digits($phone, 'The phone must be a numeric. Got: %s');
+        }
     }
 
     public function getLastName(): string
@@ -152,18 +130,20 @@ class Person
         ?string $lastName = null,
         ?string $firstName = null,
         ?string $middleName = null
-    ): bool
+    ): void
     {
-        if (!is_null($lastName) && $this->lastNameValidate($lastName))
+        if(!is_null($lastName)) {
+            $this->lastNameValidate($lastName);
             $this->lastName = $lastName;
+        }
 
-        if (!is_null($firstName) && $this->firstNameValidate($firstName))
+        if(!is_null($firstName)) {
+            $this->firstNameValidate($firstName);
             $this->firstName = $firstName;
+        }
 
-        if (!is_null($middleName) && $this->middleNameValidate($middleName))
-            $this->middleName = $middleName;
-
-        return true;
+        $this->middleNameValidate($middleName);
+        $this->middleName = $middleName;
     }
 
     /**
@@ -172,15 +152,17 @@ class Person
     public function changeContacts(
         ?string $email = null,
         ?string $phone = null
-    ): bool
+    ): void
     {
-        if (!is_null($email) && $this->emailValidate($email))
+        if(!is_null($email)) {
+            $this->emailValidate($email);
             $this->email = $email;
+        }
 
-        if (!is_null($phone) && $this->phoneValidate($phone))
+        if(!is_null($phone)) {
+            $this->phoneValidate($phone);
             $this->phone = $phone;
-
-        return true;
+        }
     }
 
     public function toArray(): array

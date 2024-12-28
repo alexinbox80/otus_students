@@ -81,10 +81,10 @@ class StudentRepository extends AbstractRepository
 
     /**
      * @param Student $student
-     * @param string $middleName
+     * @param ?string $middleName
      * @return void
      */
-    public function updateMiddleName(Student $student, string $middleName): void
+    public function updateMiddleName(Student $student, ?string $middleName): void
     {
         $student->changeName(middleName: $middleName);
         $this->flush();
