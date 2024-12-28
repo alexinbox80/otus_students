@@ -148,11 +148,11 @@ class StudentService
             $person->getFirstName(),
             $person->getMiddleName()
         );
-//        $student->setLastName($person->getLastName());
-//        $student->setFirstName($person->getFirstName());
-//        $student->setMiddleName($person->getMiddleName());
-        $student->setEmail($person->getEmail());
-        $student->setPhone($person->getPhone());
+
+        $student->changeContacts(
+            $person->getEmail(),
+            $person->getPhone()
+        );
 
         $this->studentRepository->create($student);
 
