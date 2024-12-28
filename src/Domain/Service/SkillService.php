@@ -82,14 +82,13 @@ class SkillService
 
     /**
      * @param string $name
-     * @param string $description
+     * @param ?string $description
      * @return Skill
      */
-    public function create(string $name, string $description): Skill
+    public function create(string $name, ?string $description): Skill
     {
-        $skill = new Skill();
-        $skill->setName($name);
-        $skill->setDescription($description);
+        $skill = new Skill($name, $description);
+
         $this->skillRepository->create($skill);
 
         return $skill;

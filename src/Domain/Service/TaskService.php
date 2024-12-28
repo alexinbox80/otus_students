@@ -84,15 +84,15 @@ class TaskService
     /**
      * @param Lesson $lesson
      * @param string $name
-     * @param string $description
+     * @param ?string $description
      * @return Task
      */
-    public function create(Lesson $lesson, string $name, string $description): Task
+    public function create(Lesson $lesson, string $name, ?string $description): Task
     {
-        $task = new Task();
-        $task->setName($name);
-        $task->setDescription($description);
+        $task = new Task($name, $description);
+
         $lesson->addTask($task);
+
         $this->taskRepository->create($task);
 
         return $task;

@@ -29,7 +29,7 @@ class Percentage implements EntityInterface, HasMetaTimestampsInterface
     private float $percent;
 
     #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
-    private string $description;
+    private ?string $description;
 
     #[ORM\ManyToOne(targetEntity: Task::class, inversedBy: 'percentages')]
     #[ORM\JoinColumn(name: 'task_id', referencedColumnName: 'id')]
@@ -38,6 +38,13 @@ class Percentage implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\ManyToOne(targetEntity: Skill::class, inversedBy: 'percentages')]
     #[ORM\JoinColumn(name: 'skill_id', referencedColumnName: 'id')]
     private Skill $skill;
+
+
+    public function __construct(float $percent, ?string $description = null)
+    {
+        $this->percent = $percent;
+        $this->description = $description;
+    }
 
     public function getId(): int
     {
@@ -56,12 +63,12 @@ class Percentage implements EntityInterface, HasMetaTimestampsInterface
         $this->percent = $percent;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }

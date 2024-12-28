@@ -28,7 +28,7 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
     private string $name;
 
     #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
-    private string $description;
+    private ?string $description;
 
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'lessons')]
     #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'id')]
@@ -37,8 +37,10 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'lesson', cascade: ['remove'])]
     private Collection $tasks;
 
-    public function __construct()
+    public function __construct(string $name, ?string $description)
     {
+        $this->name = $name;
+        $this->description = $description;
         $this->tasks = new ArrayCollection();
     }
 
@@ -59,12 +61,12 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
         $this->name = $name;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }

@@ -30,7 +30,7 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface
     private ?DateTime $finishedAt = null;
 
     #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
-    private string $description;
+    private ?string $description;
 
     #[ORM\Column(name: 'grade', type: 'smallint', nullable: true)]
     #[Assert\Range(min: 1, max: 10)]
@@ -43,6 +43,17 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\ManyToOne(targetEntity: Task::class, inversedBy: 'completedTasks')]
     #[ORM\JoinColumn(name: 'task_id', referencedColumnName: 'id')]
     private Task $task;
+
+    public function __construct(
+        int $grade,
+        ?string $description,
+        ?DateTime $finishedAt
+    )
+    {
+        $this->grade = $grade;
+        $this->description = $description;
+        $this->finishedAt = $finishedAt;
+    }
 
     public function getId(): int
     {
@@ -68,12 +79,12 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface
             $this->finishedAt = $finishedAt;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
@@ -117,7 +128,7 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface
             'description' => $this->getDescription(),
             'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updatedAt' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
-            'finishedAt' => $this->getFinishedAt()->format('Y-m-d H:i:s')
+            'finishedAt' => is_null($this->getFinishedAt()) ? null : $this->getFinishedAt()->format('Y-m-d H:i:s')
         ];
     }
 }

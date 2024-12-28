@@ -36,6 +36,12 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\OneToOne(targetEntity: Student::class, mappedBy: 'user')]
     private Student $student;
 
+    public function __construct(string $login, string $password)
+    {
+        $this->login = $login;
+        $this->password = $password;
+    }
+
     public function getId(): int
     {
         WebmozartAssert::notNull($this->id, sprintf('Id of Entity %s is null.', get_class($this)));
@@ -92,7 +98,7 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
             'roles' => $this->roles,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
-            'student' => $this->student->toArray(),
+            'student' => empty($this->student) ? null : $this->student->toArray(),
         ];
     }
 }

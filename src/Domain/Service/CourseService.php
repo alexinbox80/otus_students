@@ -82,14 +82,13 @@ class CourseService
 
     /**
      * @param string $name
-     * @param string $description
+     * @param ?string $description
      * @return Course
      */
-    public function create(string $name, string $description): Course
+    public function create(string $name, ?string $description): Course
     {
-        $course = new Course();
-        $course->setName($name);
-        $course->setDescription($description);
+        $course = new Course($name, $description);
+
         $this->courseRepository->create($course);
 
         return $course;

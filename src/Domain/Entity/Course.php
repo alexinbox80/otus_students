@@ -28,7 +28,7 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
     private string $name;
 
     #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
-    private string $description;
+    private ?string $description;
 
     #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'course')]
     private Collection $subscriptions;
@@ -36,8 +36,10 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\OneToMany(targetEntity: Lesson::class, mappedBy: 'course')]
     private Collection $lessons;
 
-    public function __construct()
+    public function __construct(string $name, ?string $description = null)
     {
+        $this->name = $name;
+        $this->description = $description;
         $this->subscriptions = new ArrayCollection();
         $this->lessons = new ArrayCollection();
     }
@@ -59,12 +61,12 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
         $this->name = $name;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }

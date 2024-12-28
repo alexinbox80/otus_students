@@ -110,14 +110,13 @@ class CompletedTaskService
     /**
      * @param Student $student
      * @param int $grade
-     * @param string $description
+     * @param ?string $description
+     * @param ?DateTime $finishedAt
      * @return CompletedTask
      */
-    public function create(Student $student, int $grade, string $description): CompletedTask
+    public function create(Student $student, int $grade, ?string $description, ?DateTime $finishedAt): CompletedTask
     {
-        $completedTask = new CompletedTask();
-        $completedTask->setGrade($grade);
-        $completedTask->setDescription($description);
+        $completedTask = new CompletedTask($grade, $description, $finishedAt);
 
         $student->addCompletedTask($completedTask);
 

@@ -60,9 +60,8 @@ class UserService
      */
     public function create(string $login, string $password): User
     {
-        $user = new User();
-        $user->setLogin($login);
-        $user->setPassword($password);
+        $user = new User($login, $password);
+
         $user->setIsActive(true);
         $this->userRepository->create($user);
 

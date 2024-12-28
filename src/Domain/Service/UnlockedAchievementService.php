@@ -43,7 +43,6 @@ class UnlockedAchievementService
         $unlockedAchievement->setStudent($student);
         $unlockedAchievement->setAchievement($achievement);
         $student->addUnlockedAchievement($unlockedAchievement);
-        $achievement->addUnlockedAchievement($unlockedAchievement);
 
         $this->unlockedAchievementRepository->create($unlockedAchievement);
 

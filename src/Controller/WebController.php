@@ -68,41 +68,56 @@ class WebController extends AbstractController
 //            'student' => $student->toArray(),
 //        ]);
 
-//        $user = $this->userService->findAll();
-//        return $this->json([
-//            'user' => array_map(static fn (User $user) => $user->toArray(), $user)
-//        ]);
 
-        $student = $this->studentService->findAll();
+        //$this->userService->create('user-login-123', 'user-password');
+        $user = $this->userService->findAll();
         return $this->json([
-            'student' => array_map(static fn(Student $student) => $student->toArray(), $student)
+            'user' => array_map(static fn (User $user) => $user->toArray(), $user)
         ]);
 
+//        $student = $this->studentService->findAll();
+//        return $this->json([
+//            'student' => array_map(static fn(Student $student) => $student->toArray(), $student)
+//        ]);
+
+//        $this->achievementService->create(
+//            'hello world 123',
+//            'hello description'
+//        );
 //        $achievement = $this->achievementService->findAll();
 //        return $this->json([
 //            'achievement' => array_map(static fn (Achievement $achievement) => $achievement->toArray(), $achievement)
 //        ]);
 
+//        $student = $this->studentService->find(2);
+//        $this->completedTaskService->create($student, 5, 'description', null);
 //        $completedTask = $this->completedTaskService->findAll();
 //        return $this->json([
 //            'completedTask' => array_map(static fn (CompletedTask $completedTask) => $completedTask->toArray(), $completedTask)
 //        ]);
 
+        //$course = $this->courseService->find(3);
+        //$this->lessonService->create($course, 'lesson name', null);
 //        $lesson = $this->lessonService->findAll();
 //        return $this->json([
 //            'lesson' => array_map(static fn (Lesson $lesson) => $lesson->toArray(), $lesson)
 //        ]);
 
+//        $this->courseService->create('test 13', 'test description');
 //        $course = $this->courseService->findAll();
 //        return $this->json([
 //            'course' => array_map(static fn (Course $course) => $course->toArray(), $course)
 //        ]);
 
+//        $task = $this->taskService->find(2);
+//        $skill= $this->skillService->find(2);
+//        $this->percentageService->create($task, $skill, 55.55, 'test description');
 //        $percentage = $this->percentageService->findAll();
 //        return $this->json([
 //            'percentage' => array_map(static fn (Percentage $percentage) => $percentage->toArray(), $percentage)
 //        ]);
 
+//        $this->skillService->create('skill name 12312', 'test test ');
 //        $skill = $this->skillService->findAll();
 //        return $this->json([
 //            'skill' => array_map(static fn (Skill $skill) => $skill->toArray(), $skill)
@@ -113,6 +128,8 @@ class WebController extends AbstractController
 //            'subscription' => array_map(static fn (Subscription $subscription) => $subscription->toArray(), $subscription)
 //        ]);
 
+//        $lesson = $this->lessonService->find(2);
+//        $this->taskService->create($lesson, 'task name', null);
 //        $task = $this->taskService->findAll();
 //        return $this->json([
 //            'task' => array_map(static fn (Task $task) => $task->toArray(), $task)

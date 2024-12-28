@@ -82,14 +82,13 @@ class AchievementService
 
     /**
      * @param string $name
-     * @param string $description
+     * @param ?string $description
      * @return Achievement
      */
-    public function create(string $name, string $description): Achievement
+    public function create(string $name, ?string $description): Achievement
     {
-        $achievement = new Achievement();
-        $achievement->setName($name);
-        $achievement->setDescription($description);
+        $achievement = new Achievement($name, $description);
+
         $this->achievementRepository->create($achievement);
 
         return $achievement;

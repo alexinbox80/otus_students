@@ -84,15 +84,15 @@ class LessonService
     /**
      * @param Course $course
      * @param string $name
-     * @param string $description
+     * @param ?string $description
      * @return Lesson
      */
-    public function create(Course $course, string $name, string $description): Lesson
+    public function create(Course $course, string $name, ?string $description): Lesson
     {
-        $lesson = new Lesson();
-        $lesson->setName($name);
-        $lesson->setDescription($description);
+        $lesson = new Lesson($name, $description);
+
         $course->addLesson($lesson);
+
         $this->lessonRepository->create($lesson);
 
         return $lesson;
