@@ -31,6 +31,12 @@ class Person
         ?string $phone
     )
     {
+        self::lastNameValidate($lastName);
+        self::firstNameValidate($firstName);
+        self::middleNameValidate($middleName);
+        self::emailValidate($email);
+        self::phoneValidate($phone);
+
         $this->lastName = $lastName;
         $this->firstName = $firstName;
         $this->middleName = $middleName;
@@ -41,6 +47,7 @@ class Person
     private function lastNameValidate(string $lastName): void
     {
         WebmozartAssert::stringNotEmpty($lastName, 'Last name should not be empty. Got: %s');
+        //Assert::regexp()
         WebmozartAssert::alpha($lastName, 'Last name should be in alphabet. Got: %s');
         WebmozartAssert::lengthBetween($lastName, 2, 64, 'The last name must be a string valid length of 2-64 letters. Got: %s');
     }
@@ -48,6 +55,7 @@ class Person
     private function firstNameValidate(string $firstName): void
     {
         WebmozartAssert::stringNotEmpty($firstName, 'First name should not be empty. Got: %s');
+        //Assert::regexp()
         WebmozartAssert::alpha($firstName, 'First name should be in alphabet. Got: %s');
         WebmozartAssert::lengthBetween($firstName, 2, 64, 'The first name must be a string valid length of 2-64 letters. Got: %s');
     }
@@ -57,6 +65,7 @@ class Person
         WebmozartAssert::nullOrString($middleName, 'The middle name must be a string valid length of 2-64 letters or null. Got: %s');
         if (!is_null($middleName))
         {
+            //Assert::regexp()
             WebmozartAssert::alpha($middleName, 'Middle name should be in alphabet. Got: %s');
             WebmozartAssert::lengthBetween($middleName, 2, 64, 'The middle name must be a string valid length of 2-64 letters. Got: %s');
         }
@@ -104,22 +113,17 @@ class Person
     }
 
     public function changeName(
-        ?string $lastName = null,
-        ?string $firstName = null,
+        string $lastName,
+        string $firstName,
         ?string $middleName = null
     ): void
     {
-        if(!is_null($lastName)) {
-            $this->lastNameValidate($lastName);
-            $this->lastName = $lastName;
-        }
-
-        if(!is_null($firstName)) {
-            $this->firstNameValidate($firstName);
-            $this->firstName = $firstName;
-        }
-
+        $this->lastNameValidate($lastName);
+        $this->firstNameValidate($firstName);
         $this->middleNameValidate($middleName);
+
+        $this->lastName = $lastName;
+        $this->firstName = $firstName;
         $this->middleName = $middleName;
     }
 
@@ -128,15 +132,11 @@ class Person
         ?string $phone = null
     ): void
     {
-        if(!is_null($email)) {
-            $this->emailValidate($email);
-            $this->email = $email;
-        }
+        $this->emailValidate($email);
+        $this->phoneValidate($phone);
 
-        if(!is_null($phone)) {
-            $this->phoneValidate($phone);
-            $this->phone = $phone;
-        }
+        $this->email = $email;
+        $this->phone = $phone;
     }
 
     public function toArray(): array

@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\Entity\Person;
 use App\Domain\Entity\Student;
 
 /**
@@ -59,56 +60,30 @@ class StudentRepository extends AbstractRepository
 
     /**
      * @param Student $student
-     * @param string $lastName
+     * @param Person $person
      * @return void
      */
-    public function updateLastName(Student $student, string $lastName): void
+    public function updateName(Student $student, Person $person): void
     {
-        $student->changeName(lastName: $lastName);
+        $student->changeName(
+            $person->getFirstName(),
+            $person->getLastName(),
+            $person->getMiddleName()
+        );
         $this->flush();
     }
 
     /**
      * @param Student $student
-     * @param string $firstName
+     * @param Person $person
      * @return void
      */
-    public function updateFirstName(Student $student, string $firstName): void
+    public function updateContact(Student $student, Person $person): void
     {
-        $student->changeName(firstName: $firstName);
-        $this->flush();
-    }
-
-    /**
-     * @param Student $student
-     * @param ?string $middleName
-     * @return void
-     */
-    public function updateMiddleName(Student $student, ?string $middleName): void
-    {
-        $student->changeName(middleName: $middleName);
-        $this->flush();
-    }
-
-    /**
-     * @param Student $student
-     * @param string $phone
-     * @return void
-     */
-    public function updatePhone(Student $student, string $phone): void
-    {
-        $student->changeContacts(phone: $phone);
-        $this->flush();
-    }
-
-    /**
-     * @param Student $student
-     * @param string $email
-     * @return void
-     */
-    public function updateEmail(Student $student, string $email): void
-    {
-        $student->changeContacts(email: $email);
+        $student->changeContacts(
+            $person->getEmail(),
+            $person->getPhone()
+        );
         $this->flush();
     }
 

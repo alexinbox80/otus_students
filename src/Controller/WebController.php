@@ -48,26 +48,23 @@ class WebController extends AbstractController
 
     public function index(): Response
     {
-        $person = new Person(
-            'Ivanov',
-            'Ivan',
-            null,
-            'mail@mail.ru',
-            '1233214567'
-        );
+//        $person = new Person(
+//            'Petrov',
+//            'Petr',
+//            null,
+//            null,
+//            '1233214567'
+//        );
 
         //$student = $this->studentService->create($person);
 
-//        $student = $this->studentService->updateLastName(6, 'Ivanov');
-//        $student = $this->studentService->updateFirstName(6, 'Ivan');
-//        $student = $this->studentService->updateMiddleName(16, 'Test');
-//        $student = $this->studentService->updatePhone(6, '7777799');
-//        $student = $this->studentService->updateEmail(6, 'mail@m.ru');
-
+//        $student = $this->studentService->updateName(10, $person);
+//        $student = $this->studentService->updateContact(10, $person);
+//
 //        return $this->json([
 //            'student' => $student->toArray(),
 //        ]);
-
+//
 
         //$this->userService->create('user-login-123', 'user-password');
         $user = $this->userService->findAll();
