@@ -40,8 +40,16 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     #[ORM\OneToMany(targetEntity: UnlockedAchievement::class, mappedBy: 'student')]
     private Collection $unlockedAchievements;
 
-    public function __construct()
+    public function __construct(
+        string $firstName,
+        string $lastName,
+        ?string $middleName,
+        ?string $phone,
+        ?string $email
+    )
     {
+        parent::__construct($firstName, $lastName, $middleName, $phone, $email);
+
         $this->subscriptions = new ArrayCollection();
         $this->completedTasks = new ArrayCollection();
         $this->unlockedAchievements = new ArrayCollection();

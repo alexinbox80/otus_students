@@ -142,14 +142,10 @@ class StudentService
      */
     public function create(Person $person): Student
     {
-        $student = new Student();
-        $student->changeName(
+        $student = new Student(
             $person->getLastName(),
             $person->getFirstName(),
-            $person->getMiddleName()
-        );
-
-        $student->changeContacts(
+            $person->getMiddleName(),
             $person->getEmail(),
             $person->getPhone()
         );

@@ -58,25 +58,25 @@ class WebController extends AbstractController
 
         //$student = $this->studentService->create($person);
 
-        $student = $this->studentService->updateLastName(6, 'Ivanov');
-        $student = $this->studentService->updateFirstName(6, 'Ivan');
-        $student = $this->studentService->updateMiddleName(6, null);
-        $student = $this->studentService->updatePhone(6, '7777799');
-        $student = $this->studentService->updateEmail(6, 'mail@m.ru');
+//        $student = $this->studentService->updateLastName(6, 'Ivanov');
+//        $student = $this->studentService->updateFirstName(6, 'Ivan');
+//        $student = $this->studentService->updateMiddleName(16, 'Test');
+//        $student = $this->studentService->updatePhone(6, '7777799');
+//        $student = $this->studentService->updateEmail(6, 'mail@m.ru');
 
 //        return $this->json([
 //            'student' => $student->toArray(),
 //        ]);
 
-        $user = $this->userService->findAll();
-        return $this->json([
-            'user' => array_map(static fn (User $user) => $user->toArray(), $user)
-        ]);
-
-//        $student = $this->studentService->findAll();
+//        $user = $this->userService->findAll();
 //        return $this->json([
-//            'student' => array_map(static fn(Student $student) => $student->toArray(), $student)
+//            'user' => array_map(static fn (User $user) => $user->toArray(), $user)
 //        ]);
+
+        $student = $this->studentService->findAll();
+        return $this->json([
+            'student' => array_map(static fn(Student $student) => $student->toArray(), $student)
+        ]);
 
 //        $achievement = $this->achievementService->findAll();
 //        return $this->json([
