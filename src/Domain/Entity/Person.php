@@ -36,9 +36,6 @@ class Person
         $this->middleName = $middleName;
         $this->email = $email;
         $this->phone = $phone;
-
-        self::changeName($lastName, $firstName, $middleName);
-        self::changeContacts($email, $phone);
     }
 
     private function lastNameValidate(string $lastName): void
