@@ -2,9 +2,8 @@
 
 namespace App\Domain\Entity;
 
-use Webmozart\Assert\Assert;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
+use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\MappedSuperclass]
 class Person
@@ -42,59 +41,43 @@ class Person
         self::changeContacts($email, $phone);
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     private function lastNameValidate(string $lastName): void
     {
-        Assert::stringNotEmpty($lastName, 'Last name should not be empty. Got: %s');
-        Assert::alpha($lastName, 'Last name should be in alphabet. Got: %s');
-        Assert::lengthBetween($lastName, 2, 64, 'The last name must be a string valid length of 2-64 letters. Got: %s');
+        WebmozartAssert::stringNotEmpty($lastName, 'Last name should not be empty. Got: %s');
+        WebmozartAssert::alpha($lastName, 'Last name should be in alphabet. Got: %s');
+        WebmozartAssert::lengthBetween($lastName, 2, 64, 'The last name must be a string valid length of 2-64 letters. Got: %s');
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     private function firstNameValidate(string $firstName): void
     {
-        Assert::stringNotEmpty($firstName, 'First name should not be empty. Got: %s');
-        Assert::alpha($firstName, 'First name should be in alphabet. Got: %s');
-        Assert::lengthBetween($firstName, 2, 64, 'The first name must be a string valid length of 2-64 letters. Got: %s');
+        WebmozartAssert::stringNotEmpty($firstName, 'First name should not be empty. Got: %s');
+        WebmozartAssert::alpha($firstName, 'First name should be in alphabet. Got: %s');
+        WebmozartAssert::lengthBetween($firstName, 2, 64, 'The first name must be a string valid length of 2-64 letters. Got: %s');
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     private function middleNameValidate(?string $middleName = null): void
     {
-        Assert::nullOrString($middleName, 'The middle name must be a string valid length of 2-64 letters or null. Got: %s');
+        WebmozartAssert::nullOrString($middleName, 'The middle name must be a string valid length of 2-64 letters or null. Got: %s');
         if (!is_null($middleName))
         {
-            Assert::alpha($middleName, 'Middle name should be in alphabet. Got: %s');
-            Assert::lengthBetween($middleName, 2, 64, 'The middle name must be a string valid length of 2-64 letters. Got: %s');
+            WebmozartAssert::alpha($middleName, 'Middle name should be in alphabet. Got: %s');
+            WebmozartAssert::lengthBetween($middleName, 2, 64, 'The middle name must be a string valid length of 2-64 letters. Got: %s');
         }
-
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     private function emailValidate(?string $email = null): void
     {
         if (!is_null($email)) {
-            Assert::maxLength($email, 255, 'The email must be a 255 chars length. Got: %s');
-            Assert::email($email, 'The email must be a valid email address. Got: %s');
+            WebmozartAssert::maxLength($email, 255, 'The email must be a 255 chars length. Got: %s');
+            WebmozartAssert::email($email, 'The email must be a valid email address. Got: %s');
         }
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     private function phoneValidate(?string $phone = null): void
     {
         if (!is_null($phone)) {
-            Assert::maxLength($phone, 16, 'The email must be a 16 chars length. Got: %s');
-            Assert::digits($phone, 'The phone must be a numeric. Got: %s');
+            WebmozartAssert::maxLength($phone, 16, 'The email must be a 16 chars length. Got: %s');
+            WebmozartAssert::digits($phone, 'The phone must be a numeric. Got: %s');
         }
     }
 
@@ -123,9 +106,6 @@ class Person
         return $this->email;
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function changeName(
         ?string $lastName = null,
         ?string $firstName = null,
@@ -146,9 +126,6 @@ class Person
         $this->middleName = $middleName;
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function changeContacts(
         ?string $email = null,
         ?string $phone = null

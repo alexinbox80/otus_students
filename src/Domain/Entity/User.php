@@ -5,10 +5,8 @@ namespace App\Domain\Entity;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
+use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity]
@@ -38,14 +36,9 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\OneToOne(targetEntity: Student::class, mappedBy: 'user')]
     private Student $student;
 
-    /**
-     * @throws Exception
-     */
     public function getId(): int
     {
-        if (is_null($this->id)) {
-            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
-        }
+        WebmozartAssert::notNull($this->id, sprintf('Id of Entity %s is null.', get_class($this)));
 
         return $this->id;
     }
@@ -90,9 +83,6 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         $this->isActive = $isActive;
     }
 
-    /**
-     * @throws Exception
-     */
     public function toArray(): array
     {
         return [

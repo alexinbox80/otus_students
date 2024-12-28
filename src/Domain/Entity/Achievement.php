@@ -6,7 +6,7 @@ use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
+use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\Table(name: 'achievement')]
 #[ORM\Entity]
@@ -27,14 +27,9 @@ class Achievement implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
     private string $description;
 
-    /**
-     * @throws Exception
-     */
     public function getId(): int
     {
-        if (is_null($this->id)) {
-            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
-        }
+        WebmozartAssert::notNull($this->id, sprintf('Id of Entity %s is null.', get_class($this)));
 
         return $this->id;
     }
@@ -59,9 +54,6 @@ class Achievement implements EntityInterface, HasMetaTimestampsInterface
         $this->description = $description;
     }
 
-    /**
-     * @throws Exception
-     */
     public function toArray(): array
     {
         return [

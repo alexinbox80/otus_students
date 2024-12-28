@@ -8,7 +8,7 @@ use App\Domain\Entity\Traits\UpdatedAtTrait;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
+use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\Table(name: 'task')]
 #[ORM\Entity]
@@ -46,14 +46,9 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         $this->completedTasks = new ArrayCollection();
     }
 
-    /**
-     * @throws Exception
-     */
     public function getId(): int
     {
-        if (is_null($this->id)) {
-            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
-        }
+        WebmozartAssert::notNull($this->id, sprintf('Id of Entity %s is null.', get_class($this)));
 
         return $this->id;
     }
@@ -88,9 +83,6 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         $this->lesson = $lesson;
     }
 
-    /**
-     * @return Collection<int,Percentage>
-     */
     public function getPercentages(): Collection
     {
         return $this->percentages;
@@ -123,12 +115,18 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
                 $percents += $p->getPercent();
             }
 
-            if ($percents + $percentage->getPercent() > 100) {
-                throw new Exception(sprintf(
-                    'Доля добавляемого навыка не может превышать %s%%',
-                    100 - $percents
-                ));
-            }
+//            if ($percents + $percentage->getPercent() > 100) {
+//                throw new Exception(sprintf(
+//                    'Доля добавляемого навыка не может превышать %s%%',
+//                    100 - $percents
+//                ));
+//            }
+
+            WebmozartAssert::greaterThan(
+                $percents + $percentage->getPercent(),
+                100,
+                sprintf('Доля добавляемого навыка не может превышать %s%%', 100 - $percents)
+            );
 
             $this->percentages->add($percentage);
         }
@@ -163,9 +161,6 @@ class Task implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    /**
-     * @throws Exception
-     */
     public function toArray(): array
     {
         return [

@@ -8,7 +8,7 @@ use App\Domain\Entity\Traits\UpdatedAtTrait;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
+use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\Table(name: 'skill')]
 #[ORM\Entity]
@@ -37,14 +37,9 @@ class Skill implements EntityInterface, HasMetaTimestampsInterface
         $this->percentages = new ArrayCollection();
     }
 
-    /**
-     * @throws Exception
-     */
     public function getId(): int
     {
-        if (is_null($this->id)) {
-            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
-        }
+        WebmozartAssert::notNull($this->id, sprintf('Id of Entity %s is null.', get_class($this)));
 
         return $this->id;
     }
@@ -97,9 +92,6 @@ class Skill implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    /**
-     * @throws Exception
-     */
     public function toArray(): array
     {
         return [

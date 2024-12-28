@@ -64,14 +64,14 @@ class WebController extends AbstractController
         $student = $this->studentService->updatePhone(6, '7777799');
         $student = $this->studentService->updateEmail(6, 'mail@m.ru');
 
-        return $this->json([
-            'student' => $student->toArray(),
-        ]);
-
-//        $user = $this->userService->findAll();
 //        return $this->json([
-//            'user' => array_map(static fn (User $user) => $user->toArray(), $user)
+//            'student' => $student->toArray(),
 //        ]);
+
+        $user = $this->userService->findAll();
+        return $this->json([
+            'user' => array_map(static fn (User $user) => $user->toArray(), $user)
+        ]);
 
 //        $student = $this->studentService->findAll();
 //        return $this->json([

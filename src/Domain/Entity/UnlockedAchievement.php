@@ -6,7 +6,7 @@ use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
+use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\Table(name: 'unlocked_achievement')]
 #[ORM\Entity]
@@ -30,14 +30,9 @@ class UnlockedAchievement implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\ManyToOne(targetEntity: Achievement::class)]
     private Achievement $achievement;
 
-    /**
-     * @throws Exception
-     */
     public function getId(): int
     {
-        if (is_null($this->id)) {
-            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
-        }
+        WebmozartAssert::notNull($this->id, sprintf('Id of Entity %s is null.', get_class($this)));
 
         return $this->id;
     }
@@ -62,9 +57,6 @@ class UnlockedAchievement implements EntityInterface, HasMetaTimestampsInterface
         $this->achievement = $achievement;
     }
 
-    /**
-     * @throws Exception
-     */
     public function toArray(): array
     {
         return [

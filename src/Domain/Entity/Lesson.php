@@ -8,7 +8,7 @@ use App\Domain\Entity\Traits\UpdatedAtTrait;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
+use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\Table(name: 'lesson')]
 #[ORM\Entity]
@@ -42,14 +42,9 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
         $this->tasks = new ArrayCollection();
     }
 
-    /**
-     * @throws Exception
-     */
     public function getId(): int
     {
-        if (is_null($this->id)) {
-            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
-        }
+        WebmozartAssert::notNull($this->id, sprintf('Id of Entity %s is null.', get_class($this)));
 
         return $this->id;
     }
@@ -85,7 +80,7 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
     }
 
     /**
-     * @return Collection<array-key,Task>
+     * @return Collection<int,Task>
      */
     public function getTasks(): Collection
     {
@@ -118,9 +113,6 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface
         return $this;
     }
 
-    /**
-     * @throws Exception
-     */
     public function toArray(): array
     {
         return [

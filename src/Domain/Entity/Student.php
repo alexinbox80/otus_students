@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entity;
 
+use Webmozart\Assert\Assert as WebmozartAssert;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
@@ -46,14 +47,9 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         $this->unlockedAchievements = new ArrayCollection();
     }
 
-    /**
-     * @throws Exception
-     */
     public function getId(): int
     {
-        if (is_null($this->id)) {
-            throw new Exception(sprintf('Id of Entity %s is null.', get_class($this)));
-        }
+        WebmozartAssert::notNull($this->id, sprintf('Id of Entity %s is null.', get_class($this)));
 
         return $this->id;
     }
@@ -127,9 +123,6 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         return $this;
     }
 
-    /**
-     * @throws Exception
-     */
     public function toArray(): array
     {
         return
