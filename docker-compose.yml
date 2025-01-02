@@ -3,7 +3,7 @@ services:
         image: php:8.3-fpm-alpine
         build:
             dockerfile: docker/php-fpm/Dockerfile
-        container_name: 'symfony_php'
+        container_name: 'students_php'
         ports:
             - '9000:9000'
         volumes:
@@ -14,7 +14,7 @@ services:
 
     symfony_nginx:
         image: nginx
-        container_name: 'symfony_nginx'
+        container_name: 'students_nginx'
         working_dir: /app
         ports:
             - '8080:80'
@@ -28,11 +28,11 @@ services:
         image: postgres:15
         ports:
             - 5432:5432
-        container_name: 'symfony_postgres'
+        container_name: 'students_postgres'
         working_dir: /app
         restart: always
         environment:
-            POSTGRES_DB: 'twitter'
+            POSTGRES_DB: 'students'
             POSTGRES_USER: 'user'
             POSTGRES_PASSWORD: 'password'
         volumes:
