@@ -13,9 +13,9 @@ class UserService
 
     /**
      * @param int $userId
-     * @return User
+     * @return ?User
      */
-    public function find(int $userId): User
+    public function find(int $userId): ?User
     {
         return $this->userRepository->find($userId);
     }
@@ -26,6 +26,14 @@ class UserService
     public function findAll(): array
     {
         return $this->userRepository->findAll();
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getUsers(int $page, int $perPage): array
+    {
+        return $this->userRepository->getUsers($page, $perPage);
     }
 
     /**

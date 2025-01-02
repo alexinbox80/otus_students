@@ -14,6 +14,21 @@ use Doctrine\ORM\NonUniqueResultException;
 class UserRepository extends AbstractRepository
 {
     /**
+     * @return User[]
+     */
+    public function getUsers(int $page, int $perPage): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('u')
+            ->from(User::class, 'u')
+            ->orderBy('u.id', 'DESC')
+            ->setFirstResult($perPage * $page)
+            ->setMaxResults($perPage);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @param int $userId
      * @return User|null
      */
@@ -21,9 +36,7 @@ class UserRepository extends AbstractRepository
     {
         $repository = $this->entityManager->getRepository(User::class);
         /** @var User|null $user */
-        $user = $repository->find($userId);
-
-        return $user;
+        return $repository->find($userId);
     }
 
     /**
