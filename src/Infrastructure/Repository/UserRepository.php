@@ -69,6 +69,17 @@ class UserRepository extends AbstractRepository
 
     /**
      * @param User $user
+     * @param string $avatarLink
+     * @return void
+     */
+    public function updateAvatarLink(User $user, string $avatarLink): void
+    {
+        $user->setAvatarLink($avatarLink);
+        $this->flush();
+    }
+
+    /**
+     * @param User $user
      * @return int
      */
     public function create(User $user): int

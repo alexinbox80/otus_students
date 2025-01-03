@@ -3,6 +3,7 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\User;
+use App\Domain\Model\CreateUserModel;
 use App\Infrastructure\Repository\UserRepository;
 
 class UserService
@@ -62,15 +63,27 @@ class UserService
     }
 
     /**
-     * @param string $login
-     * @param string $password
+     * @param User $user
+     * @param string $avatarLink
+     * @return void
+     */
+    public function updateAvatarLink(User $user, string $avatarLink): void
+    {
+        $this->userRepository->updateAvatarLink($user, $avatarLink);
+    }
+
+    /**
+     * @param CreateUserModel $createUserModel
      * @return User
      */
-    public function create(string $login, string $password): User
+    public function create(CreateUserModel $createUserModel): User
     {
-        $user = new User($login, $password);
+        $user = new User(
+            $createUserModel->login,
+            $createUserModel->password,
+            $createUserModel->isActive
+        );
 
-        $user->setIsActive(true);
         $this->userRepository->create($user);
 
         return $user;

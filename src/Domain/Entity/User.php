@@ -33,13 +33,23 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\Column(name: 'isActive', type: 'boolean', options: ['default' => true])]
     private bool $isActive;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $avatarLink = null;
+
     #[ORM\OneToOne(targetEntity: Student::class, mappedBy: 'user')]
     private Student $student;
 
-    public function __construct(string $login, string $password)
+    public function __construct(
+        string $login,
+        string $password,
+        bool $isActive = true,
+        ?string $avatarLink = null
+    )
     {
         $this->login = $login;
         $this->password = $password;
+        $this->isActive = $isActive;
+        $this->avatarLink = $avatarLink;
     }
 
     public function getId(): int
@@ -89,12 +99,23 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         $this->isActive = $isActive;
     }
 
+    public function getAvatarLink(): ?string
+    {
+        return $this->avatarLink;
+    }
+
+    public function setAvatarLink(?string $avatarLink): void
+    {
+        $this->avatarLink = $avatarLink;
+    }
+
     public function toArray(): array
     {
         return [
             'id' => $this->getId(),
             'login' => $this->login,
             'isActive' => $this->isActive,
+            'avatar' => $this->avatarLink,
             'roles' => $this->roles,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
