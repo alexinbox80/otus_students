@@ -19,7 +19,7 @@ class Controller
 
     #[Route(
         path: 'api/v1/user',
-        name: 'web_create_user_v1_invoke ',
+        name: 'web_create_user_v1_invoke',
         methods: ['POST']
     )]
     public function __invoke(#[MapRequestPayload] CreateUserDTO $createUserDTO): CreatedUserDTO

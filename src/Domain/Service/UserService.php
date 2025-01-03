@@ -100,4 +100,13 @@ class UserService
             $this->userRepository->remove($user);
         }
     }
+
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function removeUser(User $user): void
+    {
+        $this->userRepository->remove($user);
+    }
 }
