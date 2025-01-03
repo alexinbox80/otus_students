@@ -79,6 +79,14 @@ class UserRepository extends AbstractRepository
     }
 
     /**
+     * @return void
+     */
+    public function update(): void
+    {
+        $this->flush();
+    }
+
+    /**
      * @param User $user
      * @return int
      */

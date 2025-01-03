@@ -4,6 +4,7 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\User;
 use App\Domain\Model\CreateUserModel;
+use App\Domain\Model\UpdateUserModel;
 use App\Infrastructure\Repository\UserRepository;
 
 class UserService
@@ -85,6 +86,24 @@ class UserService
         );
 
         $this->userRepository->create($user);
+
+        return $user;
+    }
+
+    /**
+     * @param User $user
+     * @param UpdateUserModel $updateUserModel
+     * @return User
+     */
+    public function update(User $user, UpdateUserModel $updateUserModel): User
+    {
+        $user->changeFields(
+            $updateUserModel->login,
+            $updateUserModel->password,
+            $updateUserModel->isActive
+        );
+
+        $this->userRepository->update();
 
         return $user;
     }

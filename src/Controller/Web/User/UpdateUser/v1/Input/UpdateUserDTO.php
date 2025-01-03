@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller\Web\User\CreateUser\v1\Input;
+namespace App\Controller\Web\User\UpdateUser\v1\Input;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateUserDTO
+class UpdateUserDTO
 {
     public function __construct(
         #[Assert\NotBlank]

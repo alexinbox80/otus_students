@@ -11,8 +11,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class KernelViewEventListener
 {
-    public function __construct(private readonly SerializerInterface $serializer)
-    {
+    public function __construct(
+        private readonly SerializerInterface $serializer
+    ) {
     }
 
     public function onKernelView(ViewEvent $event): void
@@ -24,8 +25,13 @@ class KernelViewEventListener
         }
     }
 
-    private function getDTOResponse($data): Response {
-        $serializedData = $this->serializer->serialize($data, 'json', [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]);
+    private function getDTOResponse($data): Response
+    {
+        $serializedData = $this->serializer->serialize(
+            $data,
+            'json',
+            [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]
+        );
 
         return new JsonResponse($serializedData, Response::HTTP_OK, [], true);
     }

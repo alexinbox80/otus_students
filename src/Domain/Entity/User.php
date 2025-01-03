@@ -109,6 +109,21 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         $this->avatarLink = $avatarLink;
     }
 
+    public function changeFields(
+        string $login,
+        string $password,
+        ?bool $isActive,
+        ?array $roles = [],
+        ?string $avatarLink = null
+    ): void
+    {
+        $this->setLogin($login);
+        $this->setPassword($password);
+        $this->setRoles($roles);
+        $this->setIsActive($isActive);
+        $this->setAvatarLink($avatarLink);
+    }
+
     public function toArray(): array
     {
         return [
