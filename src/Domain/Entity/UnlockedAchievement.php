@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
+use App\Domain\Entity\Interfaces\SoftDeletableInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
@@ -16,7 +17,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ORM\Index(name: 'unlocked_achievement__achievement_id__ind', columns: ['achievement_id'])]
 #[ORM\UniqueConstraint(name: 'unlocked_achievement__student__achievement__uniq', fields: ['student', 'achievement'])]
 #[ORM\HasLifecycleCallbacks]
-class UnlockedAchievement implements EntityInterface, HasMetaTimestampsInterface
+class UnlockedAchievement implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 

@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
+use App\Domain\Entity\Interfaces\SoftDeletableInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
@@ -17,7 +18,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Index(name: 'lesson__course_id__ind', columns: ['course_id'])]
 #[ORM\UniqueConstraint(name: 'lesson__name__course__uniq', fields: ['name', 'course'])]
-class Lesson implements EntityInterface, HasMetaTimestampsInterface
+class Lesson implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 

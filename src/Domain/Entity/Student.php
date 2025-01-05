@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
+use App\Domain\Entity\Interfaces\SoftDeletableInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
@@ -20,7 +21,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ORM\Index(name: 'student__phone__ind', columns: ['phone'])]
 #[ORM\Index(name: 'student__email__ind', columns: ['email'])]
 #[ORM\UniqueConstraint(name: 'student__user_id__uniq', fields: ['user'])]
-class Student extends Person implements EntityInterface, HasMetaTimestampsInterface
+class Student extends Person implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 
