@@ -2,6 +2,7 @@
 
 namespace App\Controller\Web\User\UpdateUserAvatarLink\v1;
 
+use App\Controller\Web\User\UpdateUserAvatarLink\v1\Output\UpdatedUserAvatarDTO;
 use App\Domain\Entity\User;
 use App\Domain\Service\FileService;
 use App\Domain\Service\UserService;
@@ -17,10 +18,18 @@ class Manager
     ) {
     }
 
-    public function updateUserAvatarLink(User $user, UploadedFile $uploadedFile): void
+    public function updateUserAvatarLink(User $user, UploadedFile $uploadedFile): UpdatedUserAvatarDTO
     {
         $file = $this->fileService->storeUploadedFile($uploadedFile);
         $path = $this->baseUrl . str_replace($this->uploadPrefix, '', $file->getRealPath());
         $this->userService->updateAvatarLink($user, $path);
+
+        return new UpdatedUserAvatarDTO(
+            $user->getId(),
+            $user->getLogin(),
+            $user->getAvatarLink(),
+            $user->getCreatedAt()->format('Y-m-d H:i:s'),
+            $user->getUpdatedAt()->format('Y-m-d H:i:s')
+        );
     }
 }

@@ -2,11 +2,10 @@
 
 namespace App\Controller\Web\User\UpdateUserAvatarLink\v1;
 
+use App\Controller\Web\User\UpdateUserAvatarLink\v1\Output\UpdatedUserAvatarDTO;
 use App\Domain\Entity\User;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -22,10 +21,8 @@ class Controller
         name: 'web_update_user_avatar_link_v1_invoke',
         methods: ['POST']
     )]
-    public function __invoke(#[MapEntity(id: 'id')] User $user, Request $request): JsonResponse
+    public function __invoke(#[MapEntity(id: 'id')] User $user, Request $request): UpdatedUserAvatarDTO
     {
-        $this->manager->updateUserAvatarLink($user, $request->files->get('image'));
-
-        return new JsonResponse(['user' => $user->toArray()], Response::HTTP_OK);
+        return $this->manager->updateUserAvatarLink($user, $request->files->get('image'));
     }
 }
