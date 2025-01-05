@@ -2,9 +2,6 @@
 
 namespace App\Controller\Web\User\GetUsers\v1;
 
-use App\Domain\Entity\User;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,13 +22,8 @@ class Controller
     public function __invoke(
         #[MapQueryParameter(filter: \FILTER_VALIDATE_INT)] ?int $page = null,
         #[MapQueryParameter(filter: \FILTER_VALIDATE_INT)] ?int $perPage = null,
-    ): JsonResponse
+    ): array
     {
-        $users = $this->manager->getUsers($page ?? 0, $perPage ?? 20);
-
-        return new JsonResponse(
-            array_map(static fn (User $user): array => $user->toArray(), $users),
-            Response::HTTP_OK
-        );
+        return $this->manager->getUsers($page ?? 0, $perPage ?? 20);
     }
 }

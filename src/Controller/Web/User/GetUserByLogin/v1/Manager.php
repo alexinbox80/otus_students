@@ -2,6 +2,7 @@
 
 namespace App\Controller\Web\User\GetUserByLogin\v1;
 
+use App\Domain\Entity\User;
 use App\Domain\Service\UserService;
 
 class Manager
@@ -12,7 +13,7 @@ class Manager
 
     /**
      * @param string $login
-     * @return array
+     * @return User[]
      */
     public function findUsersByLogin(string $login): array
     {

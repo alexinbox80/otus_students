@@ -2,9 +2,6 @@
 
 namespace App\Controller\Web\User\GetUserByLogin\v1;
 
-use App\Domain\Entity\User;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -21,17 +18,8 @@ class Controller
         requirements: ['login' => '\w+'],
         methods: ['GET'],
     )]
-    public function __invoke(string $login): JsonResponse
+    public function __invoke(string $login): array
     {
-        $users = $this->manager->findUsersByLogin($login);
-
-        if (count($users) === 0) {
-            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
-        }
-
-        return new JsonResponse(
-            array_map(static fn (User $user): array => $user->toArray(), $users),
-            Response::HTTP_OK
-        );
+        return $this->manager->findUsersByLogin($login);
     }
 }
