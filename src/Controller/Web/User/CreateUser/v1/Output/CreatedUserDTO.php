@@ -2,7 +2,7 @@
 
 namespace App\Controller\Web\User\CreateUser\v1\Output;
 
-use App\Controller\DTO\OutputDTOInterface;
+use App\Controller\DTO\Interfaces\OutputDTOInterface;
 
 class CreatedUserDTO implements OutputDTOInterface
 {

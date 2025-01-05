@@ -2,7 +2,8 @@
 
 namespace App\Application\EventListener;
 
-use App\Controller\DTO\OutputDTOInterface;
+use App\Controller\DTO\Interfaces\OutputDTOInterface;
+use App\Controller\DTO\Interfaces\OutputDTONotFoundInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -21,11 +22,15 @@ class KernelViewEventListener
         $dto = $event->getControllerResult();
 
         if ($dto instanceof OutputDTOInterface) {
-            $event->setResponse($this->getDTOResponse($dto));
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
+        }
+
+        if ($dto instanceof OutputDTONotFoundInterface) {
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_NOT_FOUND));
         }
     }
 
-    private function getDTOResponse($data): Response
+    private function getDTOResponse($data, int $code): Response
     {
         $serializedData = $this->serializer->serialize(
             $data,
@@ -33,6 +38,6 @@ class KernelViewEventListener
             [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]
         );
 
-        return new JsonResponse($serializedData, Response::HTTP_OK, [], true);
+        return new JsonResponse($serializedData, $code, [], true);
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller\Web\User\UpdateUser\v1\Output;
+namespace App\Controller\Web\User\GetUserById\v1\Output;
 
 use App\Controller\DTO\Interfaces\OutputDTOInterface;
 
-class UpdatedUserDTO implements OutputDTOInterface
+class GotUserByIdDTO implements OutputDTOInterface
 {
     public function __construct(
         public readonly int $id,
@@ -13,7 +13,7 @@ class UpdatedUserDTO implements OutputDTOInterface
         public readonly bool $isActive,
         public readonly ?string $avatarLink,
         public readonly string $createdAt,
-        public readonly string $updatedAt,
+        public readonly string $updatedAt
     ) {
     }
 }

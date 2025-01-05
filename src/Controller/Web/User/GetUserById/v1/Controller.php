@@ -2,8 +2,8 @@
 
 namespace App\Controller\Web\User\GetUserById\v1;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use App\Controller\DTO\EmptyDTO;
+use App\Controller\Web\User\GetUserById\v1\Output\GotUserByIdDTO;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -22,17 +22,8 @@ class Controller
     )]
     public function __invoke(
         int $id
-    ): JsonResponse
+    ): GotUserByIdDTO|EmptyDTO
     {
-        $user = $this->manager->find($id);
-
-        if ($user === null) {
-            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
-        }
-
-        return new JsonResponse([
-            'user' => $user->toArray(),
-            ], Response::HTTP_OK
-        );
+        return $this->manager->find($id);
     }
 }
