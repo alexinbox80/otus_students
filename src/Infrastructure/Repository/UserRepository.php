@@ -3,10 +3,6 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\User;
-use DateInterval;
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @extends AbstractRepository<User>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Web\User\GetUser\v1;
+namespace App\Controller\Web\User\GetUsers\v1;
 
 use App\Domain\Entity\User;
 use App\Domain\Service\UserService;

@@ -2,14 +2,15 @@
 
 namespace App\Domain\Entity;
 
-use Webmozart\Assert\Assert as WebmozartAssert;
+use App\Domain\Entity\Interfaces\EntityInterface;
+use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
+use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\Table(name: 'student')]
 #[ORM\Entity]

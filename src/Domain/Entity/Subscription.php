@@ -2,6 +2,8 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Interfaces\EntityInterface;
+use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
