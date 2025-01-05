@@ -2,10 +2,9 @@
 
 namespace App\Controller\Web\User\DeleteUser\v1;
 
+use App\Controller\Web\User\DeleteUser\v1\Output\DeletedUserDTO;
 use App\Domain\Entity\User;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -23,10 +22,8 @@ class Controller
         requirements: ['id' => '\d+'],
         methods: ['DELETE']
     )]
-    public function __invoke(#[MapEntity(id: 'id')] User $user): Response
+    public function __invoke(#[MapEntity(id: 'id')] User $user): DeletedUserDTO
     {
-        $this->manager->deleteUser($user);
-
-        return new JsonResponse(['success' => true]);
+        return $this->manager->deleteUser($user);
     }
 }
