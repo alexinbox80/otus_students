@@ -8,6 +8,7 @@ use App\Domain\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -57,7 +58,10 @@ class KernelViewEventListener
         $serializedData = $this->serializer->serialize(
             $data,
             'json',
-            [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]
+            [
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
+                AbstractNormalizer::IGNORED_ATTRIBUTES => ['active']
+            ]
         );
 
         return new JsonResponse($serializedData, $code, [], true);
