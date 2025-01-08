@@ -16,8 +16,6 @@ class Manager
     public function deleteUser(User $user): DeletedUserDTO
     {
         $this->userService->removeUser($user);
-        return new DeletedUserDTO(
-            $success = true
-        );
+        return new DeletedUserDTO();
     }
 }

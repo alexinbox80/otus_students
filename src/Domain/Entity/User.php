@@ -8,6 +8,7 @@ use App\Domain\Entity\Interfaces\SoftDeletableInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert as WebmozartAssert;
 
@@ -27,6 +28,7 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\Column(name: 'login', type: 'string', length: 32, unique: true, nullable: false)]
     private string $login;
 
+    #[Ignore]
     #[ORM\Column(name: 'password', type: 'string', length: 64, nullable: false)]
     private string $password;
 

@@ -4,7 +4,6 @@ namespace App\Application\EventListener;
 
 use App\Controller\DTO\Interfaces\OutputDTOInterface;
 use App\Controller\DTO\Interfaces\OutputDTONotFoundInterface;
-use App\Controller\DTO\User\GotUserDTO;
 use App\Domain\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,28 +28,27 @@ class KernelViewEventListener
         }
 
         if (is_object($dto) and $dto instanceof OutputDTONotFoundInterface) {
-            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_NOT_FOUND));
+            $event->setResponse($this->getDTOResponse([
+                'success' => false,
+                'code' => Response::HTTP_NOT_FOUND
+            ], Response::HTTP_NOT_FOUND));
         }
 
         if (is_array($dto)) {
             $successResponse = [];
             foreach ($dto as $item) {
-                if ($item instanceof User)
-                    $successResponse[] = new GotUserDTO(
-                        $item->getId(),
-                        $item->getLogin(),
-                        $item->getRoles(),
-                        $item->isActive(),
-                        $item->getAvatarLink(),
-                        $item->getCreatedAt(),
-                        $item->getUpdatedAt()
-                    );
+                if ($item instanceof User) {
+                    $successResponse[] = $item;
+                }
             }
 
             if(count($successResponse) > 0)
                 $event->setResponse($this->getDTOResponse($successResponse, Response::HTTP_OK));
             else
-                $event->setResponse($this->getDTOResponse($successResponse, Response::HTTP_NOT_FOUND));
+                $event->setResponse($this->getDTOResponse([
+                    'success' => false,
+                    'code' => Response::HTTP_NOT_FOUND
+                ], Response::HTTP_NOT_FOUND));
         }
     }
 
