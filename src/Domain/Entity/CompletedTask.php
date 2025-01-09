@@ -122,6 +122,17 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface, Soft
         $this->task = $task;
     }
 
+    public function changeFields(
+        ?DateTime $finishedAt,
+        ?string $description,
+        ?int $grade
+    ): void
+    {
+        $this->setFinishedAt($finishedAt);
+        $this->setDescription($description);
+        $this->setGrade($grade);
+    }
+
     public function toArray(): array
     {
         return [

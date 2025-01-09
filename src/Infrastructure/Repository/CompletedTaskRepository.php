@@ -61,6 +61,21 @@ class CompletedTaskRepository extends AbstractRepository
     }
 
     /**
+     * @return CompletedTask[]
+     */
+    public function getCompletedTasks(int $page, int $perPage): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('c')
+            ->from(CompletedTask::class, 'c')
+            ->orderBy('c.id', 'DESC')
+            ->setFirstResult($perPage * $page)
+            ->setMaxResults($perPage);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @param CompletedTask $completedTask
      * @param int $grade
      * @return void
@@ -90,6 +105,14 @@ class CompletedTaskRepository extends AbstractRepository
     public function updateFinishedAt(CompletedTask $completedTask, DateTime $finishedAt): void
     {
         $completedTask->updateFinishedAt($finishedAt);
+        $this->flush();
+    }
+
+    /**
+     * @return void
+     */
+    public function update(): void
+    {
         $this->flush();
     }
 
