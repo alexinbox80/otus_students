@@ -66,6 +66,15 @@ class Achievement implements EntityInterface, HasMetaTimestampsInterface, SoftDe
         $this->description = $description;
     }
 
+    public function changeFields(
+        string $name,
+        ?string $description
+    ): void
+    {
+        $this->setName($name);
+        $this->setDescription($description);
+    }
+
     public function toArray(): array
     {
         return [

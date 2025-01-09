@@ -4,6 +4,7 @@ namespace App\Application\EventListener;
 
 use App\Controller\DTO\Interfaces\OutputDTOInterface;
 use App\Controller\DTO\Interfaces\OutputDTONotFoundInterface;
+use App\Domain\Entity\Achievement;
 use App\Domain\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +39,10 @@ class KernelViewEventListener
         if (is_array($dto)) {
             $successResponse = [];
             foreach ($dto as $item) {
+                if ($item instanceof Achievement) {
+                    $successResponse[] = $item;
+                }
+
                 if ($item instanceof User) {
                     $successResponse[] = $item;
                 }
