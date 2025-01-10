@@ -3,6 +3,8 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\Course;
+use App\Domain\Model\CreateCourseModel;
+use App\Domain\Model\UpdateCourseModel;
 use App\Infrastructure\Repository\CourseRepository;
 
 class CourseService
@@ -49,6 +51,14 @@ class CourseService
     }
 
     /**
+     * @return Course[]
+     */
+    public function getCourses(int $page, int $perPage): array
+    {
+        return $this->courseRepository->getCourses($page, $perPage);
+    }
+
+    /**
      * @param int $courseId
      * @param string $name
      * @return Course|null
@@ -81,15 +91,34 @@ class CourseService
     }
 
     /**
-     * @param string $name
-     * @param ?string $description
+     * @param CreateCourseModel $createCourseModel
      * @return Course
      */
-    public function create(string $name, ?string $description): Course
+    public function create(CreateCourseModel $createCourseModel): Course
     {
-        $course = new Course($name, $description);
+        $course = new Course(
+            $createCourseModel->name,
+            $createCourseModel->description
+        );
 
         $this->courseRepository->create($course);
+
+        return $course;
+    }
+
+    /**
+     * @param Course $course
+     * @param UpdateCourseModel $updateCourseModel
+     * @return Course
+     */
+    public function update(Course $course, UpdateCourseModel $updateCourseModel): Course
+    {
+        $course->changeFields(
+            $updateCourseModel->name,
+            $updateCourseModel->description,
+        );
+
+        $this->courseRepository->update();
 
         return $course;
     }
@@ -104,5 +133,14 @@ class CourseService
         if ($course instanceof Course) {
             $this->courseRepository->remove($course);
         }
+    }
+
+    /**
+     * @param Course $course
+     * @return void
+     */
+    public function removeCourse(Course $course): void
+    {
+        $this->courseRepository->remove($course);
     }
 }

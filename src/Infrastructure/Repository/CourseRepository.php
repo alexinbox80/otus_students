@@ -8,6 +8,21 @@ use Doctrine\Common\Collections\Criteria;
 class CourseRepository extends AbstractRepository
 {
     /**
+     * @return Course[]
+     */
+    public function getCourses(int $page, int $perPage): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('c')
+            ->from(Course::class, 'c')
+            ->orderBy('c.id', 'DESC')
+            ->setFirstResult($perPage * $page)
+            ->setMaxResults($perPage);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @param int $courseId
      * @return Course|null
      */
@@ -82,6 +97,14 @@ class CourseRepository extends AbstractRepository
     public function updateDescription(Course $course, string $description): void
     {
         $course->setDescription($description);
+        $this->flush();
+    }
+
+    /**
+     * @return void
+     */
+    public function update(): void
+    {
         $this->flush();
     }
 
