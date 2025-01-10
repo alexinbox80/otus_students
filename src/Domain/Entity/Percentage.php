@@ -96,6 +96,15 @@ class Percentage implements EntityInterface, HasMetaTimestampsInterface, SoftDel
         $this->skill = $skill;
     }
 
+    public function changeFields(
+        float $percent,
+        ?string $description = null
+    ): void
+    {
+        $this->setPercent($percent);
+        $this->setDescription($description);
+    }
+
     public function toArray(): array
     {
         return [
