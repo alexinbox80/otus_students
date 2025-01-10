@@ -17,9 +17,9 @@ class AchievementService
 
     /**
      * @param int $achievementId
-     * @return Achievement
+     * @return ?Achievement
      */
-    public function find(int $achievementId): Achievement
+    public function find(int $achievementId): ?Achievement
     {
         return $this->achievementRepository->find($achievementId);
     }

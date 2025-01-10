@@ -118,6 +118,15 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface, SoftDeletab
         return $this;
     }
 
+    public function changeFields(
+        string $name,
+        ?string $description = null
+    ): void
+    {
+        $this->setName($name);
+        $this->setDescription($description);
+    }
+
     public function toArray(): array
     {
         return [

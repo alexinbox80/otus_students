@@ -17,9 +17,9 @@ class CourseService
 
     /**
      * @param int $courseId
-     * @return Course
+     * @return ?Course
      */
-    public function find(int $courseId): Course
+    public function find(int $courseId): ?Course
     {
         return $this->courseRepository->find($courseId);
     }

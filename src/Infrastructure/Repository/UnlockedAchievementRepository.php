@@ -30,7 +30,7 @@ class UnlockedAchievementRepository extends AbstractRepository
     /**
      * @return void
      */
-    public function flush(): void
+    public function update(): void
     {
         $this->flush();
     }

@@ -7,6 +7,7 @@ use App\Controller\DTO\Interfaces\OutputDTONotFoundInterface;
 use App\Domain\Entity\Achievement;
 use App\Domain\Entity\CompletedTask;
 use App\Domain\Entity\Course;
+use App\Domain\Entity\Lesson;
 use App\Domain\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,6 +51,10 @@ class KernelViewEventListener
                 }
 
                 if ($item instanceof Course) {
+                    $successResponse[] = $item;
+                }
+
+                if ($item instanceof Lesson) {
                     $successResponse[] = $item;
                 }
 

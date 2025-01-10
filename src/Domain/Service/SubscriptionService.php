@@ -53,7 +53,7 @@ class SubscriptionService
         $subscription = new Subscription();
         $subscription->setStudent($student);
         $subscription->setCourse($course);
-        $this->subscriptionRepository->flush();
+        $this->subscriptionRepository->update();
 
         return $subscription;
     }

@@ -8,6 +8,21 @@ use Doctrine\Common\Collections\Criteria;
 class LessonRepository extends AbstractRepository
 {
     /**
+     * @return Lesson[]
+     */
+    public function getLessons(int $page, int $perPage): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('l')
+            ->from(Lesson::class, 'l')
+            ->orderBy('l.id', 'DESC')
+            ->setFirstResult($perPage * $page)
+            ->setMaxResults($perPage);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @param int $lessonId
      * @return Lesson|null
      */
@@ -97,7 +112,7 @@ class LessonRepository extends AbstractRepository
     /**
      * @return void
      */
-    public function flush(): void
+    public function update(): void
     {
         $this->flush();
     }

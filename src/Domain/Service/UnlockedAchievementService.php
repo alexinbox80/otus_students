@@ -59,7 +59,7 @@ class UnlockedAchievementService
         $unlockedAchievement = new UnlockedAchievement();
         $unlockedAchievement->setStudent($student);
         $unlockedAchievement->setAchievement($achievement);
-        $this->unlockedAchievementRepository->flush();
+        $this->unlockedAchievementRepository->update();
 
         return $unlockedAchievement;
     }

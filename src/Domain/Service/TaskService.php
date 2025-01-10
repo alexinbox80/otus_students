@@ -107,7 +107,7 @@ class TaskService
     {
         $task->getLesson()->removeTask($task);
         $task->removeLesson()->setLesson($lesson);
-        $this->taskRepository->flush();
+        $this->taskRepository->update();
 
         return $task;
     }
