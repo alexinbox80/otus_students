@@ -166,6 +166,15 @@ class Task implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         return $this;
     }
 
+    public function changeFields(
+        string $name,
+        ?string $description
+    ): void
+    {
+        $this->setName($name);
+        $this->setDescription($description);
+    }
+
     public function toArray(): array
     {
         return [
