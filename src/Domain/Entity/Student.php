@@ -46,11 +46,11 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         string $firstName,
         string $lastName,
         ?string $middleName,
-        ?string $phone,
-        ?string $email
+        ?string $email,
+        ?string $phone
     )
     {
-        parent::__construct($firstName, $lastName, $middleName, $phone, $email);
+        parent::__construct($firstName, $lastName, $middleName, $email, $phone);
 
         $this->subscriptions = new ArrayCollection();
         $this->completedTasks = new ArrayCollection();
@@ -131,6 +131,18 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     {
         $this->unlockedAchievements->removeElement($unlockedAchievement);
         return $this;
+    }
+
+    public function changeFields(
+        string $firstName,
+        string $lastName,
+        ?string $middleName,
+        ?string $email,
+        ?string $phone
+    ): void
+    {
+        $this->changeName($firstName, $lastName, $middleName);
+        $this->changeContacts($email, $phone);
     }
 
     public function toArray(): array

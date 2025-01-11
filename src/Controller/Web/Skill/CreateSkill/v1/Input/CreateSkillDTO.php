@@ -9,7 +9,7 @@ class CreateSkillDTO
     public function __construct(
         #[Assert\NotBlank]
         #[Assert\Length(min:8)]
-        #[Assert\Length(max:1128)]
+        #[Assert\Length(max:128)]
         public readonly string $name,
         #[Assert\Length(min:8)]
         #[Assert\Length(max:255)]

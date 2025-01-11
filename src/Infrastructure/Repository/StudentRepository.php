@@ -11,6 +11,21 @@ use App\Domain\Entity\Student;
 class StudentRepository extends AbstractRepository
 {
     /**
+     * @return Student[]
+     */
+    public function getStudents(int $page, int $perPage): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('s')
+            ->from(Student::class, 's')
+            ->orderBy('s.id', 'DESC')
+            ->setFirstResult($perPage * $page)
+            ->setMaxResults($perPage);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @param int $studentId
      * @return Student|null
      */
@@ -94,6 +109,14 @@ class StudentRepository extends AbstractRepository
     public function create(Student $student): int
     {
         return $this->store($student);
+    }
+
+    /**
+     * @return void
+     */
+    public function update(): void
+    {
+        $this->flush();
     }
 
     /**

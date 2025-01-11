@@ -4,6 +4,8 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\Person;
 use App\Domain\Entity\Student;
+use App\Domain\Model\CreateStudentModel;
+use App\Domain\Model\UpdateStudentModel;
 use App\Infrastructure\Repository\StudentRepository;
 
 class StudentService
@@ -14,9 +16,9 @@ class StudentService
 
     /**
      * @param int $studentId
-     * @return Student
+     * @return ?Student
      */
-    public function find(int $studentId): Student
+    public function find(int $studentId): ?Student
     {
         return $this->studentRepository->find($studentId);
     }
@@ -57,6 +59,14 @@ class StudentService
     }
 
     /**
+     * @return Student[]
+     */
+    public function getStudents(int $page, int $perPage): array
+    {
+        return $this->studentRepository->getStudents($page, $perPage);
+    }
+
+    /**
      * @param int $studentId
      * @param Person $person
      * @return Student|null
@@ -89,20 +99,40 @@ class StudentService
     }
 
     /**
-     * @param Person $person
+     * @param CreateStudentModel $createStudentModel
      * @return Student
      */
-    public function create(Person $person): Student
+    public function create(CreateStudentModel $createStudentModel): Student
     {
         $student = new Student(
-            $person->getLastName(),
-            $person->getFirstName(),
-            $person->getMiddleName(),
-            $person->getEmail(),
-            $person->getPhone()
+            $createStudentModel->firstName,
+            $createStudentModel->lastName,
+            $createStudentModel->middleName,
+            $createStudentModel->email,
+            $createStudentModel->phone
         );
 
         $this->studentRepository->create($student);
+
+        return $student;
+    }
+
+    /**
+     * @param Student $student
+     * @param UpdateStudentModel $updateStudentModel
+     * @return Student
+     */
+    public function update(Student $student, UpdateStudentModel $updateStudentModel): Student
+    {
+        $student->changeFields(
+            $updateStudentModel->firstName,
+            $updateStudentModel->lastName,
+            $updateStudentModel->middleName,
+            $updateStudentModel->email,
+            $updateStudentModel->phone
+        );
+
+        $this->studentRepository->update();
 
         return $student;
     }
@@ -117,5 +147,14 @@ class StudentService
         if ($student instanceof Student) {
             $this->studentRepository->remove($student);
         }
+    }
+
+    /**
+     * @param Student $student
+     * @return void
+     */
+    public function removeStudent(Student $student): void
+    {
+        $this->studentRepository->remove($student);
     }
 }
