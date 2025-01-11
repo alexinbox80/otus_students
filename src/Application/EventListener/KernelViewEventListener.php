@@ -43,29 +43,7 @@ class KernelViewEventListener
         if (is_array($dto)) {
             $successResponse = [];
             foreach ($dto as $item) {
-                if ($item instanceof Achievement) {
-                    $successResponse[] = $item;
-                }
-
-                if ($item instanceof CompletedTask) {
-                    $successResponse[] = $item;
-                }
-
-                if ($item instanceof Course) {
-                    $successResponse[] = $item;
-                }
-
-                if ($item instanceof Lesson) {
-                    $successResponse[] = $item;
-                }
-
-                if ($item instanceof Percentage) {
-                    $successResponse[] = $item;
-                }
-
-                if ($item instanceof User) {
-                    $successResponse[] = $item;
-                }
+                $successResponse[] = $item;
             }
 
             if(count($successResponse) > 0)

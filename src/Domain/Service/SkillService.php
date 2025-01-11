@@ -3,6 +3,8 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\Skill;
+use App\Domain\Model\CreateSkillModel;
+use App\Domain\Model\UpdateSkillModel;
 use App\Infrastructure\Repository\SkillRepository;
 
 class SkillService
@@ -15,9 +17,9 @@ class SkillService
 
     /**
      * @param int $skillId
-     * @return Skill
+     * @return ?Skill
      */
-    public function find(int $skillId): Skill
+    public function find(int $skillId): ?Skill
     {
         return $this->skillRepository->find($skillId);
     }
@@ -46,6 +48,14 @@ class SkillService
     public function findSkillsByDescription(string $description): array
     {
         return $this->skillRepository->findSkillsByDescriptionWithCriteria($description);
+    }
+
+    /**
+     * @return Skill[]
+     */
+    public function getSkills(int $page, int $perPage): array
+    {
+        return $this->skillRepository->getSkills($page, $perPage);
     }
 
     /**
@@ -81,15 +91,34 @@ class SkillService
     }
 
     /**
-     * @param string $name
-     * @param ?string $description
+     * @param CreateSkillModel $createSkillModel
      * @return Skill
      */
-    public function create(string $name, ?string $description): Skill
+    public function create(CreateSkillModel $createSkillModel): Skill
     {
-        $skill = new Skill($name, $description);
+        $skill = new Skill(
+            $createSkillModel->name,
+            $createSkillModel->description
+        );
 
         $this->skillRepository->create($skill);
+
+        return $skill;
+    }
+
+    /**
+     * @param Skill $skill
+     * @param UpdateSkillModel $updateSkillModel
+     * @return Skill
+     */
+    public function update(Skill $skill, UpdateSkillModel $updateSkillModel): Skill
+    {
+        $skill->changeFields(
+            $updateSkillModel->name,
+            $updateSkillModel->description
+        );
+
+        $this->skillRepository->update();
 
         return $skill;
     }
@@ -104,5 +133,14 @@ class SkillService
         if ($skill instanceof Skill) {
             $this->skillRepository->remove($skill);
         }
+    }
+
+    /**
+     * @param Skill $skill
+     * @return void
+     */
+    public function removeSkill(Skill $skill): void
+    {
+        $this->skillRepository->remove($skill);
     }
 }

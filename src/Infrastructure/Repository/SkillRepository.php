@@ -8,6 +8,21 @@ use Doctrine\Common\Collections\Criteria;
 class SkillRepository extends AbstractRepository
 {
     /**
+     * @return Skill[]
+     */
+    public function getSkills(int $page, int $perPage): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('s')
+            ->from(Skill::class, 's')
+            ->orderBy('s.id', 'DESC')
+            ->setFirstResult($perPage * $page)
+            ->setMaxResults($perPage);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @param int $skillId
      * @return Skill|null
      */
@@ -92,6 +107,14 @@ class SkillRepository extends AbstractRepository
     public function create(Skill $skill): int
     {
         return $this->store($skill);
+    }
+
+    /**
+     * @return void
+     */
+    public function update(): void
+    {
+        $this->flush();
     }
 
     /**
