@@ -19,9 +19,9 @@ class CompletedTaskService
 
     /**
      * @param int $completedTaskId
-     * @return CompletedTask
+     * @return ?CompletedTask
      */
-    public function find(int $completedTaskId): CompletedTask
+    public function find(int $completedTaskId): ?CompletedTask
     {
         return $this->completedTaskRepository->find($completedTaskId);
     }

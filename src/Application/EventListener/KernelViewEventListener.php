@@ -43,7 +43,7 @@ class KernelViewEventListener
         if (is_array($dto)) {
             $successResponse = [];
             foreach ($dto as $item) {
-                $successResponse[] = $item;
+                $successResponse[] = $item->toArray();
             }
 
             if(count($successResponse) > 0)
