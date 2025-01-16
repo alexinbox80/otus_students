@@ -2,12 +2,15 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Interfaces\EntityInterface;
+use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
+use App\Domain\Entity\Interfaces\SoftDeletableInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\Table(name: 'completed_task')]
@@ -17,7 +20,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ORM\Index(name: 'completed_task__grade__ind', columns: ['grade'])]
 #[ORM\UniqueConstraint(name: 'completed_task__student__task__uniq', fields: ['student', 'task'])]
 #[ORM\HasLifecycleCallbacks]
-class CompletedTask implements EntityInterface, HasMetaTimestampsInterface
+class CompletedTask implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 
@@ -117,6 +120,17 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface
     public function setTask(Task $task): void
     {
         $this->task = $task;
+    }
+
+    public function changeFields(
+        ?DateTime $finishedAt,
+        ?string $description,
+        ?int $grade
+    ): void
+    {
+        $this->setFinishedAt($finishedAt);
+        $this->setDescription($description);
+        $this->setGrade($grade);
     }
 
     public function toArray(): array

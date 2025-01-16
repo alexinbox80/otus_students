@@ -2,14 +2,16 @@
 
 namespace App\Domain\Entity;
 
-use Webmozart\Assert\Assert as WebmozartAssert;
+use App\Domain\Entity\Interfaces\EntityInterface;
+use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
+use App\Domain\Entity\Interfaces\SoftDeletableInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
+use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\Table(name: 'student')]
 #[ORM\Entity]
@@ -19,7 +21,7 @@ use Exception;
 #[ORM\Index(name: 'student__phone__ind', columns: ['phone'])]
 #[ORM\Index(name: 'student__email__ind', columns: ['email'])]
 #[ORM\UniqueConstraint(name: 'student__user_id__uniq', fields: ['user'])]
-class Student extends Person implements EntityInterface, HasMetaTimestampsInterface
+class Student extends Person implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 
@@ -44,11 +46,11 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         string $firstName,
         string $lastName,
         ?string $middleName,
-        ?string $phone,
-        ?string $email
+        ?string $email,
+        ?string $phone
     )
     {
-        parent::__construct($firstName, $lastName, $middleName, $phone, $email);
+        parent::__construct($firstName, $lastName, $middleName, $email, $phone);
 
         $this->subscriptions = new ArrayCollection();
         $this->completedTasks = new ArrayCollection();
@@ -129,6 +131,18 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     {
         $this->unlockedAchievements->removeElement($unlockedAchievement);
         return $this;
+    }
+
+    public function changeFields(
+        string $firstName,
+        string $lastName,
+        ?string $middleName,
+        ?string $email,
+        ?string $phone
+    ): void
+    {
+        $this->changeName($firstName, $lastName, $middleName);
+        $this->changeContacts($email, $phone);
     }
 
     public function toArray(): array

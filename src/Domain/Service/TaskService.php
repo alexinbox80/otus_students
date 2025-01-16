@@ -4,6 +4,8 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\Lesson;
 use App\Domain\Entity\Task;
+use App\Domain\Model\CreateTaskModel;
+use App\Domain\Model\UpdateTaskModel;
 use App\Infrastructure\Repository\TaskRepository;
 
 class TaskService
@@ -16,9 +18,9 @@ class TaskService
 
     /**
      * @param int $taskId
-     * @return Task
+     * @return ?Task
      */
-    public function find(int $taskId): Task
+    public function find(int $taskId): ?Task
     {
         return $this->taskRepository->find($taskId);
     }
@@ -47,6 +49,14 @@ class TaskService
     public function findTasksByDescription(string $description): array
     {
         return $this->taskRepository->findTasksByDescriptionWithCriteria($description);
+    }
+
+    /**
+     * @return Task[]
+     */
+    public function getTasks(int $page, int $perPage): array
+    {
+        return $this->taskRepository->getTasks($page, $perPage);
     }
 
     /**
@@ -82,18 +92,40 @@ class TaskService
     }
 
     /**
-     * @param Lesson $lesson
-     * @param string $name
-     * @param ?string $description
+     //* @param Lesson $lesson
+     * @param CreateTaskModel $createTaskModel
      * @return Task
      */
-    public function create(Lesson $lesson, string $name, ?string $description): Task
+    public function create(
+        //Lesson $lesson,
+        CreateTaskModel $createTaskModel
+    ): Task
     {
-        $task = new Task($name, $description);
+        $task = new Task(
+            $createTaskModel->name,
+            $createTaskModel->description
+        );
 
-        $lesson->addTask($task);
+        //$lesson->addTask($task);
 
         $this->taskRepository->create($task);
+
+        return $task;
+    }
+
+    /**
+     * @param Task $task
+     * @param UpdateTaskModel $updateTaskModel
+     * @return Task
+     */
+    public function update(Task $task, UpdateTaskModel $updateTaskModel): Task
+    {
+        $task->changeFields(
+            $updateTaskModel->name,
+            $updateTaskModel->description
+        );
+
+        $this->taskRepository->update();
 
         return $task;
     }
@@ -107,7 +139,7 @@ class TaskService
     {
         $task->getLesson()->removeTask($task);
         $task->removeLesson()->setLesson($lesson);
-        $this->taskRepository->flush();
+        $this->taskRepository->update();
 
         return $task;
     }
@@ -122,5 +154,14 @@ class TaskService
         if ($task instanceof Task) {
             $this->taskRepository->remove($task);
         }
+    }
+
+    /**
+     * @param Task $task
+     * @return void
+     */
+    public function removeTask(Task $task): void
+    {
+        $this->taskRepository->remove($task);
     }
 }

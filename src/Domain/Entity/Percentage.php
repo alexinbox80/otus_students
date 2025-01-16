@@ -2,11 +2,14 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Interfaces\EntityInterface;
+use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
+use App\Domain\Entity\Interfaces\SoftDeletableInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\Table(name: 'percentage')]
@@ -15,7 +18,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ORM\Index(name: 'percentage__skill_id__ind', columns: ['skill_id'])]
 #[ORM\UniqueConstraint(name: 'percentage__task__skill__uniq', fields: ['task', 'skill'])]
 #[ORM\HasLifecycleCallbacks]
-class Percentage implements EntityInterface, HasMetaTimestampsInterface
+class Percentage implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 
@@ -91,6 +94,15 @@ class Percentage implements EntityInterface, HasMetaTimestampsInterface
     public function setSkill(Skill $skill): void
     {
         $this->skill = $skill;
+    }
+
+    public function changeFields(
+        float $percent,
+        ?string $description = null
+    ): void
+    {
+        $this->setPercent($percent);
+        $this->setDescription($description);
     }
 
     public function toArray(): array

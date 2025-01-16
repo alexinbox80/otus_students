@@ -4,6 +4,8 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\Course;
 use App\Domain\Entity\Lesson;
+use App\Domain\Model\CreateLessonModel;
+use App\Domain\Model\UpdateLessonModel;
 use App\Infrastructure\Repository\LessonRepository;
 
 class LessonService
@@ -16,9 +18,9 @@ class LessonService
 
     /**
      * @param int $lessonId
-     * @return Lesson
+     * @return ?Lesson
      */
-    public function find(int $lessonId): Lesson
+    public function find(int $lessonId): ?Lesson
     {
         return $this->lessonRepository->find($lessonId);
     }
@@ -47,6 +49,14 @@ class LessonService
     public function findLessonsByDescription(string $description): array
     {
         return $this->lessonRepository->findLessonsByDescriptionWithCriteria($description);
+    }
+
+    /**
+     * @return Lesson[]
+     */
+    public function getLessons(int $page, int $perPage): array
+    {
+        return $this->lessonRepository->getLessons($page, $perPage);
     }
 
     /**
@@ -82,16 +92,38 @@ class LessonService
     }
 
     /**
-     * @param Course $course
-     * @param string $name
-     * @param ?string $description
+     * @param Lesson $lesson
+     * @param UpdateLessonModel $updateLessonModel
      * @return Lesson
      */
-    public function create(Course $course, string $name, ?string $description): Lesson
+    public function update(Lesson $lesson, UpdateLessonModel $updateLessonModel): Lesson
     {
-        $lesson = new Lesson($name, $description);
+        $lesson->changeFields(
+            $updateLessonModel->name,
+            $updateLessonModel->description
+        );
 
-        $course->addLesson($lesson);
+        $this->lessonRepository->update();
+
+        return $lesson;
+    }
+
+    /**
+     //* @param Course $course
+     * @param CreateLessonModel $createLessonModel
+     * @return Lesson
+     */
+    public function create(
+      //  Course $course,
+        CreateLessonModel $createLessonModel
+    ): Lesson
+    {
+        $lesson = new Lesson(
+            $createLessonModel->name,
+            $createLessonModel->description
+        );
+
+       // $course->addLesson($lesson);
 
         $this->lessonRepository->create($lesson);
 
@@ -107,7 +139,7 @@ class LessonService
     {
         $lesson->getCourse()->removeLesson($lesson);
         $lesson->removeCourse()->setCourse($course);
-        $this->lessonRepository->flush();
+        $this->lessonRepository->update();
 
         return $lesson;
     }
@@ -122,5 +154,14 @@ class LessonService
         if ($lesson instanceof Lesson) {
             $this->lessonRepository->remove($lesson);
         }
+    }
+
+    /**
+     * @param Lesson $lesson
+     * @return void
+     */
+    public function removeLesson(Lesson $lesson): void
+    {
+        $this->lessonRepository->remove($lesson);
     }
 }

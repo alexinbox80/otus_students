@@ -64,6 +64,21 @@ class AchievementRepository extends AbstractRepository
     }
 
     /**
+     * @return Achievement[]
+     */
+    public function getAchievements(int $page, int $perPage): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('a')
+            ->from(Achievement::class, 'a')
+            ->orderBy('a.id', 'DESC')
+            ->setFirstResult($perPage * $page)
+            ->setMaxResults($perPage);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @param Achievement $achievement
      * @param string $name
      * @return void
@@ -82,6 +97,14 @@ class AchievementRepository extends AbstractRepository
     public function updateDescription(Achievement $achievement, string $description): void
     {
         $achievement->setDescription($description);
+        $this->flush();
+    }
+
+    /**
+     * @return void
+     */
+    public function update(): void
+    {
         $this->flush();
     }
 

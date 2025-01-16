@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Entity\EntityInterface;
+use App\Domain\Entity\Interfaces\EntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 
@@ -27,7 +27,7 @@ abstract class AbstractRepository
     protected function store(EntityInterface $entity): int
     {
         $this->entityManager->persist($entity);
-        $this->flush();
+        self::flush();
 
         return $entity->getId();
     }

@@ -3,6 +3,8 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\Student;
+use App\Domain\Model\CreateCompletedTaskModel;
+use App\Domain\Model\UpdateCompletedTaskModel;
 use DateTime;
 use App\Domain\Entity\CompletedTask;
 use App\Infrastructure\Repository\CompletedTaskRepository;
@@ -17,9 +19,9 @@ class CompletedTaskService
 
     /**
      * @param int $completedTaskId
-     * @return CompletedTask
+     * @return ?CompletedTask
      */
-    public function find(int $completedTaskId): CompletedTask
+    public function find(int $completedTaskId): ?CompletedTask
     {
         return $this->completedTaskRepository->find($completedTaskId);
     }
@@ -57,6 +59,14 @@ class CompletedTaskService
     public function findCompletedTasksByFinishedAt(DateTime $finishedAt): array
     {
         return $this->completedTaskRepository->findCompletedTasksByFinishedAt($finishedAt);
+    }
+
+    /**
+     * @return CompletedTask[]
+     */
+    public function getCompletedTasks(int $page, int $perPage): array
+    {
+        return $this->completedTaskRepository->getCompletedTasks($page, $perPage);
     }
 
     /**
@@ -108,17 +118,40 @@ class CompletedTaskService
     }
 
     /**
-     * @param Student $student
-     * @param int $grade
-     * @param ?string $description
-     * @param ?DateTime $finishedAt
+     * @param CompletedTask $completedTask
+     * @param UpdateCompletedTaskModel $updateCompletedTaskModel
      * @return CompletedTask
      */
-    public function create(Student $student, int $grade, ?string $description, ?DateTime $finishedAt): CompletedTask
+    public function update(CompletedTask $completedTask, UpdateCompletedTaskModel $updateCompletedTaskModel): CompletedTask
     {
-        $completedTask = new CompletedTask($grade, $description, $finishedAt);
+        $completedTask->changeFields(
+            $updateCompletedTaskModel->finishedAt,
+            $updateCompletedTaskModel->description,
+            $updateCompletedTaskModel->grade
+        );
 
-        $student->addCompletedTask($completedTask);
+        $this->completedTaskRepository->update();
+
+        return $completedTask;
+    }
+
+    /**
+     //* @param Student $student
+     * @param CreateCompletedTaskModel $createCompletedTaskModel
+     * @return CompletedTask
+     */
+
+    public function create(
+        //Student $student,
+        CreateCompletedTaskModel $createCompletedTaskModel): CompletedTask
+    {
+        $completedTask = new CompletedTask(
+            $createCompletedTaskModel->grade,
+            $createCompletedTaskModel->description,
+            $createCompletedTaskModel->finishedAt
+        );
+
+        //$student->addCompletedTask($completedTask);
 
         $this->completedTaskRepository->create($completedTask);
 
@@ -135,5 +168,14 @@ class CompletedTaskService
         if ($completedTask instanceof CompletedTask) {
             $this->completedTaskRepository->remove($completedTask);
         }
+    }
+
+    /**
+     * @param CompletedTask $completedTask
+     * @return void
+     */
+    public function removeCompletedTask(CompletedTask $completedTask): void
+    {
+        $this->completedTaskRepository->remove($completedTask);
     }
 }

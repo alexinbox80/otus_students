@@ -2,11 +2,14 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Interfaces\EntityInterface;
+use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
+use App\Domain\Entity\Interfaces\SoftDeletableInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert as WebmozartAssert;
 
@@ -15,7 +18,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ORM\Entity]
 #[ORM\UniqueConstraint(name: 'course__name__uniq', fields: ['name'])]
 #[ORM\HasLifecycleCallbacks]
-class Course implements EntityInterface, HasMetaTimestampsInterface
+class Course implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 
@@ -125,6 +128,15 @@ class Course implements EntityInterface, HasMetaTimestampsInterface
     {
         $this->lessons->removeElement($lesson);
         return $this;
+    }
+
+    public function changeFields(
+        string $name,
+        ?string $description = null
+    ): void
+    {
+        $this->setName($name);
+        $this->setDescription($description);
     }
 
     public function toArray(): array

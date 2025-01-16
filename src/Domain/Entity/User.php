@@ -2,9 +2,13 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Interfaces\EntityInterface;
+use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
+use App\Domain\Entity\Interfaces\SoftDeletableInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert as WebmozartAssert;
 
@@ -24,6 +28,7 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\Column(name: 'login', type: 'string', length: 32, unique: true, nullable: false)]
     private string $login;
 
+    #[Ignore]
     #[ORM\Column(name: 'password', type: 'string', length: 64, nullable: false)]
     private string $password;
 
@@ -33,13 +38,23 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\Column(name: 'isActive', type: 'boolean', options: ['default' => true])]
     private bool $isActive;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $avatarLink = null;
+
     #[ORM\OneToOne(targetEntity: Student::class, mappedBy: 'user')]
     private Student $student;
 
-    public function __construct(string $login, string $password)
+    public function __construct(
+        string $login,
+        string $password,
+        bool $isActive = true,
+        ?string $avatarLink = null
+    )
     {
         $this->login = $login;
         $this->password = $password;
+        $this->isActive = $isActive;
+        $this->avatarLink = $avatarLink;
     }
 
     public function getId(): int
@@ -89,12 +104,38 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         $this->isActive = $isActive;
     }
 
+    public function getAvatarLink(): ?string
+    {
+        return $this->avatarLink;
+    }
+
+    public function setAvatarLink(?string $avatarLink): void
+    {
+        $this->avatarLink = $avatarLink;
+    }
+
+    public function changeFields(
+        string $login,
+        string $password,
+        ?bool $isActive,
+        ?array $roles = [],
+        ?string $avatarLink = null
+    ): void
+    {
+        $this->setLogin($login);
+        $this->setPassword($password);
+        $this->setRoles($roles);
+        $this->setIsActive($isActive);
+        $this->setAvatarLink($avatarLink);
+    }
+
     public function toArray(): array
     {
         return [
             'id' => $this->getId(),
             'login' => $this->login,
             'isActive' => $this->isActive,
+            'avatar' => $this->avatarLink,
             'roles' => $this->roles,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),

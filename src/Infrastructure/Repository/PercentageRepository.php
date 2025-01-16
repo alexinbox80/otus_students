@@ -8,6 +8,21 @@ use Doctrine\Common\Collections\Criteria;
 class PercentageRepository extends AbstractRepository
 {
     /**
+     * @return Percentage[]
+     */
+    public function getPercentages(int $page, int $perPage): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('p')
+            ->from(Percentage::class, 'p')
+            ->orderBy('p.id', 'DESC')
+            ->setFirstResult($perPage * $page)
+            ->setMaxResults($perPage);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @param int $percentageId
      * @return Percentage|null
      */
@@ -79,6 +94,14 @@ class PercentageRepository extends AbstractRepository
     public function create(Percentage $percentage): int
     {
         return $this->store($percentage);
+    }
+
+    /**
+     * @return void
+     */
+    public function update(): void
+    {
+        $this->flush();
     }
 
     /**

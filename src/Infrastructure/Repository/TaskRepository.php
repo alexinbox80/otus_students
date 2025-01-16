@@ -8,6 +8,21 @@ use Doctrine\Common\Collections\Criteria;
 class TaskRepository extends AbstractRepository
 {
     /**
+     * @return Task[]
+     */
+    public function getTasks(int $page, int $perPage): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('t')
+            ->from(Task::class, 't')
+            ->orderBy('t.id', 'DESC')
+            ->setFirstResult($perPage * $page)
+            ->setMaxResults($perPage);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @param int $taskId
      * @return Task|null
      */
@@ -88,7 +103,7 @@ class TaskRepository extends AbstractRepository
     /**
      * @return void
      */
-    public function flush(): void
+    public function update(): void
     {
         $this->flush();
     }

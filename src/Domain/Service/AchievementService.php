@@ -3,6 +3,8 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\Achievement;
+use App\Domain\Model\CreateAchievementModel;
+use App\Domain\Model\UpdateAchievementModel;
 use App\Infrastructure\Repository\AchievementRepository;
 
 class AchievementService
@@ -15,9 +17,9 @@ class AchievementService
 
     /**
      * @param int $achievementId
-     * @return Achievement
+     * @return ?Achievement
      */
-    public function find(int $achievementId): Achievement
+    public function find(int $achievementId): ?Achievement
     {
         return $this->achievementRepository->find($achievementId);
     }
@@ -28,6 +30,14 @@ class AchievementService
     public function findAll(): array
     {
         return $this->achievementRepository->findAll();
+    }
+
+    /**
+     * @return Achievement[]
+     */
+    public function getAchievements(int $page, int $perPage): array
+    {
+        return $this->achievementRepository->getAchievements($page, $perPage);
     }
 
     /**
@@ -81,13 +91,32 @@ class AchievementService
     }
 
     /**
-     * @param string $name
-     * @param ?string $description
+     * @param Achievement $achievement
+     * @param UpdateAchievementModel $updateAchievementModel
      * @return Achievement
      */
-    public function create(string $name, ?string $description): Achievement
+    public function update(Achievement $achievement, UpdateAchievementModel $updateAchievementModel): Achievement
     {
-        $achievement = new Achievement($name, $description);
+        $achievement->changeFields(
+            $updateAchievementModel->name,
+            $updateAchievementModel->description
+        );
+
+        $this->achievementRepository->update();
+
+        return $achievement;
+    }
+
+    /**
+     * @param CreateAchievementModel $createAchievementModel
+     * @return Achievement
+     */
+    public function create(CreateAchievementModel $createAchievementModel): Achievement
+    {
+        $achievement = new Achievement(
+            $createAchievementModel->name,
+            $createAchievementModel->description
+        );
 
         $this->achievementRepository->create($achievement);
 
@@ -104,5 +133,14 @@ class AchievementService
         if ($achievement instanceof Achievement) {
             $this->achievementRepository->remove($achievement);
         }
+    }
+
+    /**
+     * @param Achievement $achievement
+     * @return void
+     */
+    public function removeAchievement(Achievement $achievement): void
+    {
+        $this->achievementRepository->remove($achievement);
     }
 }

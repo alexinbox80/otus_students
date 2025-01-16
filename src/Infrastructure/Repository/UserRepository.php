@@ -3,16 +3,27 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\User;
-use DateInterval;
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @extends AbstractRepository<User>
  */
 class UserRepository extends AbstractRepository
 {
+    /**
+     * @return User[]
+     */
+    public function getUsers(int $page, int $perPage): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('u')
+            ->from(User::class, 'u')
+            ->orderBy('u.id', 'DESC')
+            ->setFirstResult($perPage * $page)
+            ->setMaxResults($perPage);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     /**
      * @param int $userId
      * @return User|null
@@ -21,9 +32,7 @@ class UserRepository extends AbstractRepository
     {
         $repository = $this->entityManager->getRepository(User::class);
         /** @var User|null $user */
-        $user = $repository->find($userId);
-
-        return $user;
+        return $repository->find($userId);
     }
 
     /**
@@ -51,6 +60,25 @@ class UserRepository extends AbstractRepository
     public function updateLogin(User $user, string $login): void
     {
         $user->setLogin($login);
+        $this->flush();
+    }
+
+    /**
+     * @param User $user
+     * @param string $avatarLink
+     * @return void
+     */
+    public function updateAvatarLink(User $user, string $avatarLink): void
+    {
+        $user->setAvatarLink($avatarLink);
+        $this->flush();
+    }
+
+    /**
+     * @return void
+     */
+    public function update(): void
+    {
         $this->flush();
     }
 

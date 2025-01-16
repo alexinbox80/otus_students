@@ -5,6 +5,8 @@ namespace App\Domain\Service;
 use App\Domain\Entity\Percentage;
 use App\Domain\Entity\Skill;
 use App\Domain\Entity\Task;
+use App\Domain\Model\CreatePercentageModel;
+use App\Domain\Model\UpdatePercentageModel;
 use App\Infrastructure\Repository\PercentageRepository;
 use Exception;
 
@@ -18,9 +20,9 @@ class PercentageService
 
     /**
      * @param int $percentageId
-     * @return Percentage
+     * @return ?Percentage
      */
-    public function find(int $percentageId): Percentage
+    public function find(int $percentageId): ?Percentage
     {
         return $this->percentageRepository->find($percentageId);
     }
@@ -49,6 +51,14 @@ class PercentageService
     public function findPercentagesByDescription(string $description): array
     {
         return $this->percentageRepository->findsPercentagesByDescriptionWithCriteria($description);
+    }
+
+    /**
+     * @return Percentage[]
+     */
+    public function getPercentages(int $page, int $perPage): array
+    {
+        return $this->percentageRepository->getPercentages($page, $perPage);
     }
 
     /**
@@ -84,21 +94,43 @@ class PercentageService
     }
 
     /**
-     * @param Task $task
-     * @param Skill $skill
-     * @param float $percent
-     * @param ?string $description
+     //* @param Task $task
+     //* @param Skill $skill
+     * @param CreatePercentageModel $createPercentageModel
      * @return Percentage
-     * @throws Exception
      */
-    public function create(Task $task, Skill $skill, float $percent, ?string $description): Percentage
+    public function create(
+        //Task $task,
+        //Skill $skill,
+        CreatePercentageModel $createPercentageModel
+    ): Percentage
     {
-        $percentage = new Percentage($percent, $description);
+        $percentage = new Percentage(
+            $createPercentageModel->percent,
+            $createPercentageModel->description
+        );
 
-        $task->addPercentage($percentage);
-        $skill->addPercentage($percentage);
+        //$task->addPercentage($percentage);
+        //$skill->addPercentage($percentage);
 
         $this->percentageRepository->create($percentage);
+
+        return $percentage;
+    }
+
+    /**
+     * @param Percentage $percentage
+     * @param UpdatePercentageModel $updatePercentageModel
+     * @return Percentage
+     */
+    public function update(Percentage $percentage, UpdatePercentageModel $updatePercentageModel): Percentage
+    {
+        $percentage->changeFields(
+            $updatePercentageModel->percent,
+            $updatePercentageModel->description
+        );
+
+        $this->percentageRepository->update();
 
         return $percentage;
     }
@@ -113,5 +145,14 @@ class PercentageService
         if ($percentage instanceof Percentage) {
             $this->percentageRepository->remove($percentage);
         }
+    }
+
+    /**
+     * @param Percentage $percentage
+     * @return void
+     */
+    public function removePercentage(Percentage $percentage): void
+    {
+        $this->percentageRepository->remove($percentage);
     }
 }
