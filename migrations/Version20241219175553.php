@@ -91,7 +91,7 @@ final class Version20241219175553 extends AbstractMigration
         $this->addSql('DELETE FROM completed_task WHERE id in (1, 2, 3);');
 
         $this->addSql('DELETE FROM student WHERE id in (1, 2, 3);');
-        $this->addSql('DELETE FROM "user" WHERE id in (1, 2, 3);');
+        $this->addSql('DELETE FROM "user" WHERE id in (4, 5, 6);');
 
         $this->addSql('DELETE FROM task WHERE id in (1, 2, 3);');
         $this->addSql('DELETE FROM lesson WHERE id in (1, 2, 3);');

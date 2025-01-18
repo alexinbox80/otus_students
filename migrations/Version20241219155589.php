@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241219175589 extends AbstractMigration
+final class Version20241219155589 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -36,7 +36,7 @@ final class Version20241219175589 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DELETE FROM "user" WHERE id in (4, 5, 6);');
+        $this->addSql('DELETE FROM "user" WHERE id in (1, 2, 3);');
         $this->addSql('DELETE FROM manager WHERE id in (1);');
         $this->addSql('DELETE FROM teacher WHERE id in (1);');
     }
