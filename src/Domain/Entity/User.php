@@ -47,6 +47,9 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\OneToOne(targetEntity: Teacher::class, mappedBy: 'user')]
     private Teacher $teacher;
 
+    #[ORM\OneToOne(targetEntity: Manager::class, mappedBy: 'user')]
+    private Manager $manager;
+
     public function __construct(
         string $login,
         string $password,
@@ -143,6 +146,8 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
             'student' => empty($this->student) ? null : $this->student->toArray(),
+            'teacher' => empty($this->teacher) ? null : $this->teacher->toArray(),
+            'manager' => empty($this->manager) ? null : $this->manager->toArray(),
         ];
     }
 }

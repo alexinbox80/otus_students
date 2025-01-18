@@ -47,6 +47,11 @@ final class Version20241217054006 extends AbstractMigration
         $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS teacher__first_name__last_name__middle_name__ind ON teacher (first_name, last_name, middle_name)');
         $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS teacher__phone__ind ON teacher (phone)');
         $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS teacher__email__ind ON teacher (email)');
+        $this->addSql('CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS manager__user_id__uniq ON manager (user_id) WHERE (deleted_at IS NULL)');
+        $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS manager__last_name__first_name__middle_name__ind ON manager (last_name, first_name, middle_name)');
+        $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS manager__first_name__last_name__middle_name__ind ON manager (first_name, last_name, middle_name)');
+        $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS manager__phone__ind ON manager (phone)');
+        $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS manager__email__ind ON manager (email)');
         $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS subscription__student_id__ind ON subscription (student_id)');
         $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS subscription__course_id__ind ON subscription (course_id)');
         $this->addSql('CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS subscription__student__course__uniq ON subscription (student_id, course_id)');
@@ -83,6 +88,11 @@ final class Version20241217054006 extends AbstractMigration
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS teacher__first_name__last_name__middle_name__ind');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS teacher__phone__ind');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS teacher__email__ind');
+        $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS manager__user_id__uniq');
+        $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS manager__last_name__first_name__middle_name__ind');
+        $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS manager__first_name__last_name__middle_name__ind');
+        $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS manager__phone__ind');
+        $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS manager__email__ind');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS subscription__student_id__ind');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS subscription__course_id__ind');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS subscription__student__course__uniq');
