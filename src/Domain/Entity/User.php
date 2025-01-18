@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\UniqueConstraint(name: 'user__login__uniq', fields: ['login'])]
+#[ORM\UniqueConstraint(name: 'user__login__uniq', fields: ['login'], options: ['where' => '(deleted_at IS NULL)'])]
 class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
@@ -43,6 +43,9 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
 
     #[ORM\OneToOne(targetEntity: Student::class, mappedBy: 'user')]
     private Student $student;
+
+    #[ORM\OneToOne(targetEntity: Teacher::class, mappedBy: 'user')]
+    private Teacher $teacher;
 
     public function __construct(
         string $login,
