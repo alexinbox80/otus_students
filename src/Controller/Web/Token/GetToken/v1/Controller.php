@@ -2,9 +2,7 @@
 
 namespace App\Controller\Web\Token\GetToken\v1;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -19,8 +17,8 @@ class Controller
         name: 'web_get_token_v1_invoke',
         methods: ['POST']
     )]
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): array
     {
-        return new JsonResponse(['token' => $this->manager->getToken($request)]);
+        return ['token' => $this->manager->getToken($request)];
     }
 }

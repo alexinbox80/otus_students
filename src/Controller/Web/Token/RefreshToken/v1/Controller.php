@@ -3,9 +3,7 @@
 namespace App\Controller\Web\Token\RefreshToken\v1;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class Controller extends AbstractController
@@ -18,8 +16,8 @@ class Controller extends AbstractController
         name: 'web_refresh_token_v1_invoke',
         methods: ['POST']
     )]
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): array
     {
-        return new JsonResponse(['token' => $this->manager->refreshToken($this->getUser())]);
+        return ['token' => $this->manager->refreshToken($this->getUser())];
     }
 }
