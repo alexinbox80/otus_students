@@ -15,8 +15,9 @@ class CreateUserDTO
         #[Assert\Length(min:8)]
         #[Assert\Length(max:32)]
         public readonly string $password,
+        #[Assert\NotNull]
         #[Assert\Type('boolean')]
-        public readonly ?bool $isActive
+        public readonly ?bool $isActive,
     ) {
     }
 }

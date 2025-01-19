@@ -8,15 +8,24 @@ use App\Domain\Entity\Interfaces\SoftDeletableInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
+use App\Domain\ValueObject\RoleEnum;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert as WebmozartAssert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'user__login__uniq', fields: ['login'], options: ['where' => '(deleted_at IS NULL)'])]
-class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
+//#[ORM\UniqueConstraint(name: 'user__refresh_token__uniq', fields: ['refresh_token'], options: ['where' => '(deleted_at IS NULL)'])]
+class User implements
+    EntityInterface,
+    HasMetaTimestampsInterface,
+    SoftDeletableInterface,
+    UserInterface,
+    PasswordAuthenticatedUserInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 
@@ -32,8 +41,11 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\Column(name: 'password', type: 'string', length: 64, nullable: false)]
     private string $password;
 
-    #[ORM\Column(name: 'roles', type: 'json')]
+    #[ORM\Column(type: 'json', length: 1024, nullable: false)]
     private array $roles = [];
+
+    #[ORM\Column(type: 'string', length: 32, unique: true, nullable: true)]
+    private ?string $refreshToken = null;
 
     #[ORM\Column(name: 'isActive', type: 'boolean', options: ['default' => true])]
     private bool $isActive;
@@ -49,19 +61,6 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
 
     #[ORM\OneToOne(targetEntity: Manager::class, mappedBy: 'user')]
     private Manager $manager;
-
-    public function __construct(
-        string $login,
-        string $password,
-        bool $isActive = true,
-        ?string $avatarLink = null
-    )
-    {
-        $this->login = $login;
-        $this->password = $password;
-        $this->isActive = $isActive;
-        $this->avatarLink = $avatarLink;
-    }
 
     public function getId(): int
     {
@@ -90,14 +89,34 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         $this->password = $password;
     }
 
+    /**
+     * @return string[]
+     */
     public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = RoleEnum::ROLE_USER->value;
+
+        return array_unique($roles);
     }
 
+    /**
+     * @param string[] $roles
+     */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
+    }
+
+    public function getRefreshToken(): ?string
+    {
+        return $this->refreshToken;
+    }
+
+    public function setRefreshToken(?string $refreshToken): void
+    {
+        $this->refreshToken = $refreshToken;
     }
 
     public function isActive(): bool
@@ -120,12 +139,21 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         $this->avatarLink = $avatarLink;
     }
 
+    public function eraseCredentials(): void
+    {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->login;
+    }
+
     public function changeFields(
         string $login,
         string $password,
         ?bool $isActive,
-        ?array $roles = [],
-        ?string $avatarLink = null
+        ?string $avatarLink = null,
+        ?array $roles = []
     ): void
     {
         $this->setLogin($login);

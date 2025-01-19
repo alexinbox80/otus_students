@@ -24,7 +24,8 @@ class Manager
             UpdateUserModel::class,
             $updateUserDTO->login,
             $updateUserDTO->password,
-            $updateUserDTO->isActive
+            $updateUserDTO->isActive,
+            $updateUserDTO->roles
         );
 
         $user = $this->userService->update($user, $updateUserModel);

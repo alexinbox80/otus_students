@@ -61,6 +61,7 @@ final class Version20241217054006 extends AbstractMigration
         $this->addSql('CREATE INDEX CONCURRENTLY IF NOT EXISTS unlocked_achievement__achievement_id__ind ON unlocked_achievement (achievement_id)');
         $this->addSql('CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS unlocked_achievement__student__achievement__uniq ON unlocked_achievement (student_id, achievement_id)');
         $this->addSql('CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS user__login__uniq ON "user" (login) WHERE (deleted_at IS NULL)');
+        $this->addSql('CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS user__refresh_token__uniq ON "user" (refresh_token) WHERE (deleted_at IS NULL)');
     }
 
     public function down(Schema $schema): void
@@ -102,5 +103,6 @@ final class Version20241217054006 extends AbstractMigration
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS unlocked_achievement__achievement_id__ind');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS unlocked_achievement__student__achievement__uniq');
         $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS user__login__uniq');
+        $this->addSql('DROP INDEX CONCURRENTLY IF EXISTS user__refresh_token__uniq');
     }
 }

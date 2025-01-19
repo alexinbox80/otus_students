@@ -6,10 +6,14 @@ use App\Domain\Entity\User;
 use App\Domain\Model\CreateUserModel;
 use App\Domain\Model\UpdateUserModel;
 use App\Infrastructure\Repository\UserRepository;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserService
 {
-    public function __construct(private readonly UserRepository $userRepository)
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+    )
     {
     }
 
@@ -48,6 +52,38 @@ class UserService
     }
 
     /**
+     * @param string $login
+     * @return User|null
+     */
+    public function findUserByLogin(string $login): ?User
+    {
+        $users = $this->userRepository->findUsersByLogin($login);
+        return $users[0] ?? null;
+    }
+
+    /**
+     * @param string $token
+     * @return User|null
+     */
+    public function findUserByRefreshToken(string $token): ?User
+    {
+        return $this->userRepository->findUserByRefreshToken($token);
+    }
+
+    /**
+     * @param string $login
+     * @return void
+     */
+    public function clearUserRefreshToken(string $login): void
+    {
+        $user = $this->findUserByLogin($login);
+
+        if ($user !== null) {
+            $this->userRepository->clearUserRefreshToken($user);
+        }
+    }
+
+    /**
      * @param int $userId
      * @param string $login
      * @return User|null
@@ -74,15 +110,33 @@ class UserService
     }
 
     /**
+     * @param string $login
+     * @return string|null
+     * @throws \Random\RandomException
+     */
+    public function updateUserRefreshToken(string $login): ?string
+    {
+        $user = $this->findUserByLogin($login);
+        if ($user === null) {
+            return null;
+        }
+
+        return $this->userRepository->updateUserRefreshToken($user);
+    }
+
+    /**
      * @param CreateUserModel $createUserModel
      * @return User
      */
     public function create(CreateUserModel $createUserModel): User
     {
-        $user = new User(
+        $user = new User();
+        $user->changeFields(
             $createUserModel->login,
-            $createUserModel->password,
-            $createUserModel->isActive
+            $this->userPasswordHasher->hashPassword($user, $createUserModel->password),
+            $createUserModel->isActive,
+            $createUserModel->avatarLink,
+            $createUserModel->roles
         );
 
         $this->userRepository->create($user);
@@ -99,8 +153,10 @@ class UserService
     {
         $user->changeFields(
             $updateUserModel->login,
-            $updateUserModel->password,
-            $updateUserModel->isActive
+            $this->userPasswordHasher->hashPassword($user, $updateUserModel->password),
+            $updateUserModel->isActive,
+            $updateUserModel->avatarLink,
+            $updateUserModel->roles
         );
 
         $this->userRepository->update();

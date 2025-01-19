@@ -39,10 +39,10 @@ final class Version20241219175553 extends AbstractMigration
         $this->addSql('INSERT INTO achievement (id, name, description, created_at, updated_at) VALUES (1, \'все задания в занятии выполнены на 10 баллов\', \'достижение за выполнение всех заданий\', NOW(), NOW());');
         $this->addSql('INSERT INTO achievement (id, name, description, created_at, updated_at) VALUES (2, \'доля оценок выше 9 больше 90%\', \'доля оценок за задания\', NOW(), NOW());');
         $this->addSql('INSERT INTO achievement (id, name, description, created_at, updated_at) VALUES (3, \'все задания сданы досрочно\', \'достижение за досрочную сдачу заданий\', NOW(), NOW());');
-
-        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (4, \'ivanov\', \'$2a$15$h336rWce.PCPYKltaTA0G.c.c5abLMZlntW3Q/ZQusCtTDU9Rblca\', \'["ROLE_STUDENT"]\', true,  NOW(), NOW());');
-        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (5, \'petrov\', \'$2a$15$h336rWce.PCPYKltaTA0G.c.c5abLMZlntW3Q/ZQusCtTDU9Rblca\', \'["ROLE_STUDENT"]\', true,  NOW(), NOW());');
-        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (6, \'sergeev\', \'$2a$15$h336rWce.PCPYKltaTA0G.c.c5abLMZlntW3Q/ZQusCtTDU9Rblca\', \'["ROLE_STUDENT"]\', true,  NOW(), NOW());');
+                                                                                                                                        //12345678
+        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (4, \'ivanov\', \'$2y$13$vvRIGrOtoo7x8mSet7QEVesiJBg12Xgho8QQUPx4eWjOoeAvKFEGK\', \'["ROLE_STUDENT"]\', true,  NOW(), NOW());');
+        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (5, \'petrov\', \'$2y$13$vvRIGrOtoo7x8mSet7QEVesiJBg12Xgho8QQUPx4eWjOoeAvKFEGK\', \'["ROLE_STUDENT"]\', true,  NOW(), NOW());');
+        $this->addSql('INSERT INTO "user" (id, login, password, roles, isactive, created_at, updated_at) VALUES (6, \'sergeev\', \'$2y$13$vvRIGrOtoo7x8mSet7QEVesiJBg12Xgho8QQUPx4eWjOoeAvKFEGK\', \'["ROLE_STUDENT"]\', true,  NOW(), NOW());');
 
         $this->addSql('INSERT INTO student (id, user_id, last_name, first_name, middle_name, phone, email, created_at, updated_at) VALUES (1, 4, \'Иванов\', \'Иван\', \'Иванович\', \'79215556677\', \'ivan@mail.ru\', NOW(), NOW());');
         $this->addSql('INSERT INTO student (id, user_id, last_name, first_name, middle_name, phone, email, created_at, updated_at) VALUES (2, 5, \'Петров\', \'Петр\', \'Петрович\', \'79215556688\', \'petr@mail.ru\', NOW(), NOW());');

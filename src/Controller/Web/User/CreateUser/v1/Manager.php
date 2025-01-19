@@ -7,13 +7,14 @@ use App\Controller\Web\User\CreateUser\v1\Output\CreatedUserDTO;
 use App\Domain\Model\CreateUserModel;
 use App\Domain\Service\ModelFactory;
 use App\Domain\Service\UserService;
+use App\Domain\ValueObject\RoleEnum;
 
 class Manager
 {
     public function __construct(
         /** @var ModelFactory<CreateUserModel> */
         private readonly ModelFactory $modelFactory,
-        private readonly UserService $userService,
+        private readonly UserService $userService
     ) {
     }
 
@@ -23,7 +24,8 @@ class Manager
             CreateUserModel::class,
             $createUserDTO->login,
             $createUserDTO->password,
-            $createUserDTO->isActive
+            $createUserDTO->isActive,
+            [RoleEnum::ROLE_STUDENT->value]
         );
 
         $user = $this->userService->create($createUserModel);
