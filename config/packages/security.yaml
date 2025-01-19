@@ -19,10 +19,10 @@ security:
         token:
             pattern: ^/api/v1/get-token
             security: false
-        createUser:
-            pattern: ^/api/v1/user
-            security: false
-            methods: [POST]
+#        createUser:
+#            pattern: ^/api/v1/user
+#            security: false
+#            methods: POST
         main:
             lazy: true
             provider: app_user_provider
@@ -61,6 +61,7 @@ security:
         - { path: ^/api/v1/teacher, roles: [ ROLE_TEACHER ], methods: [ POST, PATCH, DELETE ] }
         - { path: ^/api/v1/users, roles: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ], methods: [ GET ] }
         - { path: ^/api/v1/user, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ PATCH, DELETE ] }
+        - { path: ^/api/v1/user, roles: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
         - { path: ^/api/v1/update-user-avatar-link/*, roles: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
 
     role_hierarchy:
