@@ -39,30 +39,20 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/v1/achievements, roles: [ ROLE_TEACHER ], methods: [ GET ] }
-        - { path: ^/api/v1/achievement, roles: [ ROLE_TEACHER ], methods: [ POST, PATCH, DELETE ] }
-        - { path: ^/api/v1/completed-tasks, roles: [ ROLE_TEACHER ], methods: [ GET ] }
-        - { path: ^/api/v1/completed-task, roles: [ ROLE_TEACHER ], methods: [ POST, PATCH, DELETE ] }
-        - { path: ^/api/v1/courses, roles: [ ROLE_MANAGER ], methods: [ GET ] }
-        - { path: ^/api/v1/course, roles: [ ROLE_MANAGER ], methods: [ POST, PATCH, DELETE ] }
-        - { path: ^/api/v1/lessons, roles: [ ROLE_MANAGER ], methods: [ GET ] }
-        - { path: ^/api/v1/lesson, roles: [ ROLE_MANAGER ], methods: [ POST, PATCH, DELETE ] }
-        - { path: ^/api/v1/managers, roles: [ ROLE_MANAGER ], methods: [ GET ] }
-        - { path: ^/api/v1/manager, roles: [ ROLE_MANAGER ], methods: [ POST, PATCH, DELETE ] }
-        - { path: ^/api/v1/percentages, roles: [ ROLE_MANAGER ], methods: [ GET ] }
-        - { path: ^/api/v1/percentage, roles: [ ROLE_MANAGER ], methods: [ POST, PATCH, DELETE ] }
-        - { path: ^/api/v1/skills, roles: [ ROLE_MANAGER ], methods: [ GET ] }
-        - { path: ^/api/v1/skill, roles: [ ROLE_MANAGER ], methods: [ POST, PATCH, DELETE ] }
-        - { path: ^/api/v1/students, roles: [ ROLE_STUDENT ], methods: [ GET ] }
-        - { path: ^/api/v1/student, roles: [ ROLE_STUDENT ], methods: [ POST, PATCH, DELETE ] }
-        - { path: ^/api/v1/tasks, roles: [ ROLE_TEACHER ], methods: [ GET ] }
-        - { path: ^/api/v1/task, roles: [ ROLE_TEACHER ], methods: [ POST, PATCH, DELETE ] }
-        - { path: ^/api/v1/teachers, roles: [ ROLE_TEACHER ], methods: [ GET ] }
-        - { path: ^/api/v1/teacher, roles: [ ROLE_TEACHER ], methods: [ POST, PATCH, DELETE ] }
+        - { path: ^/api/v1/achievement, roles: [ ROLE_TEACHER ] }
+        - { path: ^/api/v1/completed-task, roles: [ ROLE_TEACHER ] }
+        - { path: ^/api/v1/course, roles: [ ROLE_MANAGER ] }
+        - { path: ^/api/v1/lesson, roles: [ ROLE_MANAGER ] }
+        - { path: ^/api/v1/manager, roles: [ ROLE_MANAGER ] }
+        - { path: ^/api/v1/percentage, roles: [ ROLE_MANAGER ] }
+        - { path: ^/api/v1/skill, roles: [ ROLE_MANAGER ] }
+        - { path: ^/api/v1/student, roles: [ ROLE_STUDENT ] }
+        - { path: ^/api/v1/task, roles: [ ROLE_TEACHER ] }
+        - { path: ^/api/v1/teacher, roles: [ ROLE_TEACHER ] }
         - { path: ^/api/v1/users, roles: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ], methods: [ GET ] }
-        - { path: ^/api/v1/user, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ PATCH, DELETE ] }
         - { path: ^/api/v1/user, roles: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
-        - { path: ^/api/v1/update-user-avatar-link/*, roles: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/user, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ PATCH, DELETE ] }
+        - { path: ^/api/v1/update-user-avatar-link/\d+$, roles: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
 
     role_hierarchy:
             ROLE_ADMIN: [ ROLE_USER, ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ]

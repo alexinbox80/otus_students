@@ -7,29 +7,33 @@ use App\Controller\Web\User\CreateUser\v1\Output\CreatedUserDTO;
 use App\Domain\Model\CreateUserModel;
 use App\Domain\Service\ModelFactory;
 use App\Domain\Service\UserService;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use App\Domain\ValueObject\RoleEnum;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class Manager
 {
     public function __construct(
         /** @var ModelFactory<CreateUserModel> */
         private readonly ModelFactory $modelFactory,
-        private readonly UserService $userService,
-        private readonly TokenStorageInterface $tokenStorage
+        private readonly UserService $userService
     ) {
     }
 
-    public function create(CreateUserDTO $createUserDTO): CreatedUserDTO
+    public function create(CreateUserDTO $createUserDTO, UserInterface $user): CreatedUserDTO
     {
-        $token = $this->tokenStorage->getToken();
-        $roles = $token->getUser()->getRoles();
+        $roles = $user->getRoles();
+        if (count($roles) > 0) {
+            $role = [$roles[0]];
+        } else {
+            $role = [RoleEnum::ROLE_STUDENT->value];
+        }
 
         $createUserModel = $this->modelFactory->makeModel(
             CreateUserModel::class,
             $createUserDTO->login,
             $createUserDTO->password,
             $createUserDTO->isActive,
-            [$roles[0]]
+            $role
         );
 
         $user = $this->userService->create($createUserModel);

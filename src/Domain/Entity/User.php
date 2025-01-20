@@ -19,7 +19,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'user__login__uniq', fields: ['login'], options: ['where' => '(deleted_at IS NULL)'])]
-//#[ORM\UniqueConstraint(name: 'user__refresh_token__uniq', fields: ['refresh_token'], options: ['where' => '(deleted_at IS NULL)'])]
 class User implements
     EntityInterface,
     HasMetaTimestampsInterface,
@@ -167,10 +166,10 @@ class User implements
     {
         return [
             'id' => $this->getId(),
-            'login' => $this->login,
-            'isActive' => $this->isActive,
-            'avatar' => $this->avatarLink,
-            'roles' => $this->roles,
+            'login' => $this->getLogin(),
+            'isActive' => $this->isActive(),
+            'avatar' => $this->getAvatarLink(),
+            'roles' => $this->getRoles(),
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
             'student' => empty($this->student) ? null : $this->student->toArray(),
