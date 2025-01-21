@@ -37,7 +37,7 @@ class JwtAuthenticator extends AbstractAuthenticator
         try {
             $tokenData = $this->jwtEncoder->decode($token);
         } catch (JWTDecodeFailureException $exception) {
-            $message = $exception->getReason() === JWTDecodeFailureException::EXPIRED_TOKEN ? 'Expired token' : '';
+            $message = $exception->getReason() === JWTDecodeFailureException::EXPIRED_TOKEN ? 'Expired token' : $exception->getMessage();
             throw new UnauthorizedException($message);
         }
         if (!isset($tokenData['username'])) {
