@@ -16,7 +16,9 @@ class UpdateUserDTO
         #[Assert\Length(max:32)]
         public readonly string $password,
         #[Assert\Type('boolean')]
-        public readonly ?bool $isActive
+        public readonly ?bool $isActive,
+        /** @var string[] $roles */
+        public readonly array $roles,
     ) {
     }
 }

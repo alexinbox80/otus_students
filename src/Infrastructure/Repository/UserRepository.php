@@ -53,6 +53,16 @@ class UserRepository extends AbstractRepository
     }
 
     /**
+     * @param string $refreshToken
+     * @return User|null
+     */
+    public function findUserByRefreshToken(string $refreshToken): ?User
+    {
+        /** @var User|null $user */
+        return $this->entityManager->getRepository(User::class)->findOneBy(['refreshToken' => $refreshToken]);
+    }
+
+    /**
      * @param User $user
      * @param string $login
      * @return void
@@ -75,6 +85,20 @@ class UserRepository extends AbstractRepository
     }
 
     /**
+     * @param User $user
+     * @return string
+     * @throws \Random\RandomException
+     */
+    public function updateUserRefreshToken(User $user): string
+    {
+        $refreshToken = base64_encode(random_bytes(20));
+        $user->setRefreshToken($refreshToken);
+        $this->flush();
+
+        return $refreshToken;
+    }
+
+    /**
      * @return void
      */
     public function update(): void
@@ -89,6 +113,16 @@ class UserRepository extends AbstractRepository
     public function create(User $user): int
     {
         return $this->store($user);
+    }
+
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function clearUserRefreshToken(User $user): void
+    {
+        $user->setRefreshToken(null);
+        $this->flush();
     }
 
     /**

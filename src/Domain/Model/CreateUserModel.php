@@ -12,7 +12,9 @@ class CreateUserModel
         #[Assert\NotBlank]
         public readonly string $password,
         #[Assert\Type('boolean')]
-        public readonly ?bool $isActive
+        public readonly ?bool $isActive = true,
+        public readonly array $roles = [],
+        public readonly ?string $avatarLink = null,
     ) {
     }
 }

@@ -40,7 +40,13 @@ class KernelViewEventListener
             ], Response::HTTP_NOT_FOUND));
         }
 
-        if (is_array($dto)) {
+        if (is_array($dto) and array_key_exists('token', $dto)) {
+            $event->setResponse($this->getDTOResponse([
+                'token' => $dto['token'],
+                'success' => true,
+                'code' => Response::HTTP_OK
+            ], Response::HTTP_OK));
+        } elseif (is_array($dto)) {
             $successResponse = [];
             foreach ($dto as $item) {
                 $successResponse[] = $item->toArray();

@@ -20,7 +20,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ORM\Index(name: 'student__first_name__last_name__middle_name__ind', columns: ['first_name', 'last_name', 'middle_name'])]
 #[ORM\Index(name: 'student__phone__ind', columns: ['phone'])]
 #[ORM\Index(name: 'student__email__ind', columns: ['email'])]
-#[ORM\UniqueConstraint(name: 'student__user_id__uniq', fields: ['user'])]
+#[ORM\UniqueConstraint(name: 'student__user_id__uniq', fields: ['user'], options: ['where' => '(deleted_at IS NULL)'])]
 class Student extends Person implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;

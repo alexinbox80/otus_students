@@ -8,15 +8,23 @@ use App\Domain\Entity\Interfaces\SoftDeletableInterface;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
+use App\Domain\ValueObject\RoleEnum;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert as WebmozartAssert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\UniqueConstraint(name: 'user__login__uniq', fields: ['login'])]
-class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
+#[ORM\UniqueConstraint(name: 'user__login__uniq', fields: ['login'], options: ['where' => '(deleted_at IS NULL)'])]
+class User implements
+    EntityInterface,
+    HasMetaTimestampsInterface,
+    SoftDeletableInterface,
+    UserInterface,
+    PasswordAuthenticatedUserInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 
@@ -32,8 +40,11 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\Column(name: 'password', type: 'string', length: 64, nullable: false)]
     private string $password;
 
-    #[ORM\Column(name: 'roles', type: 'json')]
+    #[ORM\Column(type: 'json', length: 1024, nullable: false)]
     private array $roles = [];
+
+    #[ORM\Column(type: 'string', length: 32, unique: true, nullable: true)]
+    private ?string $refreshToken = null;
 
     #[ORM\Column(name: 'isActive', type: 'boolean', options: ['default' => true])]
     private bool $isActive;
@@ -44,18 +55,11 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\OneToOne(targetEntity: Student::class, mappedBy: 'user')]
     private Student $student;
 
-    public function __construct(
-        string $login,
-        string $password,
-        bool $isActive = true,
-        ?string $avatarLink = null
-    )
-    {
-        $this->login = $login;
-        $this->password = $password;
-        $this->isActive = $isActive;
-        $this->avatarLink = $avatarLink;
-    }
+    #[ORM\OneToOne(targetEntity: Teacher::class, mappedBy: 'user')]
+    private Teacher $teacher;
+
+    #[ORM\OneToOne(targetEntity: Manager::class, mappedBy: 'user')]
+    private Manager $manager;
 
     public function getId(): int
     {
@@ -84,14 +88,34 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         $this->password = $password;
     }
 
+    /**
+     * @return string[]
+     */
     public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = RoleEnum::ROLE_USER->value;
+
+        return array_unique($roles);
     }
 
+    /**
+     * @param string[] $roles
+     */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
+    }
+
+    public function getRefreshToken(): ?string
+    {
+        return $this->refreshToken;
+    }
+
+    public function setRefreshToken(?string $refreshToken): void
+    {
+        $this->refreshToken = $refreshToken;
     }
 
     public function isActive(): bool
@@ -114,12 +138,21 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         $this->avatarLink = $avatarLink;
     }
 
+    public function eraseCredentials(): void
+    {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->login;
+    }
+
     public function changeFields(
         string $login,
         string $password,
         ?bool $isActive,
-        ?array $roles = [],
-        ?string $avatarLink = null
+        ?string $avatarLink = null,
+        ?array $roles = []
     ): void
     {
         $this->setLogin($login);
@@ -133,13 +166,15 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     {
         return [
             'id' => $this->getId(),
-            'login' => $this->login,
-            'isActive' => $this->isActive,
-            'avatar' => $this->avatarLink,
-            'roles' => $this->roles,
+            'login' => $this->getLogin(),
+            'isActive' => $this->isActive(),
+            'avatar' => $this->getAvatarLink(),
+            'roles' => $this->getRoles(),
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
             'student' => empty($this->student) ? null : $this->student->toArray(),
+            'teacher' => empty($this->teacher) ? null : $this->teacher->toArray(),
+            'manager' => empty($this->manager) ? null : $this->manager->toArray(),
         ];
     }
 }
