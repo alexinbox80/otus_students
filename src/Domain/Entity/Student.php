@@ -2,6 +2,8 @@
 
 namespace App\Domain\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
@@ -23,6 +25,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ORM\Index(name: 'student__email__ind', columns: ['email'])]
 #[ORM\UniqueConstraint(name: 'student__user_id__uniq', fields: ['user'], options: ['where' => '(deleted_at IS NULL)'])]
 #[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['user.login' => 'partial'])]
 class Student extends Person implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;

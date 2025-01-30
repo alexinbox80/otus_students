@@ -23,12 +23,15 @@ security:
 #            pattern: ^/api/v1/user
 #            security: false
 #            methods: POST
+        apiPlatform:
+            pattern: ^/api-platform$
+            security: false
         main:
             lazy: true
             provider: app_user_provider
             stateless: true
             custom_authenticator: App\Application\Security\JwtAuthenticator
-            security: false
+            security: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
