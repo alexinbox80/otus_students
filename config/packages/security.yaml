@@ -28,7 +28,7 @@ security:
             provider: app_user_provider
             stateless: true
             custom_authenticator: App\Application\Security\JwtAuthenticator
-            security: true
+            security: false
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
