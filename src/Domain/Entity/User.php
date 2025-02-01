@@ -10,10 +10,15 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\GraphQl\Mutation;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Domain\ApiPlatform\DTO\Input\CreateUserDTO;
 use App\Domain\ApiPlatform\DTO\Output\CreatedUserDTO;
+use App\Domain\ApiPlatform\GraphQL\Resolver\UserCreateResolver;
+use App\Domain\ApiPlatform\GraphQL\Resolver\UserUpdateResolver;
 use App\Domain\ApiPlatform\State\UserDeleteProcessor;
 use App\Domain\ApiPlatform\State\UserPatchProcessor;
 use App\Domain\ApiPlatform\State\UserPostProcessor;
@@ -44,6 +49,13 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
     new Delete(processor: UserDeleteProcessor::class)
 ],
     normalizationContext: ['groups' => ['user']],
+    graphQlOperations: [
+        new Query(),
+        new QueryCollection(),
+        new Mutation(resolver: UserCreateResolver::class, name: 'create'),
+        new Mutation(resolver: UserUpdateResolver::class, name: 'update'),
+        new Mutation(args: ['id' => ['type' => 'ID']], name: 'delete')
+    ]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['login' => 'partial'])]
 #[ApiFilter(OrderFilter::class, properties: ['login'])]
@@ -66,7 +78,7 @@ class User implements
     #[Groups(['user', 'student'])]
     private string $login;
 
-    #[Ignore]
+    //#[Ignore]
     #[ORM\Column(name: 'password', type: 'string', length: 64, nullable: false)]
     private string $password;
 
@@ -199,11 +211,11 @@ class User implements
     }
 
     public function changeFields(
-        string $login,
-        string $password,
-        ?bool $isActive,
+        string  $login,
+        string  $password,
+        ?bool   $isActive,
         ?string $avatarLink = null,
-        ?array $roles = []
+        ?array  $roles = []
     ): void
     {
         $this->setLogin($login);
