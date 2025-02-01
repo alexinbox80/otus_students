@@ -3,6 +3,7 @@
 namespace App\Domain\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -24,6 +25,7 @@ use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
 use App\Domain\ValueObject\RoleEnum;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert as WebmozartAssert;
@@ -40,9 +42,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
     new Post(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserPostProcessor::class),
     new Patch(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserPatchProcessor::class),
     new Delete(processor: UserDeleteProcessor::class)
-])]
+],
+    normalizationContext: ['groups' => ['user']],
+)]
 #[ApiFilter(SearchFilter::class, properties: ['login' => 'partial'])]
 #[ApiFilter(OrderFilter::class, properties: ['login'])]
+#[ApiFilter(RangeFilter::class, properties: ['student.id'])]
 class User implements
     EntityInterface,
     HasMetaTimestampsInterface,
@@ -58,6 +63,7 @@ class User implements
     private ?int $id = null;
 
     #[ORM\Column(name: 'login', type: 'string', length: 32, unique: true, nullable: false)]
+    #[Groups(['user', 'student'])]
     private string $login;
 
     #[Ignore]
@@ -65,24 +71,30 @@ class User implements
     private string $password;
 
     #[ORM\Column(type: 'json', length: 1024, nullable: false)]
+    #[Groups(['user', 'student'])]
     private array $roles = [];
 
     #[ORM\Column(type: 'string', length: 32, unique: true, nullable: true)]
     private ?string $refreshToken = null;
 
     #[ORM\Column(name: 'isActive', type: 'boolean', options: ['default' => true])]
+    #[Groups(['user', 'student'])]
     private bool $isActive;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Groups(['user', 'student'])]
     private ?string $avatarLink = null;
 
     #[ORM\OneToOne(targetEntity: Student::class, mappedBy: 'user')]
+    #[Groups(['user'])]
     private Student $student;
 
     #[ORM\OneToOne(targetEntity: Teacher::class, mappedBy: 'user')]
+    #[Groups(['user'])]
     private Teacher $teacher;
 
     #[ORM\OneToOne(targetEntity: Manager::class, mappedBy: 'user')]
+    #[Groups(['user'])]
     private Manager $manager;
 
     public function getId(): int
@@ -110,6 +122,21 @@ class User implements
     public function setPassword(string $password): void
     {
         $this->password = $password;
+    }
+
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    public function getTeacher(): ?Teacher
+    {
+        return $this->teacher;
+    }
+
+    public function getManager(): ?Manager
+    {
+        return $this->manager;
     }
 
     /**
