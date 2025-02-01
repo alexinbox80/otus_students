@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Domain\ApiPlatform\DTO\Input\CreateUserDTO;
@@ -34,6 +35,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'user__login__uniq', fields: ['login'], options: ['where' => '(deleted_at IS NULL)'])]
 #[ApiResource(operations: [
+    new GetCollection(),
     new Get(output: CreatedUserDTO::class, provider: UserProviderDecorator::class),
     new Post(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserPostProcessor::class),
     new Patch(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserPatchProcessor::class),
