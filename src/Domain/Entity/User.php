@@ -50,6 +50,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         new Patch(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserPatchProcessor::class),
         new Delete(processor: UserDeleteProcessor::class)
     ],
+    cacheHeaders: [
+        'public' => true,
+        'max_age' => 60,
+    ],
     normalizationContext: ['groups' => ['user']],
     graphQlOperations: [
         new Query(),
