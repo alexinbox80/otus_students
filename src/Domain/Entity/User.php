@@ -18,6 +18,7 @@ use ApiPlatform\Metadata\Post;
 use App\Domain\ApiPlatform\DTO\Input\CreateUserDTO;
 use App\Domain\ApiPlatform\DTO\Output\CreatedUserDTO;
 use App\Domain\ApiPlatform\GraphQL\Resolver\UserCreateResolver;
+use App\Domain\ApiPlatform\GraphQL\Resolver\UserDeleteResolver;
 use App\Domain\ApiPlatform\GraphQL\Resolver\UserUpdateResolver;
 use App\Domain\ApiPlatform\State\UserDeleteProcessor;
 use App\Domain\ApiPlatform\State\UserPatchProcessor;
@@ -41,20 +42,27 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'user__login__uniq', fields: ['login'], options: ['where' => '(deleted_at IS NULL)'])]
-#[ApiResource(operations: [
-    new GetCollection(),
-    new Get(output: CreatedUserDTO::class, provider: UserProviderDecorator::class),
-    new Post(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserPostProcessor::class),
-    new Patch(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserPatchProcessor::class),
-    new Delete(processor: UserDeleteProcessor::class)
-],
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(output: CreatedUserDTO::class, provider: UserProviderDecorator::class),
+        new Post(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserPostProcessor::class),
+        new Patch(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserPatchProcessor::class),
+        new Delete(processor: UserDeleteProcessor::class)
+    ],
     normalizationContext: ['groups' => ['user']],
     graphQlOperations: [
         new Query(),
         new QueryCollection(),
         new Mutation(resolver: UserCreateResolver::class, name: 'create'),
-        new Mutation(resolver: UserUpdateResolver::class, name: 'update'),
-        new Mutation(args: ['id' => ['type' => 'ID']], name: 'delete')
+        new Mutation(resolver: UserUpdateResolver::class,
+            args: [
+                'id' => ['type' => 'ID'],
+                'login' => ['type' => 'String'],
+                'password' => ['type' => 'String'],
+                'roles' => ['type' => 'Iterable'],
+            ], name: 'update'),
+        new Mutation(resolver: UserDeleteResolver::class, args: ['id' => ['type' => 'ID']], name: 'delete')
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['login' => 'partial'])]

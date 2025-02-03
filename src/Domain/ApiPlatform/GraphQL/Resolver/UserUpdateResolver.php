@@ -30,7 +30,8 @@ class UserUpdateResolver implements QueryItemResolverInterface
             $context['args']['input']['roles']
         );
 
-        $user = $this->userService->find($context['args']['input']['id']);
+        $ids = explode('/', $context['args']['input']['id']);
+        $user = $this->userService->find(end($ids));
         return $this->userService->update($user, $updateUserModel);
     }
 }
