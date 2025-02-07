@@ -2,6 +2,10 @@
 
 namespace App\Domain\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Entity\Interfaces\SoftDeletableInterface;
@@ -11,6 +15,7 @@ use App\Domain\Entity\Traits\UpdatedAtTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\Table(name: 'student')]
@@ -21,6 +26,9 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ORM\Index(name: 'student__phone__ind', columns: ['phone'])]
 #[ORM\Index(name: 'student__email__ind', columns: ['email'])]
 #[ORM\UniqueConstraint(name: 'student__user_id__uniq', fields: ['user'], options: ['where' => '(deleted_at IS NULL)'])]
+#[ApiResource(normalizationContext: ['groups' => ['student']])]
+#[ApiFilter(SearchFilter::class, properties: ['user.login' => 'partial'])]
+#[ApiFilter(RangeFilter::class, properties: ['user.id'])]
 class Student extends Person implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
@@ -31,6 +39,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     private ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'student')]
+    #[Groups(['student'])]
     private User $user;
 
     #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'student')]
@@ -62,6 +71,11 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         WebmozartAssert::notNull($this->id, sprintf('Id of Entity %s is null.', get_class($this)));
 
         return $this->id;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
     }
 
     /**

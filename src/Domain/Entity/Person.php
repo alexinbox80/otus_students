@@ -3,24 +3,30 @@
 namespace App\Domain\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Webmozart\Assert\Assert as WebmozartAssert;
 
 #[ORM\MappedSuperclass]
 class Person
 {
     #[ORM\Column(name: 'last_name', type: 'string', length: 64, nullable: false)]
+    #[Groups(['user', 'student'])]
     private string $lastName;
 
     #[ORM\Column(name: 'first_name', type: 'string', length: 64, nullable: false)]
+    #[Groups(['user', 'student'])]
     private string $firstName;
 
     #[ORM\Column(name: 'middle_name', type: 'string', length: 64, nullable: true)]
+    #[Groups(['user', 'student'])]
     private ?string $middleName;
 
     #[ORM\Column(name: 'phone', type: 'string', length: 16, nullable: true)]
+    #[Groups(['user', 'student'])]
     private ?string $phone;
 
     #[ORM\Column(name: 'email', type: 'string', length: 255, nullable: true)]
+    #[Groups(['user', 'student'])]
     private ?string $email;
 
     public function __construct(

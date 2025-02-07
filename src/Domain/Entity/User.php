@@ -2,6 +2,28 @@
 
 namespace App\Domain\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\GraphQl\Mutation;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Domain\ApiPlatform\DTO\Input\CreateUserDTO;
+use App\Domain\ApiPlatform\DTO\Output\CreatedUserDTO;
+use App\Domain\ApiPlatform\GraphQL\Resolver\UserCreateResolver;
+use App\Domain\ApiPlatform\GraphQL\Resolver\UserDeleteResolver;
+use App\Domain\ApiPlatform\GraphQL\Resolver\UserUpdateResolver;
+use App\Domain\ApiPlatform\State\UserDeleteProcessor;
+use App\Domain\ApiPlatform\State\UserPatchProcessor;
+use App\Domain\ApiPlatform\State\UserPostProcessor;
+use App\Domain\ApiPlatform\State\UserProviderDecorator;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Entity\Interfaces\SoftDeletableInterface;
@@ -9,6 +31,7 @@ use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
 use App\Domain\ValueObject\RoleEnum;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert as WebmozartAssert;
@@ -19,6 +42,36 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'user__login__uniq', fields: ['login'], options: ['where' => '(deleted_at IS NULL)'])]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(output: CreatedUserDTO::class, provider: UserProviderDecorator::class),
+        new Post(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserPostProcessor::class),
+        new Patch(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserPatchProcessor::class),
+        new Delete(processor: UserDeleteProcessor::class)
+    ],
+    cacheHeaders: [
+        'public' => true,
+        'max_age' => 60,
+    ],
+    normalizationContext: ['groups' => ['user']],
+    graphQlOperations: [
+        new Query(),
+        new QueryCollection(),
+        new Mutation(resolver: UserCreateResolver::class, name: 'create'),
+        new Mutation(resolver: UserUpdateResolver::class,
+            args: [
+                'id' => ['type' => 'ID'],
+                'login' => ['type' => 'String'],
+                'password' => ['type' => 'String'],
+                'roles' => ['type' => 'Iterable'],
+            ], name: 'update'),
+        new Mutation(resolver: UserDeleteResolver::class, args: ['id' => ['type' => 'ID']], name: 'delete')
+    ]
+)]
+#[ApiFilter(SearchFilter::class, properties: ['login' => 'partial'])]
+#[ApiFilter(OrderFilter::class, properties: ['login'])]
+#[ApiFilter(RangeFilter::class, properties: ['student.id'])]
 class User implements
     EntityInterface,
     HasMetaTimestampsInterface,
@@ -34,31 +87,38 @@ class User implements
     private ?int $id = null;
 
     #[ORM\Column(name: 'login', type: 'string', length: 32, unique: true, nullable: false)]
+    #[Groups(['user', 'student'])]
     private string $login;
 
-    #[Ignore]
+    //#[Ignore]
     #[ORM\Column(name: 'password', type: 'string', length: 64, nullable: false)]
     private string $password;
 
     #[ORM\Column(type: 'json', length: 1024, nullable: false)]
+    #[Groups(['user', 'student'])]
     private array $roles = [];
 
     #[ORM\Column(type: 'string', length: 32, unique: true, nullable: true)]
     private ?string $refreshToken = null;
 
     #[ORM\Column(name: 'isActive', type: 'boolean', options: ['default' => true])]
+    #[Groups(['user', 'student'])]
     private bool $isActive;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Groups(['user', 'student'])]
     private ?string $avatarLink = null;
 
     #[ORM\OneToOne(targetEntity: Student::class, mappedBy: 'user')]
+    #[Groups(['user'])]
     private Student $student;
 
     #[ORM\OneToOne(targetEntity: Teacher::class, mappedBy: 'user')]
+    #[Groups(['user'])]
     private Teacher $teacher;
 
     #[ORM\OneToOne(targetEntity: Manager::class, mappedBy: 'user')]
+    #[Groups(['user'])]
     private Manager $manager;
 
     public function getId(): int
@@ -86,6 +146,21 @@ class User implements
     public function setPassword(string $password): void
     {
         $this->password = $password;
+    }
+
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    public function getTeacher(): ?Teacher
+    {
+        return $this->teacher;
+    }
+
+    public function getManager(): ?Manager
+    {
+        return $this->manager;
     }
 
     /**
@@ -148,11 +223,11 @@ class User implements
     }
 
     public function changeFields(
-        string $login,
-        string $password,
-        ?bool $isActive,
+        string  $login,
+        string  $password,
+        ?bool   $isActive,
         ?string $avatarLink = null,
-        ?array $roles = []
+        ?array  $roles = []
     ): void
     {
         $this->setLogin($login);
