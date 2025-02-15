@@ -65,6 +65,32 @@ services:
         networks:
             - net
 
+    symfony_rabbitmq:
+        image: rabbitmq:3-management
+        working_dir: /app
+        hostname: symfony_rabbit-mq
+        container_name: 'students_rabbit-mq'
+        ports:
+            - 15672:15672
+            - 5672:5672
+        environment:
+            RABBITMQ_DEFAULT_USER: user
+            RABBITMQ_DEFAULT_PASS: password
+        networks:
+            - net
+
+    symfony_supervisor:
+        image: php:8.3-cli-alpine
+        build: docker/supervisor
+        container_name: 'students_supervisor'
+        volumes:
+            - ./:/app
+            - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+        working_dir: /app
+        command: [ "supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
+        networks:
+            - net
+
 #Docker Networks
 networks:
     net:
