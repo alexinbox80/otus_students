@@ -1,0 +1,8 @@
+<?php
+
+namespace App\Domain\ValueObject;
+
+enum RedisCacheTagEnum: string
+{
+    case CACHE_TAG_SKILLS = 'skills';
+}

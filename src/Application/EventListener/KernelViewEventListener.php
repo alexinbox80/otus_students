@@ -4,12 +4,6 @@ namespace App\Application\EventListener;
 
 use App\Controller\DTO\Interfaces\OutputDTOInterface;
 use App\Controller\DTO\Interfaces\OutputDTONotFoundInterface;
-use App\Domain\Entity\Achievement;
-use App\Domain\Entity\CompletedTask;
-use App\Domain\Entity\Course;
-use App\Domain\Entity\Lesson;
-use App\Domain\Entity\Percentage;
-use App\Domain\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -47,9 +41,13 @@ class KernelViewEventListener
                 'code' => Response::HTTP_OK
             ], Response::HTTP_OK));
         } elseif (is_array($dto)) {
-            $successResponse = [];
-            foreach ($dto as $item) {
-                $successResponse[] = $item->toArray();
+            if (isset($dto['skills'])) {
+                $successResponse = $dto;
+            } else {
+                $successResponse = [];
+                foreach ($dto as $item) {
+                    $successResponse[] = $item->toArray();
+                }
             }
 
             if(count($successResponse) > 0)

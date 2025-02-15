@@ -4,28 +4,29 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\Skill;
 use App\Domain\Model\CreateSkillModel;
+use App\Domain\Model\SkillModel;
 use App\Domain\Model\UpdateSkillModel;
-use App\Infrastructure\Repository\SkillRepository;
+use App\Domain\Repository\SkillRepositoryInterface;
+use Psr\Cache\InvalidArgumentException;
 
 class SkillService
 {
     public function __construct(
-        private readonly SkillRepository $skillRepository
-    )
-    {
+        private readonly SkillRepositoryInterface $skillRepository
+    ) {
     }
 
     /**
      * @param int $skillId
-     * @return ?Skill
+     * @return ?SkillModel
      */
-    public function find(int $skillId): ?Skill
+    public function find(int $skillId): ?SkillModel
     {
         return $this->skillRepository->find($skillId);
     }
 
     /**
-     * @return Skill[]
+     * @return SkillModel[]
      */
     public function findAll(): array
     {
@@ -34,7 +35,7 @@ class SkillService
 
     /**
      * @param string $name
-     * @return Skill[]
+     * @return SkillModel[]
      */
     public function findSkillsByName(string $name): array
     {
@@ -43,27 +44,31 @@ class SkillService
 
     /**
      * @param string $description
-     * @return Skill[]
+     * @return SkillModel[]
      */
     public function findSkillsByDescription(string $description): array
     {
         return $this->skillRepository->findSkillsByDescriptionWithCriteria($description);
     }
 
+
     /**
-     * @return Skill[]
+     * @param int $page
+     * @param int $perPage
+     * @return SkillModel[]
+     * @throws InvalidArgumentException
      */
-    public function getSkills(int $page, int $perPage): array
+    public function getSkillsPaginated(int $page, int $perPage): array
     {
-        return $this->skillRepository->getSkills($page, $perPage);
+        return $this->skillRepository->getSkillsPaginated($page, $perPage);
     }
 
     /**
      * @param int $skillId
      * @param string $name
-     * @return Skill|null
+     * @return SkillModel|null
      */
-    public function updateName(int $skillId, string $name): ?Skill
+    public function updateName(int $skillId, string $name): ?SkillModel
     {
         $skill = $this->skillRepository->find($skillId);
         if (!($skill instanceof Skill)) {
@@ -77,9 +82,9 @@ class SkillService
     /**
      * @param int $skillId
      * @param string $description
-     * @return Skill|null
+     * @return SkillModel|null
      */
-    public function updateDescription(int $skillId, string $description): ?Skill
+    public function updateDescription(int $skillId, string $description): ?SkillModel
     {
         $skill = $this->skillRepository->find($skillId);
         if (!($skill instanceof Skill)) {
@@ -92,9 +97,9 @@ class SkillService
 
     /**
      * @param CreateSkillModel $createSkillModel
-     * @return Skill
+     * @return SkillModel
      */
-    public function create(CreateSkillModel $createSkillModel): Skill
+    public function create(CreateSkillModel $createSkillModel): SkillModel
     {
         $skill = new Skill(
             $createSkillModel->name,
@@ -103,15 +108,21 @@ class SkillService
 
         $this->skillRepository->create($skill);
 
-        return $skill;
+        return new SkillModel(
+            $skill->getId(),
+            $skill->getName(),
+            $skill->getDescription(),
+            $skill->getCreatedAt(),
+            $skill->getUpdatedAt()
+        );
     }
 
     /**
      * @param Skill $skill
      * @param UpdateSkillModel $updateSkillModel
-     * @return Skill
+     * @return SkillModel
      */
-    public function update(Skill $skill, UpdateSkillModel $updateSkillModel): Skill
+    public function update(Skill $skill, UpdateSkillModel $updateSkillModel): SkillModel
     {
         $skill->changeFields(
             $updateSkillModel->name,
@@ -120,7 +131,13 @@ class SkillService
 
         $this->skillRepository->update();
 
-        return $skill;
+        return new SkillModel(
+            $skill->getId(),
+            $skill->getName(),
+            $skill->getDescription(),
+            $skill->getCreatedAt(),
+            $skill->getUpdatedAt()
+        );
     }
 
     /**
@@ -130,7 +147,7 @@ class SkillService
     public function removeById(int $skillId): void
     {
         $skill = $this->skillRepository->find($skillId);
-        if ($skill instanceof Skill) {
+        if ($skill !== null) {
             $this->skillRepository->remove($skill);
         }
     }

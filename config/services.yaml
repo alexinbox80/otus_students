@@ -41,3 +41,19 @@ services:
     App\Application\Security\AuthService:
         arguments:
             $tokenTTL: '%env(JWT_TTL_SEC)%'
+
+    redis_client:
+        class: Redis
+        factory: Symfony\Component\Cache\Adapter\RedisAdapter::createConnection
+        arguments:
+            - '%env(REDIS_DSN)%'
+
+    redis_tag_aware_adapter:
+        class: Symfony\Component\Cache\Adapter\RedisTagAwareAdapter
+        arguments:
+            - '@redis_client'
+            - 'students_cache'
+
+    App\Infrastructure\Repository\SkillRepositoryCacheDecorator:
+        arguments:
+            $cache: '@redis_tag_aware_adapter'

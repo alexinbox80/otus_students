@@ -57,6 +57,14 @@ services:
         networks:
             - net
 
+    symfony_redis:
+        container_name: 'students_redis'
+        image: redis:alpine
+        ports:
+            - 6379:6379
+        networks:
+            - net
+
 #Docker Networks
 networks:
     net:

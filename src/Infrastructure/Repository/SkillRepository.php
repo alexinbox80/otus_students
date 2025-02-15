@@ -3,14 +3,16 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\Skill;
+use App\Domain\Model\SkillModel;
+use App\Domain\ValueObject\RedisCacheTagEnum;
 use Doctrine\Common\Collections\Criteria;
 
 class SkillRepository extends AbstractRepository
 {
     /**
-     * @return Skill[]
+     * @return SkillModel[]
      */
-    public function getSkills(int $page, int $perPage): array
+    public function getSkillsPaginated(int $page, int $perPage): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('s')
@@ -19,7 +21,10 @@ class SkillRepository extends AbstractRepository
             ->setFirstResult($perPage * $page)
             ->setMaxResults($perPage);
 
-        return $queryBuilder->getQuery()->getResult();
+        return $queryBuilder
+            ->getQuery()
+            ->enableResultCache(null, RedisCacheTagEnum::CACHE_TAG_SKILLS->value . "_{$page}_$perPage")
+            ->getResult();
     }
 
     /**

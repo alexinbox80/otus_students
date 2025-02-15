@@ -22,11 +22,11 @@ class Manager
 
         if (!is_null($skill)) {
             return new GotSkillByIdDTO(
-                $skill->getId(),
-                $skill->getName(),
-                $skill->getDescription(),
-                $skill->getCreatedAt()->format('Y-m-d H:i:s'),
-                $skill->getUpdatedAt()->format('Y-m-d H:i:s')
+                $skill->id,
+                $skill->name,
+                $skill->description,
+                $skill->createdAt->format('Y-m-d H:i:s'),
+                $skill->updatedAt->format('Y-m-d H:i:s')
             );
         } else {
             return new EmptyDTO();
