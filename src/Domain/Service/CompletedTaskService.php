@@ -2,7 +2,6 @@
 
 namespace App\Domain\Service;
 
-use App\Domain\Entity\Student;
 use App\Domain\Model\CompletedTaskModel;
 use App\Domain\Model\CreateCompletedTaskModel;
 use App\Domain\Model\UpdateCompletedTaskModel;
@@ -14,6 +13,8 @@ use Psr\Cache\InvalidArgumentException;
 class CompletedTaskService
 {
     public function __construct(
+        private readonly StudentService $studentService,
+        private readonly TaskService $taskService,
         private readonly CompletedTaskRepositoryInterface $completedTaskRepository
     )
     {
@@ -131,7 +132,12 @@ class CompletedTaskService
      */
     public function update(CompletedTask $completedTask, UpdateCompletedTaskModel $updateCompletedTaskModel): CompletedTaskModel
     {
+        $student = $this->studentService->find($updateCompletedTaskModel->studentId);
+        $task = $this->taskService->find($updateCompletedTaskModel->taskId);
+
         $completedTask->changeFields(
+            $student,
+            $task,
             $updateCompletedTaskModel->finishedAt,
             $updateCompletedTaskModel->description,
             $updateCompletedTaskModel->grade
@@ -141,6 +147,8 @@ class CompletedTaskService
 
         return new CompletedTaskModel(
             $completedTask->getId(),
+            $completedTask->getStudent()->getId(),
+            $completedTask->getTask()->getId(),
             $completedTask->getFinishedAt(),
             $completedTask->getDescription(),
             $completedTask->getGrade(),
@@ -150,17 +158,21 @@ class CompletedTaskService
     }
 
     /**
-     * //* @param Student $student
      * @param CreateCompletedTaskModel $createCompletedTaskModel
      * @return CompletedTaskModel
      * @throws InvalidArgumentException
      */
 
     public function create(
-        //Student $student,
-        CreateCompletedTaskModel $createCompletedTaskModel): CompletedTaskModel
+        CreateCompletedTaskModel $createCompletedTaskModel
+    ): CompletedTaskModel
     {
+        $student = $this->studentService->find($createCompletedTaskModel->studentId);
+        $task = $this->taskService->find($createCompletedTaskModel->taskId);
+
         $completedTask = new CompletedTask(
+            $student,
+            $task,
             $createCompletedTaskModel->grade,
             $createCompletedTaskModel->description,
             $createCompletedTaskModel->finishedAt
@@ -172,6 +184,8 @@ class CompletedTaskService
 
         return new CompletedTaskModel(
             $completedTask->getId(),
+            $completedTask->getStudent()->getId(),
+            $completedTask->getTask()->getId(),
             $completedTask->getFinishedAt(),
             $completedTask->getDescription(),
             $completedTask->getGrade(),

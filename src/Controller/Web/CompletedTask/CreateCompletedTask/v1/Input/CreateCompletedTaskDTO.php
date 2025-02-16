@@ -8,6 +8,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreateCompletedTaskDTO
 {
     public function __construct(
+        #[Assert\Type('integer')]
+        #[Assert\Positive]
+        public readonly int $studentId,
+        #[Assert\Type('integer')]
+        #[Assert\Positive]
+        public readonly int $taskId,
         #[Assert\Type("\DateTimeInterface")]
         public ?DateTime $finishedAt,
         #[Assert\Length(min:8)]

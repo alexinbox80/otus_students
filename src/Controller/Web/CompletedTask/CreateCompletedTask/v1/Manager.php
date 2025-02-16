@@ -7,6 +7,7 @@ use App\Controller\Web\CompletedTask\CreateCompletedTask\v1\Output\CreatedComple
 use App\Domain\Model\CreateCompletedTaskModel;
 use App\Domain\Service\ModelFactory;
 use App\Domain\Service\CompletedTaskService;
+use Psr\Cache\InvalidArgumentException;
 
 class Manager
 {
@@ -17,10 +18,15 @@ class Manager
     ) {
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function create(CreateCompletedTaskDTO $createCompletedTaskDTO): CreatedCompletedTaskDTO
     {
         $createCompletedTaskModel = $this->modelFactory->makeModel(
             CreateCompletedTaskModel::class,
+            $createCompletedTaskDTO->studentId,
+            $createCompletedTaskDTO->taskId,
             $createCompletedTaskDTO->finishedAt,
             $createCompletedTaskDTO->description,
             $createCompletedTaskDTO->grade
@@ -29,12 +35,14 @@ class Manager
         $completedTask = $this->completedTaskService->create($createCompletedTaskModel);
 
         return new CreatedCompletedTaskDTO(
-            $completedTask->id,
-            $completedTask->finishedAt,
-            $completedTask->description,
-            $completedTask->grade,
-            $completedTask->createdAt->format('Y-m-d H:i:s'),
-            $completedTask->updatedAt->format('Y-m-d H:i:s')
+            $completedTask->getId(),
+            $completedTask->getStudentId(),
+            $completedTask->getTaskId(),
+            $completedTask->getFinishedAt(),
+            $completedTask->getDescription(),
+            $completedTask->getGrade(),
+            $completedTask->getCreatedAt()->format('Y-m-d H:i:s'),
+            $completedTask->getUpdatedAt()->format('Y-m-d H:i:s')
         );
     }
 }

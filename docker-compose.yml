@@ -12,21 +12,21 @@ services:
         networks:
             - net
 
-    symfony_caddy:
-        image: dunglas/frankenphp:1-builder-php8.3
-        build:
-            dockerfile: docker/caddy/Dockerfile
-        container_name: 'students_caddy'
-        ports:
-            - '6443:443'
-            - '6080:80'
-            - '6088:2019'
-        volumes:
-            - ./:/app
-            - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
-        working_dir: /app
-        networks:
-            - net
+#    symfony_caddy:
+#        image: dunglas/frankenphp:1-builder-php8.3
+#        build:
+#            dockerfile: docker/caddy/Dockerfile
+#        container_name: 'students_caddy'
+#        ports:
+#            - '6443:443'
+#            - '6080:80'
+#            - '6088:2019'
+#        volumes:
+#            - ./:/app
+#            - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+#        working_dir: /app
+#        networks:
+#            - net
 
     symfony_nginx:
         image: nginx

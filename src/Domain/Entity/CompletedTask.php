@@ -48,11 +48,15 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface, Soft
     private Task $task;
 
     public function __construct(
+        Student $student,
+        Task $task,
         int $grade,
         ?string $description,
         ?DateTime $finishedAt
     )
     {
+        $this->student = $student;
+        $this->task = $task;
         $this->grade = $grade;
         $this->description = $description;
         $this->finishedAt = $finishedAt;
@@ -123,12 +127,16 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface, Soft
     }
 
     public function changeFields(
+        Student $student,
+        Task $task,
         ?DateTime $finishedAt,
         ?string $description,
         ?int $grade
     ): void
     {
-        $this->setFinishedAt($finishedAt);
+        $this->student = $student;
+        $this->task = $task;
+        $this->setFinishedAt();
         $this->setDescription($description);
         $this->setGrade($grade);
     }

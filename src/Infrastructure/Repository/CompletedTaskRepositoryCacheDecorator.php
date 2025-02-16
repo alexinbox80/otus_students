@@ -26,14 +26,20 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
     public function find(int $completedTaskId): ?CompletedTaskModel
     {
         $completedTask = $this->completedTaskRepository->find($completedTaskId);
-        return new CompletedTaskModel(
-            $completedTask->getId(),
-            $completedTask->getFinishedAt(),
-            $completedTask->getDescription(),
-            $completedTask->getGrade(),
-            $completedTask->getCreatedAt(),
-            $completedTask->getUpdatedAt()
-        );
+
+        if ($completedTask !== null)
+            return new CompletedTaskModel(
+                $completedTask->getId(),
+                $completedTask->getStudent()->getId(),
+                $completedTask->getTask()->getId(),
+                $completedTask->getFinishedAt(),
+                $completedTask->getDescription(),
+                $completedTask->getGrade(),
+                $completedTask->getCreatedAt(),
+                $completedTask->getUpdatedAt()
+            );
+        else
+            return null;
     }
 
     /**
@@ -46,6 +52,8 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
         return array_map(
             static fn (CompletedTask $completedTask): CompletedTaskModel => new CompletedTaskModel(
                 $completedTask->getId(),
+                $completedTask->getStudent()->getId(),
+                $completedTask->getTask()->getId(),
                 $completedTask->getFinishedAt(),
                 $completedTask->getDescription(),
                 $completedTask->getGrade(),
@@ -67,6 +75,8 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
         return array_map(
             static fn (CompletedTask $completedTask): CompletedTaskModel => new CompletedTaskModel(
                 $completedTask->getId(),
+                $completedTask->getStudent()->getId(),
+                $completedTask->getTask()->getId(),
                 $completedTask->getFinishedAt(),
                 $completedTask->getDescription(),
                 $completedTask->getGrade(),
@@ -88,6 +98,8 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
         return array_map(
             static fn (CompletedTask $completedTask): CompletedTaskModel => new CompletedTaskModel(
                 $completedTask->getId(),
+                $completedTask->getStudent()->getId(),
+                $completedTask->getTask()->getId(),
                 $completedTask->getFinishedAt(),
                 $completedTask->getDescription(),
                 $completedTask->getGrade(),
@@ -109,6 +121,8 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
         return array_map(
             static fn (CompletedTask $completedTask): CompletedTaskModel => new CompletedTaskModel(
                 $completedTask->getId(),
+                $completedTask->getStudent()->getId(),
+                $completedTask->getTask()->getId(),
                 $completedTask->getFinishedAt(),
                 $completedTask->getDescription(),
                 $completedTask->getGrade(),
@@ -132,6 +146,8 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
                 $completedTaskModels = array_map(
                     static fn (CompletedTask $completedTask): CompletedTaskModel => new CompletedTaskModel(
                         $completedTask->getId(),
+                        $completedTask->getStudent()->getId(),
+                        $completedTask->getTask()->getId(),
                         $completedTask->getFinishedAt(),
                         $completedTask->getDescription(),
                         $completedTask->getGrade(),
