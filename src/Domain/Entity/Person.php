@@ -53,7 +53,6 @@ class Person
     private function lastNameValidate(string $lastName): void
     {
         WebmozartAssert::stringNotEmpty($lastName, 'Last name should not be empty. Got: %s');
-        //Assert::regexp()
         WebmozartAssert::alpha($lastName, 'Last name should be in alphabet. Got: %s');
         WebmozartAssert::lengthBetween($lastName, 2, 64, 'The last name must be a string valid length of 2-64 letters. Got: %s');
     }
@@ -61,7 +60,6 @@ class Person
     private function firstNameValidate(string $firstName): void
     {
         WebmozartAssert::stringNotEmpty($firstName, 'First name should not be empty. Got: %s');
-        //Assert::regexp()
         WebmozartAssert::alpha($firstName, 'First name should be in alphabet. Got: %s');
         WebmozartAssert::lengthBetween($firstName, 2, 64, 'The first name must be a string valid length of 2-64 letters. Got: %s');
     }
@@ -71,7 +69,6 @@ class Person
         WebmozartAssert::nullOrString($middleName, 'The middle name must be a string valid length of 2-64 letters or null. Got: %s');
         if (!is_null($middleName))
         {
-            //Assert::regexp()
             WebmozartAssert::alpha($middleName, 'Middle name should be in alphabet. Got: %s');
             WebmozartAssert::lengthBetween($middleName, 2, 64, 'The middle name must be a string valid length of 2-64 letters. Got: %s');
         }

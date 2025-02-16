@@ -29,7 +29,7 @@ class SkillRepositoryCacheDecorator implements SkillRepositoryInterface
         return $this->cache->get(
             $this->getCacheKey($page, $perPage),
             function (ItemInterface $item) use ($page, $perPage) {
-                $skills = $this->skillRepository->getskillsPaginated($page, $perPage);
+                $skills = $this->skillRepository->getSkillsPaginated($page, $perPage);
                 $skillModels = array_map(
                     static fn (Skill $skill): SkillModel => new SkillModel(
                         $skill->getId(),

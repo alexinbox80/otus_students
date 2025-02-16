@@ -57,3 +57,7 @@ services:
     App\Infrastructure\Repository\SkillRepositoryCacheDecorator:
         arguments:
             $cache: '@redis_tag_aware_adapter'
+
+    App\Infrastructure\Repository\CompletedTaskRepositoryCacheDecorator:
+        arguments:
+            $cache: '@redis_tag_aware_adapter'

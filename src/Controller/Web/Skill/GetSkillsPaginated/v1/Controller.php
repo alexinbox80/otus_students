@@ -3,8 +3,6 @@
 namespace App\Controller\Web\Skill\GetSkillsPaginated\v1;
 
 use Psr\Cache\InvalidArgumentException;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
@@ -31,12 +29,6 @@ class Controller
         #[MapQueryParameter(filter: \FILTER_VALIDATE_INT)] ?int $perPage = null,
     )
     {
-//        return $this->manager->getSkillsPaginated($page ?? 0, $perPage ?? 20);
-//        return $this->manager->getSkills($page ?? 0, $perPage ?? 20);
-//        return new JsonResponse([
-//            'skills' => $this->manager->getSkillsPaginated($page ?? 0, $perPage ?? 20)
-//        ]);
-
         return [
             'skills' => $this->manager->getSkillsPaginated($page ?? 0, $perPage ?? 20)
         ];

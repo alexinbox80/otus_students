@@ -11,6 +11,5 @@ class SkillDTO
         public readonly string $createdAt,
         public readonly string $updatedAt
     ) {
-
     }
 }

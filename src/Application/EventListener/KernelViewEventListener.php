@@ -41,7 +41,7 @@ class KernelViewEventListener
                 'code' => Response::HTTP_OK
             ], Response::HTTP_OK));
         } elseif (is_array($dto)) {
-            if (isset($dto['skills'])) {
+            if (isset($dto['skills']) || isset($dto['completed-tasks'])) {
                 $successResponse = $dto;
             } else {
                 $successResponse = [];

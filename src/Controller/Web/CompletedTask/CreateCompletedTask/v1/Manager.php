@@ -29,12 +29,12 @@ class Manager
         $completedTask = $this->completedTaskService->create($createCompletedTaskModel);
 
         return new CreatedCompletedTaskDTO(
-            $completedTask->getId(),
-            $completedTask->getFinishedAt(),
-            $completedTask->getDescription(),
-            $completedTask->getGrade(),
-            $completedTask->getCreatedAt()->format('Y-m-d H:i:s'),
-            $completedTask->getUpdatedAt()->format('Y-m-d H:i:s')
+            $completedTask->id,
+            $completedTask->finishedAt,
+            $completedTask->description,
+            $completedTask->grade,
+            $completedTask->createdAt->format('Y-m-d H:i:s'),
+            $completedTask->updatedAt->format('Y-m-d H:i:s')
         );
     }
 }

@@ -22,12 +22,12 @@ class Manager
 
         if (!is_null($completedTask)) {
             return new GotCompletedTaskByIdDTO(
-                $completedTask->getId(),
-                $completedTask->getFinishedAt(),
-                $completedTask->getDescription(),
-                $completedTask->getGrade(),
-                $completedTask->getCreatedAt()->format('Y-m-d H:i:s'),
-                $completedTask->getUpdatedAt()->format('Y-m-d H:i:s')
+                $completedTask->id,
+                $completedTask->finishedAt,
+                $completedTask->description,
+                $completedTask->grade,
+                $completedTask->createdAt->format('Y-m-d H:i:s'),
+                $completedTask->updatedAt->format('Y-m-d H:i:s')
             );
         } else {
             return new EmptyDTO();
