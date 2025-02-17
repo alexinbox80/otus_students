@@ -4,10 +4,12 @@ namespace App\Controller\Web\User\CreateUser\v1;
 
 use App\Controller\Web\User\CreateUser\v1\Input\CreateUserDTO;
 use App\Controller\Web\User\CreateUser\v1\Output\CreatedUserDTO;
+use App\Domain\Event\CreateUserEvent;
 use App\Domain\Model\CreateUserModel;
 use App\Domain\Service\ModelFactory;
 use App\Domain\Service\UserService;
 use App\Domain\ValueObject\RoleEnum;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class Manager
@@ -15,7 +17,8 @@ class Manager
     public function __construct(
         /** @var ModelFactory<CreateUserModel> */
         private readonly ModelFactory $modelFactory,
-        private readonly UserService $userService
+        private readonly UserService $userService,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -37,6 +40,10 @@ class Manager
         );
 
         $user = $this->userService->create($createUserModel);
+
+        $activationCode = rand(100000, 999999);
+        $event = new CreateUserEvent($user->getId(), $user->getLogin(), $activationCode);
+        $event = $this->eventDispatcher->dispatch($event);
 
         return new CreatedUserDTO(
             $user->getId(),
