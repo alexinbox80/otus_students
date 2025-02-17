@@ -2,6 +2,8 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\Bus\SendNotificationBusInterface;
+use App\Domain\DTO\SendNotificationDTO;
 use App\Domain\Model\CompletedTaskModel;
 use App\Domain\Model\CreateCompletedTaskModel;
 use App\Domain\Model\UpdateCompletedTaskModel;
@@ -15,7 +17,8 @@ class CompletedTaskService
     public function __construct(
         private readonly StudentService $studentService,
         private readonly TaskService $taskService,
-        private readonly CompletedTaskRepositoryInterface $completedTaskRepository
+        private readonly CompletedTaskRepositoryInterface $completedTaskRepository,
+        private readonly SendNotificationBusInterface $sendNotificationBus
     )
     {
     }
@@ -181,6 +184,17 @@ class CompletedTaskService
         //$student->addCompletedTask($completedTask);
 
         $this->completedTaskRepository->create($completedTask);
+
+        $text = "Dear {$student->getFirstName()} {$student->getLastName()}!,\\n you mark is {$createCompletedTaskModel->grade} for {$task->getName()} \\n";
+        $description = "Completed task: {$task->getName()} Description: {$task->getDescription()}\\n";
+        $this->sendNotificationBus->sendNotification(
+            new SendNotificationDTO(
+                $createCompletedTaskModel->studentId,
+                $text,
+                $description,
+                'CompletedTask'
+            )
+        );
 
         return new CompletedTaskModel(
             $completedTask->getId(),
