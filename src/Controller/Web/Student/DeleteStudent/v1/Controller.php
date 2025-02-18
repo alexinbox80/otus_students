@@ -4,6 +4,7 @@ namespace App\Controller\Web\Student\DeleteStudent\v1;
 
 use App\Controller\Web\Student\DeleteStudent\v1\Output\DeletedStudentDTO;
 use App\Domain\Entity\Student;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,6 +17,9 @@ class Controller
     ) {
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Route(
         path: 'api/v1/student/{id}',
         name: 'web_delete_student_by_id_v1_invoke',

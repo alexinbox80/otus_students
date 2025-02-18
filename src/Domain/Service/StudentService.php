@@ -5,26 +5,30 @@ namespace App\Domain\Service;
 use App\Domain\Entity\Person;
 use App\Domain\Entity\Student;
 use App\Domain\Model\CreateStudentModel;
+use App\Domain\Model\StudentModel;
 use App\Domain\Model\UpdateStudentModel;
-use App\Infrastructure\Repository\StudentRepository;
+use App\Domain\Repository\StudentRepositoryInterface;
+use Psr\Cache\InvalidArgumentException;
 
 class StudentService
 {
-    public function __construct(private readonly StudentRepository $studentRepository)
-    {
+    public function __construct(
+        private readonly StudentRepositoryInterface $studentRepository,
+        private readonly UserService $userService
+    ) {
     }
 
     /**
      * @param int $studentId
-     * @return ?Student
+     * @return ?StudentModel
      */
-    public function find(int $studentId): ?Student
+    public function find(int $studentId): ?StudentModel
     {
         return $this->studentRepository->find($studentId);
     }
 
     /**
-     * @return Student[]
+     * @return StudentModel[]
      */
     public function findAll(): array
     {
@@ -33,7 +37,7 @@ class StudentService
 
     /**
      * @param string $lastName
-     * @return Student[]
+     * @return StudentModel[]
      */
     public function findStudentsByLastName(string $lastName): array
     {
@@ -42,7 +46,7 @@ class StudentService
 
     /**
      * @param string $firstName
-     * @return Student[]
+     * @return StudentModel[]
      */
     public function findStudentsByFirstName(string $firstName): array
     {
@@ -51,7 +55,7 @@ class StudentService
 
     /**
      * @param string $middleName
-     * @return Student[]
+     * @return StudentModel[]
      */
     public function findStudentsByMiddleName(string $middleName): array
     {
@@ -59,19 +63,21 @@ class StudentService
     }
 
     /**
-     * @return Student[]
+     * @return StudentModel[]
+     * @throws InvalidArgumentException
      */
-    public function getStudents(int $page, int $perPage): array
+    public function getStudentsPaginated(int $page, int $perPage): array
     {
-        return $this->studentRepository->getStudents($page, $perPage);
+        return $this->studentRepository->getStudentsPaginated($page, $perPage);
     }
 
     /**
      * @param int $studentId
      * @param Person $person
-     * @return Student|null
+     * @return StudentModel|null
+     * @throws InvalidArgumentException
      */
-    public function updateName(int $studentId, Person $person): ?Student
+    public function updateName(int $studentId, Person $person): ?StudentModel
     {
         $student = $this->studentRepository->find($studentId);
         if (!($student instanceof Student)) {
@@ -85,9 +91,10 @@ class StudentService
     /**
      * @param int $studentId
      * @param Person $person
-     * @return Student|null
+     * @return StudentModel|null
+     * @throws InvalidArgumentException
      */
-    public function updateContact(int $studentId, Person $person): ?Student
+    public function updateContact(int $studentId, Person $person): ?StudentModel
     {
         $student = $this->studentRepository->find($studentId);
         if (!($student instanceof Student)) {
@@ -100,11 +107,15 @@ class StudentService
 
     /**
      * @param CreateStudentModel $createStudentModel
-     * @return Student
+     * @return StudentModel
+     * @throws InvalidArgumentException
      */
-    public function create(CreateStudentModel $createStudentModel): Student
+    public function create(CreateStudentModel $createStudentModel): StudentModel
     {
+        $user = $this->userService->find($createStudentModel->userId);
+
         $student = new Student(
+            $user,
             $createStudentModel->firstName,
             $createStudentModel->lastName,
             $createStudentModel->middleName,
@@ -114,17 +125,31 @@ class StudentService
 
         $this->studentRepository->create($student);
 
-        return $student;
+        return new StudentModel(
+            $student->getId(),
+            $student->getUser()->getId(),
+            $student->getFirstName(),
+            $student->getLastName(),
+            $student->getMiddleName(),
+            $student->getEmail(),
+            $student->getPhone(),
+            $student->getCreatedAt(),
+            $student->getUpdatedAt()
+        );
     }
 
     /**
      * @param Student $student
      * @param UpdateStudentModel $updateStudentModel
-     * @return Student
+     * @return StudentModel
+     * @throws InvalidArgumentException
      */
-    public function update(Student $student, UpdateStudentModel $updateStudentModel): Student
+    public function update(Student $student, UpdateStudentModel $updateStudentModel): StudentModel
     {
+        $user = $this->userService->find($updateStudentModel->userId);
+
         $student->changeFields(
+            $user,
             $updateStudentModel->firstName,
             $updateStudentModel->lastName,
             $updateStudentModel->middleName,
@@ -134,17 +159,28 @@ class StudentService
 
         $this->studentRepository->update();
 
-        return $student;
+        return new StudentModel(
+            $student->getId(),
+            $student->getUser()->getId(),
+            $student->getFirstName(),
+            $student->getLastName(),
+            $student->getMiddleName(),
+            $student->getEmail(),
+            $student->getPhone(),
+            $student->getCreatedAt(),
+            $student->getUpdatedAt()
+        );
     }
 
     /**
      * @param int $studentId
      * @return void
+     * @throws InvalidArgumentException
      */
     public function removeById(int $studentId): void
     {
         $student = $this->studentRepository->find($studentId);
-        if ($student instanceof Student) {
+        if ($student !== null) {
             $this->studentRepository->remove($student);
         }
     }
@@ -152,6 +188,7 @@ class StudentService
     /**
      * @param Student $student
      * @return void
+     * @throws InvalidArgumentException
      */
     public function removeStudent(Student $student): void
     {

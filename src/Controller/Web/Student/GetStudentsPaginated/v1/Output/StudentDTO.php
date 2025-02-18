@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller\Web\Student\CreateStudent\v1\Output;
+namespace App\Controller\Web\Student\GetStudentsPaginated\v1\Output;
 
-use App\Controller\DTO\Interfaces\OutputDTOInterface;
+use DateTime;
 
-class CreatedStudentDTO implements OutputDTOInterface
+class StudentDTO
 {
     public function __construct(
         public readonly int $id,

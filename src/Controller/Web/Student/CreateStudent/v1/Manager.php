@@ -7,6 +7,7 @@ use App\Controller\Web\Student\CreateStudent\v1\Output\CreatedStudentDTO;
 use App\Domain\Model\CreateStudentModel;
 use App\Domain\Service\ModelFactory;
 use App\Domain\Service\StudentService;
+use Psr\Cache\InvalidArgumentException;
 
 class Manager
 {
@@ -17,10 +18,14 @@ class Manager
     ) {
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function create(CreateStudentDTO $createStudentDTO): CreatedStudentDTO
     {
         $createStudentModel = $this->modelFactory->makeModel(
             CreateStudentModel::class,
+            $createStudentDTO->userId,
             $createStudentDTO->firstName,
             $createStudentDTO->lastName,
             $createStudentDTO->middleName,
@@ -32,6 +37,7 @@ class Manager
 
         return new CreatedStudentDTO(
             $student->getId(),
+            $student->getUserId(),
             $student->getFirstName(),
             $student->getLastName(),
             $student->getMiddleName(),

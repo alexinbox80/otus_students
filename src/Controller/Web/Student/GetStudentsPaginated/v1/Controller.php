@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller\Web\Student\GetStudents\v1;
+namespace App\Controller\Web\Student\GetStudentsPaginated\v1;
 
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,6 +14,9 @@ class Controller
     {
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     #[Route(
         path: 'api/v1/students',
         name: 'web_get_students_v1_invoke',
@@ -24,6 +28,8 @@ class Controller
         #[MapQueryParameter(filter: \FILTER_VALIDATE_INT)] ?int $perPage = null,
     ): array
     {
-        return $this->manager->getStudents($page ?? 0, $perPage ?? 20);
+        return [
+            'students' => $this->manager->getStudentsPaginated($page ?? 0, $perPage ?? 20)
+        ];
     }
 }

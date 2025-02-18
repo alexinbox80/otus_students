@@ -13,7 +13,7 @@ class StudentRepository extends AbstractRepository
     /**
      * @return Student[]
      */
-    public function getStudents(int $page, int $perPage): array
+    public function getStudentsPaginated(int $page, int $perPage): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('s')

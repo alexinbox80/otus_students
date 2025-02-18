@@ -62,6 +62,10 @@ services:
         arguments:
             $cache: '@redis_tag_aware_adapter'
 
+    App\Infrastructure\Repository\StudentRepositoryCacheDecorator:
+        arguments:
+            $cache: '@redis_tag_aware_adapter'
+
     App\Infrastructure\Bus\RabbitMqBus:
         calls:
             - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::SendNotification, '@old_sound_rabbit_mq.send_notification_producer' ] ]
