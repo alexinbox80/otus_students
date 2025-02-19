@@ -4,6 +4,8 @@ namespace App\Application\EventListener;
 
 use App\Controller\DTO\Interfaces\OutputDTOInterface;
 use App\Controller\DTO\Interfaces\OutputDTONotFoundInterface;
+use App\Controller\Web\Student\ConfirmationEmail\v1\Output\EmailCodeConfirmedDTO;
+use App\Controller\Web\Student\ConfirmationPhone\v1\Output\PhoneCodeConfirmedDTO;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -22,6 +24,14 @@ class KernelViewEventListener
     public function onKernelView(ViewEvent $event): void
     {
         $dto = $event->getControllerResult();
+
+        if (is_object($dto) and $dto instanceof EmailCodeConfirmedDTO) {
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
+        }
+
+        if (is_object($dto) and $dto instanceof PhoneCodeConfirmedDTO) {
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
+        }
 
         if (is_object($dto) and $dto instanceof OutputDTOInterface) {
             $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));

@@ -13,11 +13,13 @@ class CreateStudentModel
         public readonly string $firstName,
         #[Assert\NotBlank]
         public readonly string $lastName,
-        public readonly ?string $middleName,
+        public readonly ?string $middleName = null,
         #[Assert\Email()]
-        public readonly ?string $email,
+        public readonly ?string $email = null,
         #[Assert\Type('numeric')]
-        public readonly ?string $phone
+        public readonly ?string $phone = null,
+        public readonly ?string $emailCode = null,
+        public readonly ?string $phoneCode = null,
     ) {
     }
 }

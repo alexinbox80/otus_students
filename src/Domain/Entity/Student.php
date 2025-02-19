@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Entity\Interfaces\SoftDeletableInterface;
+use App\Domain\Entity\Traits\ConfirmationTrait;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
@@ -31,7 +32,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ApiFilter(RangeFilter::class, properties: ['user.id'])]
 class Student extends Person implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
-    use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
+    use ConfirmationTrait, CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
     #[ORM\Id]

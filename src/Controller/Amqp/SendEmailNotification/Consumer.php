@@ -25,10 +25,10 @@ class Consumer extends AbstractConsumer
      */
     protected function handle($message): int
     {
-        $student = $this->studentService->find($message->userId);
+        $student = $this->studentService->find($message->studentId);
 
         if ($student === null) {
-            return $this->reject(sprintf('Student ID %s was not found or does not use email ', $message->userId));
+            return $this->reject(sprintf('Student ID %s was not found or does not use email ', $message->studentId));
         }
 
         $this->emailNotificationService->saveEmailNotification(

@@ -2,6 +2,8 @@
 
 namespace App\Domain\Service;
 
+use App\Controller\Web\Student\ConfirmationEmail\v1\Input\EmailConfirmationCodeDTO;
+use App\Controller\Web\Student\ConfirmationPhone\v1\Input\PhoneConfirmationCodeDTO;
 use App\Domain\Entity\Person;
 use App\Domain\Entity\Student;
 use App\Domain\Model\CreateStudentModel;
@@ -16,6 +18,38 @@ class StudentService
         private readonly StudentRepositoryInterface $studentRepository,
         private readonly UserService $userService
     ) {
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function confirmationEmail(EmailConfirmationCodeDTO $emailConfirmationCodeDTO, string $login): bool
+    {
+        $user = $this->userService->findUserByLogin($login);
+        if($user->getStudent()->getEmailCode() !== $emailConfirmationCodeDTO->emailCode)
+            return false;
+        else {
+            $user->getStudent()->setEmailConfirmed(true);
+            $this->studentRepository->update();
+        }
+
+        return true;
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function confirmationPhone(PhoneConfirmationCodeDTO $phoneConfirmationCodeDTO, string $login): bool
+    {
+        $user = $this->userService->findUserByLogin($login);
+        if($user->getStudent()->getPhoneCode() !== $phoneConfirmationCodeDTO->phoneCode)
+            return false;
+        else {
+            $user->getStudent()->setPhoneConfirmed(true);
+            $this->studentRepository->update();
+        }
+
+        return true;
     }
 
     /**
@@ -122,6 +156,8 @@ class StudentService
             $createStudentModel->email,
             $createStudentModel->phone
         );
+        $student->setEmailCode($createStudentModel->emailCode);
+        $student->setPhoneCode($createStudentModel->phoneCode);
 
         $this->studentRepository->create($student);
 

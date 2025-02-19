@@ -18,7 +18,7 @@ class SendNotificationRabbitMqBus implements SendNotificationBusInterface
         return $this->rabbitMqBus->publishToExchange(
             AmqpExchangeEnum::SendNotification,
             $sendNotificationDTO,
-            rand(0, 2) === 1 ? 'email' : 'sms'
+            $sendNotificationDTO->route
         );
     }
 }

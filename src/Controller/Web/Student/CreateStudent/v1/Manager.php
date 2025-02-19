@@ -4,17 +4,20 @@ namespace App\Controller\Web\Student\CreateStudent\v1;
 
 use App\Controller\Web\Student\CreateStudent\v1\Input\CreateStudentDTO;
 use App\Controller\Web\Student\CreateStudent\v1\Output\CreatedStudentDTO;
+use App\Domain\Event\CreateStudentEvent;
 use App\Domain\Model\CreateStudentModel;
 use App\Domain\Service\ModelFactory;
 use App\Domain\Service\StudentService;
 use Psr\Cache\InvalidArgumentException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Manager
 {
     public function __construct(
         /** @var ModelFactory<CreateStudentModel> */
         private readonly ModelFactory  $modelFactory,
-        private readonly StudentService $studentService
+        private readonly StudentService $studentService,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -23,6 +26,9 @@ class Manager
      */
     public function create(CreateStudentDTO $createStudentDTO): CreatedStudentDTO
     {
+        $emailCode = rand(100000, 999999);
+        $phoneCode = rand(100000, 999999);
+
         $createStudentModel = $this->modelFactory->makeModel(
             CreateStudentModel::class,
             $createStudentDTO->userId,
@@ -30,10 +36,20 @@ class Manager
             $createStudentDTO->lastName,
             $createStudentDTO->middleName,
             $createStudentDTO->email,
-            $createStudentDTO->phone
+            $createStudentDTO->phone,
+            $emailCode,
+            $phoneCode
         );
 
         $student = $this->studentService->create($createStudentModel);
+
+        $event = new CreateStudentEvent(
+            $student->getId(),
+            $student->getUserId(),
+            $emailCode,
+            $phoneCode
+        );
+        $event = $this->eventDispatcher->dispatch($event);
 
         return new CreatedStudentDTO(
             $student->getId(),
