@@ -12,9 +12,10 @@ class EmailNotificationService
     ) {
     }
 
-    public function saveEmailNotification(string $email, string $text, string $description, string $entityName): void
+    public function saveEmailNotification(string $email, string $text, string $description, string $studentId, string $entityName): void
     {
         $emailNotification = new EmailNotification(
+            $studentId,
             $email,
             $text,
             $description,

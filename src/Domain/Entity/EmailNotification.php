@@ -22,6 +22,9 @@ class EmailNotification implements EntityInterface, HasMetaTimestampsInterface, 
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
+    #[ORM\Column(name: 'user_id', type: 'integer', nullable: true)]
+    private ?int $userId = null;
+
     #[ORM\Column(type: 'string', length: 128, nullable: false)]
     private string $email;
 
@@ -35,12 +38,14 @@ class EmailNotification implements EntityInterface, HasMetaTimestampsInterface, 
     private ?string $entityName = null;
 
     public function __construct(
+        string $userId,
         string $email,
         string $text,
         ?string $description = null,
         ?string $entityName = null
     )
     {
+        $this->userId = $userId;
         $this->email = $email;
         $this->text = $text;
         $this->description = $description;
@@ -50,6 +55,11 @@ class EmailNotification implements EntityInterface, HasMetaTimestampsInterface, 
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function userId(): int
+    {
+        return $this->userId;
     }
 
     public function getEmail(): string

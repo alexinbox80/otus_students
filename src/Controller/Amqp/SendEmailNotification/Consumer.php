@@ -35,6 +35,7 @@ class Consumer extends AbstractConsumer
             $student->getEmail(),
             $message->text,
             $message->description,
+            $message->studentId,
             $message->entityName
         );
 

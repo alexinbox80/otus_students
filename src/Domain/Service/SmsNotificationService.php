@@ -12,9 +12,10 @@ class SmsNotificationService
     ) {
     }
 
-    public function saveSmsNotification(string $phone, string $text, string $description, string $entityName): void
+    public function saveSmsNotification(string $phone, string $text, string $description, string $userId, string $entityName): void
     {
         $emailNotification = new SmsNotification(
+            $userId,
             $phone,
             $text,
             $description,

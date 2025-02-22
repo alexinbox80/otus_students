@@ -22,6 +22,9 @@ class SmsNotification implements EntityInterface, HasMetaTimestampsInterface, So
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
+    #[ORM\Column(name: 'user_id', type: 'integer', nullable: true)]
+    private ?int $userId = null;
+
     #[ORM\Column(type: 'string', length: 11, nullable: false)]
     private string $phone;
 
@@ -35,12 +38,14 @@ class SmsNotification implements EntityInterface, HasMetaTimestampsInterface, So
     private ?string $entityName = null;
 
     public function __construct(
+        string $userId,
         string $phone,
         string $text,
         ?string $description = null,
         ?string $entityName = null
     )
     {
+        $this->userId = $userId;
         $this->phone = $phone;
         $this->text = $text;
         $this->description = $description;
@@ -50,6 +55,11 @@ class SmsNotification implements EntityInterface, HasMetaTimestampsInterface, So
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function userId(): int
+    {
+        return $this->userId;
     }
 
     public function getPhone(): string
