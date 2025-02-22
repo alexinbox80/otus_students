@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Web\Student\ConfirmationPhone\v1\Output;
+namespace App\Controller\Web\Teacher\ConfirmationPhone\v1\Output;
 
 use App\Controller\DTO\Interfaces\OutputPhoneCodeConfirmedDTOInterface;
 

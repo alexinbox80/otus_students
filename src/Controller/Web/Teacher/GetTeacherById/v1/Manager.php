@@ -23,6 +23,7 @@ class Manager
         if (!is_null($teacher)) {
             return new GotTeacherByIdDTO(
                 $teacher->getId(),
+                $teacher->getUserId(),
                 $teacher->getLastName(),
                 $teacher->getFirstName(),
                 $teacher->getMiddleName(),

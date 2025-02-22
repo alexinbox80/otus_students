@@ -4,27 +4,71 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\Person;
 use App\Domain\Entity\Teacher;
+use App\Domain\Model\CreateEmailConfirmationCodeModel;
+use App\Domain\Model\CreatePhoneConfirmationCodeModel;
 use App\Domain\Model\CreateTeacherModel;
+use App\Domain\Model\TeacherModel;
 use App\Domain\Model\UpdateTeacherModel;
-use App\Infrastructure\Repository\TeacherRepository;
+use App\Domain\Repository\TeacherRepositoryInterface;
+use Psr\Cache\InvalidArgumentException;
 
 class TeacherService
 {
-    public function __construct(private readonly TeacherRepository $teacherRepository)
+    public function __construct(
+        private readonly TeacherRepositoryInterface $teacherRepository,
+        private readonly UserService $userService
+    ) {
+    }
+
+    /**
+     * @param CreateEmailConfirmationCodeModel $emailConfirmationCodeModel
+     * @param string $login
+     * @return bool
+     * @throws InvalidArgumentException
+     */
+    public function confirmationEmail(CreateEmailConfirmationCodeModel $emailConfirmationCodeModel, string $login): bool
     {
+        $user = $this->userService->findUserByLogin($login);
+        if($user->getTeacher()->getEmailCode() !== $emailConfirmationCodeModel->emailCode)
+            return false;
+        else {
+            $user->getTeacher()->setEmailConfirmed(true);
+            $this->teacherRepository->update();
+        }
+
+        return true;
+    }
+
+    /**
+     * @param CreatePhoneConfirmationCodeModel $phoneConfirmationCodeModel
+     * @param string $login
+     * @return bool
+     * @throws InvalidArgumentException
+     */
+    public function confirmationPhone(CreatePhoneConfirmationCodeModel $phoneConfirmationCodeModel, string $login): bool
+    {
+        $user = $this->userService->findUserByLogin($login);
+        if($user->getTeacher()->getPhoneCode() !== $phoneConfirmationCodeModel->phoneCode)
+            return false;
+        else {
+            $user->getTeacher()->setPhoneConfirmed(true);
+            $this->teacherRepository->update();
+        }
+
+        return true;
     }
 
     /**
      * @param int $teacherId
-     * @return ?Teacher
+     * @return ?TeacherModel
      */
-    public function find(int $teacherId): ?Teacher
+    public function find(int $teacherId): ?TeacherModel
     {
         return $this->teacherRepository->find($teacherId);
     }
 
     /**
-     * @return Teacher[]
+     * @return TeacherModel[]
      */
     public function findAll(): array
     {
@@ -33,7 +77,7 @@ class TeacherService
 
     /**
      * @param string $lastName
-     * @return Teacher[]
+     * @return TeacherModel[]
      */
     public function findTeachersByLastName(string $lastName): array
     {
@@ -42,7 +86,7 @@ class TeacherService
 
     /**
      * @param string $firstName
-     * @return Teacher[]
+     * @return TeacherModel[]
      */
     public function findTeachersByFirstName(string $firstName): array
     {
@@ -51,7 +95,7 @@ class TeacherService
 
     /**
      * @param string $middleName
-     * @return Teacher[]
+     * @return TeacherModel[]
      */
     public function findTeachersByMiddleName(string $middleName): array
     {
@@ -59,19 +103,21 @@ class TeacherService
     }
 
     /**
-     * @return Teacher[]
+     * @return TeacherModel[]
+     * @throws InvalidArgumentException
      */
-    public function getTeachers(int $page, int $perPage): array
+    public function getTeachersPaginated(int $page, int $perPage): array
     {
-        return $this->teacherRepository->getTeachers($page, $perPage);
+        return $this->teacherRepository->getTeachersPaginated($page, $perPage);
     }
 
     /**
      * @param int $teacherId
      * @param Person $person
-     * @return Teacher|null
+     * @return TeacherModel|null
+     * @throws InvalidArgumentException
      */
-    public function updateName(int $teacherId, Person $person): ?Teacher
+    public function updateName(int $teacherId, Person $person): ?TeacherModel
     {
         $teacher = $this->teacherRepository->find($teacherId);
         if (!($teacher instanceof Teacher)) {
@@ -85,9 +131,10 @@ class TeacherService
     /**
      * @param int $teacherId
      * @param Person $person
-     * @return Teacher|null
+     * @return TeacherModel|null
+     * @throws InvalidArgumentException
      */
-    public function updateContact(int $teacherId, Person $person): ?Teacher
+    public function updateContact(int $teacherId, Person $person): ?TeacherModel
     {
         $teacher = $this->teacherRepository->find($teacherId);
         if (!($teacher instanceof Teacher)) {
@@ -100,31 +147,51 @@ class TeacherService
 
     /**
      * @param CreateTeacherModel $createTeacherModel
-     * @return Teacher
+     * @return TeacherModel
+     * @throws InvalidArgumentException
      */
-    public function create(CreateTeacherModel $createTeacherModel): Teacher
+    public function create(CreateTeacherModel $createTeacherModel): TeacherModel
     {
+        $user = $this->userService->find($createTeacherModel->userId);
+
         $teacher = new Teacher(
+            $user,
             $createTeacherModel->firstName,
             $createTeacherModel->lastName,
             $createTeacherModel->middleName,
             $createTeacherModel->email,
             $createTeacherModel->phone
         );
+        $teacher->setEmailCode($createTeacherModel->emailCode);
+        $teacher->setPhoneCode($createTeacherModel->phoneCode);
 
         $this->teacherRepository->create($teacher);
 
-        return $teacher;
+        return new TeacherModel(
+            $teacher->getId(),
+            $teacher->getUser()->getId(),
+            $teacher->getFirstName(),
+            $teacher->getLastName(),
+            $teacher->getMiddleName(),
+            $teacher->getEmail(),
+            $teacher->getPhone(),
+            $teacher->getCreatedAt(),
+            $teacher->getUpdatedAt()
+        );
     }
 
     /**
      * @param Teacher $teacher
      * @param UpdateTeacherModel $updateTeacherModel
-     * @return Teacher
+     * @return TeacherModel
+     * @throws InvalidArgumentException
      */
-    public function update(Teacher $teacher, UpdateTeacherModel $updateTeacherModel): Teacher
+    public function update(Teacher $teacher, UpdateTeacherModel $updateTeacherModel): TeacherModel
     {
+        $user = $this->userService->find($updateTeacherModel->userId);
+
         $teacher->changeFields(
+            $user,
             $updateTeacherModel->firstName,
             $updateTeacherModel->lastName,
             $updateTeacherModel->middleName,
@@ -134,17 +201,28 @@ class TeacherService
 
         $this->teacherRepository->update();
 
-        return $teacher;
+        return new TeacherModel(
+            $teacher->getId(),
+            $teacher->getUser()->getId(),
+            $teacher->getFirstName(),
+            $teacher->getLastName(),
+            $teacher->getMiddleName(),
+            $teacher->getEmail(),
+            $teacher->getPhone(),
+            $teacher->getCreatedAt(),
+            $teacher->getUpdatedAt()
+        );
     }
 
     /**
      * @param int $teacherId
      * @return void
+     * @throws InvalidArgumentException
      */
     public function removeById(int $teacherId): void
     {
         $teacher = $this->teacherRepository->find($teacherId);
-        if ($teacher instanceof Teacher) {
+        if ($teacher !== null) {
             $this->teacherRepository->remove($teacher);
         }
     }
@@ -152,6 +230,7 @@ class TeacherService
     /**
      * @param Teacher $teacher
      * @return void
+     * @throws InvalidArgumentException
      */
     public function removeTeacher(Teacher $teacher): void
     {

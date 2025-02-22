@@ -4,8 +4,8 @@ namespace App\Application\EventListener;
 
 use App\Controller\DTO\Interfaces\OutputDTOInterface;
 use App\Controller\DTO\Interfaces\OutputDTONotFoundInterface;
-use App\Controller\Web\Student\ConfirmationEmail\v1\Output\EmailCodeConfirmedDTO;
-use App\Controller\Web\Student\ConfirmationPhone\v1\Output\PhoneCodeConfirmedDTO;
+use App\Controller\DTO\Interfaces\OutputEmailCodeConfirmedDTOInterface;
+use App\Controller\DTO\Interfaces\OutputPhoneCodeConfirmedDTOInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -25,11 +25,11 @@ class KernelViewEventListener
     {
         $dto = $event->getControllerResult();
 
-        if (is_object($dto) and $dto instanceof EmailCodeConfirmedDTO) {
+        if (is_object($dto) and $dto instanceof OutputEmailCodeConfirmedDTOInterface) {
             $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
         }
 
-        if (is_object($dto) and $dto instanceof PhoneCodeConfirmedDTO) {
+        if (is_object($dto) and $dto instanceof OutputPhoneCodeConfirmedDTOInterface) {
             $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
         }
 
@@ -54,6 +54,7 @@ class KernelViewEventListener
             if (isset($dto['skills'])
                 || isset($dto['completed-tasks'])
                 || isset($dto['students'])
+                || isset($dto['teachers'])
             ) {
                 $successResponse = $dto;
             } else {

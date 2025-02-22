@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller\Web\Student\ConfirmationEmail\v1;
+namespace App\Controller\Web\Teacher\ConfirmationEmail\v1;
 
-use App\Controller\Web\Student\ConfirmationEmail\v1\Input\EmailConfirmationCodeDTO;
-use App\Controller\Web\Student\ConfirmationEmail\v1\Output\EmailCodeConfirmedDTO;
+use App\Controller\Web\Teacher\ConfirmationEmail\v1\Input\EmailConfirmationCodeDTO;
+use App\Controller\Web\Teacher\ConfirmationEmail\v1\Output\EmailCodeConfirmedDTO;
 use App\Domain\Model\CreateEmailConfirmationCodeModel;
 use App\Domain\Service\ModelFactory;
-use App\Domain\Service\StudentService;
+use App\Domain\Service\TeacherService;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -15,7 +15,7 @@ class Manager
     public function __construct(
         /** @var ModelFactory<CreateEmailConfirmationCodeModel> */
         private readonly ModelFactory  $modelFactory,
-        private readonly StudentService $studentService
+        private readonly TeacherService $teacherService
     ) {
     }
 
@@ -29,7 +29,7 @@ class Manager
             $emailConfirmationCodeDTO->emailCode
         );
 
-        $result = $this->studentService->confirmationEmail($emailConfirmationCodeModel, $user->getUserIdentifier());
+        $result = $this->teacherService->confirmationEmail($emailConfirmationCodeModel, $user->getUserIdentifier());
 
         if (!$result) {
             $success = false;

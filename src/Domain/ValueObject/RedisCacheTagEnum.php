@@ -8,4 +8,6 @@ enum RedisCacheTagEnum: string
     case CACHE_TAG_COMPLETED_TASKS = 'completed_tasks';
 
     case CACHE_TAG_STUDENTS = 'students';
+
+    case CACHE_TAG_TEACHERS = 'teachers';
 }

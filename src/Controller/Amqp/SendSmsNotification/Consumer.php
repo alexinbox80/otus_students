@@ -6,11 +6,13 @@ use App\Application\RabbitMq\AbstractConsumer;
 use App\Controller\Amqp\SendSmsNotification\Input\Message;
 use App\Domain\Service\SmsNotificationService;
 use App\Domain\Service\StudentService;
+use App\Domain\Service\TeacherService;
 
 class Consumer extends AbstractConsumer
 {
     public function __construct(
         private readonly StudentService $studentService,
+        private readonly TeacherService $teacherService,
         private readonly SmsNotificationService $smsNotificationService,
     ) {
     }
@@ -25,17 +27,27 @@ class Consumer extends AbstractConsumer
      */
     protected function handle($message): int
     {
-        $student = $this->studentService->find($message->studentId);
+        if ($message->entityName === 'Student') {
+            $user = $this->studentService->find($message->userId);
 
-        if ($student === null) {
-            return $this->reject(sprintf('Student ID %s was not found or does not use phone ', $message->studentId));
+            if ($user === null) {
+                return $this->reject(sprintf('Student ID %s was not found or does not use phone ', $message->userId));
+            }
+        }
+
+        if ($message->entityName === 'Teacher') {
+            $user = $this->teacherService->find($message->userId);
+
+            if ($user === null) {
+                return $this->reject(sprintf('Teacher ID %s was not found or does not use phone ', $message->userId));
+            }
         }
 
         $this->smsNotificationService->saveSmsNotification(
-            $student->getPhone(),
+            $user->getPhone(),
             $message->text,
             $message->description,
-            $message->studentId,
+            $message->userId,
             $message->entityName
         );
 

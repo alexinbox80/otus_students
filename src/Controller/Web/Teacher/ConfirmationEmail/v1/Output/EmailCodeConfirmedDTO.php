@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Web\Student\ConfirmationEmail\v1\Output;
+namespace App\Controller\Web\Teacher\ConfirmationEmail\v1\Output;
 
 use App\Controller\DTO\Interfaces\OutputEmailCodeConfirmedDTOInterface;
 

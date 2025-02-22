@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller\Web\Student\ConfirmationPhone\v1;
+namespace App\Controller\Web\Teacher\ConfirmationPhone\v1;
 
-use App\Controller\Web\Student\ConfirmationPhone\v1\Input\PhoneConfirmationCodeDTO;
-use App\Controller\Web\Student\ConfirmationPhone\v1\Output\PhoneCodeConfirmedDTO;
+use App\Controller\Web\Teacher\ConfirmationPhone\v1\Input\PhoneConfirmationCodeDTO;
+use App\Controller\Web\Teacher\ConfirmationPhone\v1\Output\PhoneCodeConfirmedDTO;
 use App\Domain\Model\CreatePhoneConfirmationCodeModel;
 use App\Domain\Service\ModelFactory;
-use App\Domain\Service\StudentService;
+use App\Domain\Service\TeacherService;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -14,8 +14,8 @@ class Manager
 {
     public function __construct(
         /** @var ModelFactory<CreatePhoneConfirmationCodeModel> */
-        private readonly ModelFactory $modelFactory,
-        private readonly StudentService $studentService
+        private readonly ModelFactory  $modelFactory,
+        private readonly TeacherService $teacherService
     ) {
     }
 
@@ -29,7 +29,7 @@ class Manager
             $phoneConfirmationCodeDTO->phoneCode
         );
 
-        $result = $this->studentService->confirmationPhone($emailConfirmationCodeModel, $user->getUserIdentifier());
+        $result = $this->teacherService->confirmationPhone($emailConfirmationCodeModel, $user->getUserIdentifier());
 
         if (!$result) {
             $success = false;

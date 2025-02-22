@@ -2,10 +2,10 @@
 
 namespace App\Domain\Service;
 
-use App\Controller\Web\Student\ConfirmationEmail\v1\Input\EmailConfirmationCodeDTO;
-use App\Controller\Web\Student\ConfirmationPhone\v1\Input\PhoneConfirmationCodeDTO;
 use App\Domain\Entity\Person;
 use App\Domain\Entity\Student;
+use App\Domain\Model\CreateEmailConfirmationCodeModel;
+use App\Domain\Model\CreatePhoneConfirmationCodeModel;
 use App\Domain\Model\CreateStudentModel;
 use App\Domain\Model\StudentModel;
 use App\Domain\Model\UpdateStudentModel;
@@ -23,10 +23,10 @@ class StudentService
     /**
      * @throws InvalidArgumentException
      */
-    public function confirmationEmail(EmailConfirmationCodeDTO $emailConfirmationCodeDTO, string $login): bool
+    public function confirmationEmail(CreateEmailConfirmationCodeModel $emailConfirmationCodeModel, string $login): bool
     {
         $user = $this->userService->findUserByLogin($login);
-        if($user->getStudent()->getEmailCode() !== $emailConfirmationCodeDTO->emailCode)
+        if($user->getStudent()->getEmailCode() !== $emailConfirmationCodeModel->emailCode)
             return false;
         else {
             $user->getStudent()->setEmailConfirmed(true);
@@ -39,10 +39,10 @@ class StudentService
     /**
      * @throws InvalidArgumentException
      */
-    public function confirmationPhone(PhoneConfirmationCodeDTO $phoneConfirmationCodeDTO, string $login): bool
+    public function confirmationPhone(CreatePhoneConfirmationCodeModel $phoneConfirmationCodeModel, string $login): bool
     {
         $user = $this->userService->findUserByLogin($login);
-        if($user->getStudent()->getPhoneCode() !== $phoneConfirmationCodeDTO->phoneCode)
+        if($user->getStudent()->getPhoneCode() !== $phoneConfirmationCodeModel->phoneCode)
             return false;
         else {
             $user->getStudent()->setPhoneConfirmed(true);

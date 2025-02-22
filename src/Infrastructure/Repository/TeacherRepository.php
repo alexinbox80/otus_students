@@ -13,7 +13,7 @@ class TeacherRepository extends AbstractRepository
     /**
      * @return Teacher[]
      */
-    public function getTeachers(int $page, int $perPage): array
+    public function getTeachersPaginated(int $page, int $perPage): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('t')

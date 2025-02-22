@@ -8,6 +8,8 @@ class CreateTeacherModel
 {
     public function __construct(
         #[Assert\NotBlank]
+        public readonly int $userId,
+        #[Assert\NotBlank]
         public readonly string $firstName,
         #[Assert\NotBlank]
         public readonly string $lastName,
@@ -15,7 +17,9 @@ class CreateTeacherModel
         #[Assert\Email()]
         public readonly ?string $email,
         #[Assert\Type('numeric')]
-        public readonly ?string $phone
+        public readonly ?string $phone,
+        public readonly ?string $emailCode = null,
+        public readonly ?string $phoneCode = null,
     ) {
     }
 }

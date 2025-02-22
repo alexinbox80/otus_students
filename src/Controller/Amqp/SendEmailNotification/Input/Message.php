@@ -9,7 +9,7 @@ class Message
     public function __construct(
         #[Assert\NotNull]
         #[Assert\Type('numeric')]
-        public readonly int $studentId,
+        public readonly int $userId,
         #[Assert\Type('string')]
         #[Assert\Length(max: 512)]
         public readonly string $text,

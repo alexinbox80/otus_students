@@ -5,6 +5,7 @@ namespace App\Controller\Web\Teacher\DeleteTeacher\v1;
 use App\Controller\Web\Teacher\DeleteTeacher\v1\Output\DeletedTeacherDTO;
 use App\Domain\Entity\Teacher;
 use App\Domain\Service\TeacherService;
+use Psr\Cache\InvalidArgumentException;
 
 class Manager
 {
@@ -13,6 +14,9 @@ class Manager
     ) {
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function deleteTeacher(Teacher $teacher): DeletedTeacherDTO
     {
         $this->teacherService->removeTeacher($teacher);

@@ -8,6 +8,7 @@ class CreatedTeacherDTO implements OutputDTOInterface
 {
     public function __construct(
         public readonly int $id,
+        public readonly int $userId,
         public readonly string $lastName,
         public readonly string $firstName,
         public readonly ?string $middleName,

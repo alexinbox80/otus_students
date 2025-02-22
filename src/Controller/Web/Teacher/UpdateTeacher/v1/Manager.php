@@ -22,6 +22,7 @@ class Manager
     {
         $updateTeacherModel = $this->modelFactory->makeModel(
             UpdateTeacherModel::class,
+            $updateTeacherDTO->userId,
             $updateTeacherDTO->firstName,
             $updateTeacherDTO->lastName,
             $updateTeacherDTO->middleName,
@@ -33,6 +34,7 @@ class Manager
 
         return new UpdatedTeacherDTO(
             $teacher->getId(),
+            $teacher->getUserId(),
             $teacher->getFirstName(),
             $teacher->getLastName(),
             $teacher->getMiddleName(),
