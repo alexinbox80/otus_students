@@ -43,6 +43,14 @@ class Consumer extends AbstractConsumer
             }
         }
 
+        if ($message->entityName === 'CompletedTask' ) {
+            $user = $this->studentService->find($message->userId);
+
+            if ($user === null) {
+                return $this->reject(sprintf('Student ID %s was not found or does not use email ', $message->userId));
+            }
+        }
+
         $this->emailNotificationService->saveEmailNotification(
             $user->getEmail(),
             $message->text,

@@ -4,10 +4,12 @@ namespace App\Domain\Service;
 
 use App\Domain\Bus\SendNotificationBusInterface;
 use App\Domain\DTO\SendNotificationDTO;
+use App\Domain\Event\CompletedTaskEvent;
 use App\Domain\Model\CompletedTaskModel;
 use App\Domain\Model\CreateCompletedTaskModel;
 use App\Domain\Model\UpdateCompletedTaskModel;
 use App\Domain\Repository\CompletedTaskRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use DateTime;
 use App\Domain\Entity\CompletedTask;
 use Psr\Cache\InvalidArgumentException;
@@ -18,7 +20,7 @@ class CompletedTaskService
         private readonly StudentService $studentService,
         private readonly TaskService $taskService,
         private readonly CompletedTaskRepositoryInterface $completedTaskRepository,
-        private readonly SendNotificationBusInterface $sendNotificationBus
+        private readonly EventDispatcherInterface $eventDispatcher
     )
     {
     }
@@ -185,16 +187,23 @@ class CompletedTaskService
 
         $this->completedTaskRepository->create($completedTask);
 
-        $text = "Dear {$student->getFirstName()} {$student->getLastName()}!,\\n you mark is {$createCompletedTaskModel->grade} for {$task->getName()} \\n";
-        $description = "Completed task: {$task->getName()} Description: {$task->getDescription()}\\n";
-        $this->sendNotificationBus->sendNotification(
-            new SendNotificationDTO(
-                $createCompletedTaskModel->studentId,
-                $text,
-                $description,
-                'CompletedTask'
-            )
+//        $text = "Dear {$student->getFirstName()} {$student->getLastName()}!,\\n you mark is {$createCompletedTaskModel->grade} for {$task->getName()} \\n";
+//        $description = "Completed task: {$task->getName()} Description: {$task->getDescription()}\\n";
+//        $this->sendNotificationBus->sendNotification(
+//            new SendNotificationDTO(
+//                $createCompletedTaskModel->studentId,
+//                $text,
+//                $description,
+//                'CompletedTask',
+//                'email'
+//            )
+//        );
+
+        $event = new CompletedTaskEvent(
+            $createCompletedTaskModel,
+            $task
         );
+        $event = $this->eventDispatcher->dispatch($event);
 
         return new CompletedTaskModel(
             $completedTask->getId(),

@@ -17,9 +17,9 @@ interface StudentRepositoryInterface
 
     /**
      * @param int $studentId
-     * @return StudentModel|null
+     * @return Student|null
      */
-    public function find(int $studentId): ?StudentModel;
+    public function find(int $studentId): ?Student;
 
     /**
      * @return StudentModel[]

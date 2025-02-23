@@ -58,26 +58,11 @@ class StudentRepositoryCacheDecorator implements StudentRepositoryInterface
 
     /**
      * @param int $studentId
-     * @return StudentModel|null
+     * @return Student|null
      */
-    public function find(int $studentId): ?StudentModel
+    public function find(int $studentId): ?Student
     {
-        $student = $this->studentRepository->find($studentId);
-
-        if ($student !== null)
-            return new StudentModel(
-                $student->getId(),
-                $student->getUser()->getId(),
-                $student->getFirstName(),
-                $student->getLastName(),
-                $student->getMiddleName(),
-                $student->getEmail(),
-                $student->getPhone(),
-                $student->getCreatedAt(),
-                $student->getUpdatedAt()
-            );
-        else
-            return null;
+        return $this->studentRepository->find($studentId);
     }
 
     /**

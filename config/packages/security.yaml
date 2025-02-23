@@ -56,6 +56,10 @@ security:
         - { path: ^/api/v1/user, roles: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
         - { path: ^/api/v1/user, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ PATCH, DELETE ] }
         - { path: ^/api/v1/update-user-avatar-link/\d+$, roles: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/student/email-confirmation, roles: [ ROLE_STUDENT, ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/student/phone-confirmation, roles: [ ROLE_STUDENT, ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/teacher/email-confirmation, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/teacher/phone-confirmation, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
 
     role_hierarchy:
             ROLE_ADMIN: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ]

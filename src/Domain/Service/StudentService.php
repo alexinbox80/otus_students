@@ -54,9 +54,9 @@ class StudentService
 
     /**
      * @param int $studentId
-     * @return ?StudentModel
+     * @return ?Student
      */
-    public function find(int $studentId): ?StudentModel
+    public function find(int $studentId): ?Student
     {
         return $this->studentRepository->find($studentId);
     }
