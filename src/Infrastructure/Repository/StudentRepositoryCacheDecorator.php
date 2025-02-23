@@ -66,26 +66,11 @@ class StudentRepositoryCacheDecorator implements StudentRepositoryInterface
     }
 
     /**
-     * @return StudentModel[]
+     * @return Student[]
      */
     public function findAll(): array
     {
-        $students = $this->studentRepository->findAll();
-
-        return array_map(
-            static fn (Student $student): StudentModel => new StudentModel(
-                $student->getId(),
-                $student->getUser()->getId(),
-                $student->getFirstName(),
-                $student->getLastName(),
-                $student->getMiddleName(),
-                $student->getEmail(),
-                $student->getPhone(),
-                $student->getCreatedAt(),
-                $student->getUpdatedAt()
-            ),
-            $students
-        );
+        return $this->studentRepository->findAll();
     }
 
     /**

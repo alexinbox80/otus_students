@@ -62,7 +62,7 @@ class StudentService
     }
 
     /**
-     * @return StudentModel[]
+     * @return Student[]
      */
     public function findAll(): array
     {

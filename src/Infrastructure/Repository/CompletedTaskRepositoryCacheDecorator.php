@@ -3,9 +3,6 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\CompletedTask;
-use App\Domain\Entity\Course;
-use App\Domain\Entity\Lesson;
-use App\Domain\Entity\Skill;
 use App\Domain\Entity\Student;
 use App\Domain\Model\CompletedTaskModel;
 use App\Domain\Repository\CompletedTaskRepositoryInterface;
@@ -44,6 +41,15 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
             );
         else
             return null;
+    }
+
+    /**
+     * @param Student $student
+     * @return CompletedTask[]|null
+     */
+    public function findByStudent(Student $student): array|null
+    {
+       return $this->completedTaskRepository->findByStudent($student);
     }
 
     /**
@@ -240,46 +246,5 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
     {
         $this->completedTaskRepository->remove($completedTask);
         $this->cache->invalidateTags([RedisCacheTagEnum::CACHE_TAG_COMPLETED_TASKS->value]);
-    }
-
-    /**
-     * @param Lesson $lesson
-     * @param Student $student
-     * @return float
-     */
-    public function getTotalGradeForLesson(Lesson $lesson, Student $student): float
-    {
-        return $this->completedTaskRepository->getTotalGradeForLessonWithCriteria($lesson, $student);
-    }
-
-    /**
-     * @param Skill $skill
-     * @param Student $student
-     * @return float
-     */
-    public function getTotalGradeForSkill(Skill $skill, Student $student): float
-    {
-        return $this->completedTaskRepository->getTotalGradeForSkillWithCriteria($skill, $student);
-    }
-
-    /**
-     * @param Course $course
-     * @param Student $student
-     * @return float
-     */
-    public function getTotalGradeForCourse(Course $course, Student $student): float
-    {
-        return $this->completedTaskRepository->getTotalGradeForCourseWithCriteria($course, $student);
-    }
-
-    /**
-     * @param DateTime $startDate
-     * @param DateTime $endDate
-     * @param Student $student
-     * @return float
-     */
-    public function getTotalGradeInTimeRange(DateTime $startDate, DateTime $endDate, Student $student): float
-    {
-        return $this->completedTaskRepository->getTotalGradeInTimeRangeWithCriteria($startDate, $endDate, $student);
     }
 }

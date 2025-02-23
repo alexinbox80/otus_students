@@ -39,11 +39,11 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface, Soft
     #[Assert\Range(min: 1, max: 10)]
     private ?int $grade = null;
 
-    #[ORM\ManyToOne(targetEntity: Student::class, inversedBy: 'completedTasks')]
+    #[ORM\ManyToOne(targetEntity: Student::class, cascade: ['all'], fetch: 'EAGER', inversedBy: 'completedTasks')]
     #[ORM\JoinColumn(name: 'student_id', referencedColumnName: 'id')]
     private Student $student;
 
-    #[ORM\ManyToOne(targetEntity: Task::class, inversedBy: 'completedTasks')]
+    #[ORM\ManyToOne(targetEntity: Task::class, cascade: ['all'], fetch: 'EAGER', inversedBy: 'completedTasks')]
     #[ORM\JoinColumn(name: 'task_id', referencedColumnName: 'id')]
     private Task $task;
 

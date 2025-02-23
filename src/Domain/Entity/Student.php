@@ -39,7 +39,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'student')]
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'student', cascade: ['all'], fetch: 'EAGER')]
     #[Groups(['student'])]
     private User $user;
 

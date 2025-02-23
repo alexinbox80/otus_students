@@ -55,6 +55,7 @@ class KernelViewEventListener
                 || isset($dto['completed-tasks'])
                 || isset($dto['students'])
                 || isset($dto['teachers'])
+                || isset($dto['grade-for-lesson'])
             ) {
                 $successResponse = $dto;
             } else {

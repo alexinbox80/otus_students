@@ -2,6 +2,7 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\Entity\Student;
 use App\Domain\Event\CompletedTaskEvent;
 use App\Domain\Model\CompletedTaskModel;
 use App\Domain\Model\CreateCompletedTaskModel;
@@ -30,6 +31,15 @@ class CompletedTaskService
     public function find(int $completedTaskId): ?CompletedTaskModel
     {
         return $this->completedTaskRepository->find($completedTaskId);
+    }
+
+    /**
+     * @param Student $student
+     * @return CompletedTask[]|null
+     */
+    public function findByStudent(Student $student): array|null
+    {
+        return $this->completedTaskRepository->findByStudent($student);
     }
 
     /**
