@@ -2,8 +2,6 @@
 
 namespace App\Domain\Service;
 
-use App\Domain\Bus\SendNotificationBusInterface;
-use App\Domain\DTO\SendNotificationDTO;
 use App\Domain\Event\CompletedTaskEvent;
 use App\Domain\Model\CompletedTaskModel;
 use App\Domain\Model\CreateCompletedTaskModel;
@@ -186,18 +184,6 @@ class CompletedTaskService
         //$student->addCompletedTask($completedTask);
 
         $this->completedTaskRepository->create($completedTask);
-
-//        $text = "Dear {$student->getFirstName()} {$student->getLastName()}!,\\n you mark is {$createCompletedTaskModel->grade} for {$task->getName()} \\n";
-//        $description = "Completed task: {$task->getName()} Description: {$task->getDescription()}\\n";
-//        $this->sendNotificationBus->sendNotification(
-//            new SendNotificationDTO(
-//                $createCompletedTaskModel->studentId,
-//                $text,
-//                $description,
-//                'CompletedTask',
-//                'email'
-//            )
-//        );
 
         $event = new CompletedTaskEvent(
             $createCompletedTaskModel,
