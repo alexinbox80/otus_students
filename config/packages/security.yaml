@@ -62,7 +62,7 @@ security:
         - { path: ^/api/v1/teacher/phone-confirmation, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
         - { path: ^/api/v1/get-students-grade-for-course, roles: [ ROLE_MANAGER ], methods: [ GET ] }
         - { path: ^/api/v1/get-students-grade-for-lesson, roles: [ ROLE_MANAGER ], methods: [ GET ] }
-        - { path: ^/api/v1/get-students-grade-for-lesson-in-time-range, roles: [ ROLE_MANAGER ], methods: [ GET ] }
+        - { path: ^/api/v1/get-students-grade-for-lesson-in-time-range, roles: [ ROLE_MANAGER ], methods: [ POST ] }
         - { path: ^/api/v1/get-students-grade-for-skill, roles: [ ROLE_MANAGER ], methods: [ GET ] }
 
     role_hierarchy:
