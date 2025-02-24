@@ -6,10 +6,17 @@ use App\Domain\Entity\Course;
 use App\Domain\Entity\Lesson;
 use App\Domain\Entity\Skill;
 use App\Domain\Entity\Student;
+use Psr\Cache\InvalidArgumentException;
 use DateTime;
 
 interface StudentGradeRepositoryInterface
 {
+    /**
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    public function ClearCache(): void;
+
     /**
      * @param Lesson $lesson
      * @param Student $student

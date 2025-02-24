@@ -6,6 +6,7 @@ use App\Domain\Entity\CompletedTask;
 use App\Domain\Entity\Student;
 use App\Domain\Model\CompletedTaskModel;
 use App\Domain\Repository\CompletedTaskRepositoryInterface;
+use App\Domain\Repository\StudentGradeRepositoryInterface;
 use App\Domain\ValueObject\RedisCacheTagEnum;
 use DateTime;
 use Psr\Cache\InvalidArgumentException;
@@ -17,6 +18,7 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
     public function __construct(
         private readonly CompletedTaskRepository $completedTaskRepository,
         private readonly TagAwareCacheInterface $cache,
+        private readonly StudentGradeRepositoryInterface $studentGradeRepository
     ) {
     }
 
@@ -189,6 +191,7 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
     {
         $this->completedTaskRepository->updateGrade($completedTask, $grade);
         $this->cache->invalidateTags([RedisCacheTagEnum::CACHE_TAG_COMPLETED_TASKS->value]);
+        $this->studentGradeRepository->ClearCache();
     }
 
     /**
@@ -201,6 +204,7 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
     {
         $this->completedTaskRepository->updateDescription($completedTask, $description);
         $this->cache->invalidateTags([RedisCacheTagEnum::CACHE_TAG_COMPLETED_TASKS->value]);
+        $this->studentGradeRepository->ClearCache();
     }
 
     /**
@@ -213,6 +217,7 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
     {
         $this->completedTaskRepository->updateFinishedAt($completedTask, $finishedAt);
         $this->cache->invalidateTags([RedisCacheTagEnum::CACHE_TAG_COMPLETED_TASKS->value]);
+        $this->studentGradeRepository->ClearCache();
     }
 
     /**
@@ -223,6 +228,7 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
     {
         $this->completedTaskRepository->update();
         $this->cache->invalidateTags([RedisCacheTagEnum::CACHE_TAG_COMPLETED_TASKS->value]);
+        $this->studentGradeRepository->ClearCache();
     }
 
     /**
@@ -234,6 +240,7 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
     {
         $result = $this->completedTaskRepository->create($completedTask);
         $this->cache->invalidateTags([RedisCacheTagEnum::CACHE_TAG_COMPLETED_TASKS->value]);
+        $this->studentGradeRepository->ClearCache();
         return $result;
     }
 
@@ -246,5 +253,6 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
     {
         $this->completedTaskRepository->remove($completedTask);
         $this->cache->invalidateTags([RedisCacheTagEnum::CACHE_TAG_COMPLETED_TASKS->value]);
+        $this->studentGradeRepository->ClearCache();
     }
 }
