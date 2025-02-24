@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\Student;
-use App\Domain\ValueObject\RedisCacheTagEnum;
 use DateTime;
 use App\Domain\Entity\CompletedTask;
 use Doctrine\Common\Collections\Criteria;
@@ -87,10 +86,7 @@ class CompletedTaskRepository extends AbstractRepository
             ->setFirstResult($perPage * $page)
             ->setMaxResults($perPage);
 
-        return $queryBuilder
-        ->getQuery()
-        ->enableResultCache(null, RedisCacheTagEnum::CACHE_TAG_COMPLETED_TASKS->value . "_{$page}_$perPage")
-        ->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**

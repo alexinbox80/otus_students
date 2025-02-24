@@ -35,7 +35,7 @@ class StudentGradeRepositoryCacheDecorator implements StudentGradeRepositoryInte
      */
     public function getTotalGradeForSkill(Skill $skill, Student $student): float
     {
-        return $this->studentGradeRepository->getTotalGradeForSkillWithCriteria($skill, $student);
+        return $this->studentGradeRepository->getTotalGradeForSkill($skill, $student);
     }
 
     /**
@@ -45,7 +45,7 @@ class StudentGradeRepositoryCacheDecorator implements StudentGradeRepositoryInte
      */
     public function getTotalGradeForCourse(Course $course, Student $student): float
     {
-        return $this->studentGradeRepository->getTotalGradeForCourseWithCriteria($course, $student);
+        return $this->studentGradeRepository->getTotalGradeForCourse($course, $student);
     }
 
     /**

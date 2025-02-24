@@ -47,7 +47,7 @@ class StudentGradeRepository extends AbstractRepository
      * @param Student $student
      * @return float
      */
-    public function getTotalGradeForSkillWithCriteria(Skill $skill, Student $student): float
+    public function getTotalGradeForSkill(Skill $skill, Student $student): float
     {
         $completedTasks = $this->entityManager->getRepository(CompletedTask::class)->findBy(['student' => $student]);
 
@@ -72,7 +72,7 @@ class StudentGradeRepository extends AbstractRepository
      * @param Student $student
      * @return float
      */
-    public function getTotalGradeForCourseWithCriteria(Course $course, Student $student): float
+    public function getTotalGradeForCourse(Course $course, Student $student): float
     {
         $completedTasks = $this->entityManager->getRepository(CompletedTask::class)->findBy(['student' => $student]);
 
