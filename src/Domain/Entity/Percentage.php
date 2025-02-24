@@ -34,11 +34,11 @@ class Percentage implements EntityInterface, HasMetaTimestampsInterface, SoftDel
     #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
     private ?string $description;
 
-    #[ORM\ManyToOne(targetEntity: Task::class, inversedBy: 'percentages')]
+    #[ORM\ManyToOne(targetEntity: Task::class, cascade: ['all'], fetch: 'EAGER', inversedBy: 'percentages')]
     #[ORM\JoinColumn(name: 'task_id', referencedColumnName: 'id')]
     private Task $task;
 
-    #[ORM\ManyToOne(targetEntity: Skill::class, inversedBy: 'percentages')]
+    #[ORM\ManyToOne(targetEntity: Skill::class, cascade: ['all'], fetch: 'EAGER', inversedBy: 'percentages')]
     #[ORM\JoinColumn(name: 'skill_id', referencedColumnName: 'id')]
     private Skill $skill;
 

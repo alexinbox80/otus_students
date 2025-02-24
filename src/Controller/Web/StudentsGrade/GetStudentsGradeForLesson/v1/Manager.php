@@ -10,8 +10,8 @@ use App\Domain\Service\StudentService;
 class Manager
 {
     public function __construct(
-        private readonly StudentGradeService  $studentGradeService,
-        private readonly StudentService       $studentService,
+        private readonly StudentGradeService $studentGradeService,
+        private readonly StudentService $studentService,
         private readonly CompletedTaskService $completedTaskService
     )
     {
