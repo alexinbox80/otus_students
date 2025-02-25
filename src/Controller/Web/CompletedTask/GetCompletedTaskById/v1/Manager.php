@@ -23,8 +23,8 @@ class Manager
         if (!is_null($completedTask)) {
             return new GotCompletedTaskByIdDTO(
                 $completedTask->getId(),
-                $completedTask->getStudentId(),
-                $completedTask->getTaskId(),
+                $completedTask->getStudent()->getId(),
+                $completedTask->getTask()->getId(),
                 $completedTask->getFinishedAt(),
                 $completedTask->getDescription(),
                 $completedTask->getGrade(),
