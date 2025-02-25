@@ -25,8 +25,8 @@ class Manager
                 foreach ($percentages as $percentage) {
                     $this->studentGradeService->getTotalGradeAsync(
                         $student->getId(),
-                        $percentage->getSkill()->getId(),
-                        StudentGradeEnum::GET_STUDENT_GRADE_FOR_SKILL->value
+                        StudentGradeEnum::GET_STUDENT_GRADE_FOR_SKILL->value,
+                        $percentage->getSkill()->getId()
                     );
                 }
             }

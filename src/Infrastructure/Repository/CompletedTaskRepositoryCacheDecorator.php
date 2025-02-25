@@ -24,25 +24,11 @@ class CompletedTaskRepositoryCacheDecorator implements CompletedTaskRepositoryIn
 
     /**
      * @param int $completedTaskId
-     * @return CompletedTaskModel|null
+     * @return CompletedTask|null
      */
-    public function find(int $completedTaskId): ?CompletedTaskModel
+    public function find(int $completedTaskId): ?CompletedTask
     {
-        $completedTask = $this->completedTaskRepository->find($completedTaskId);
-
-        if ($completedTask !== null)
-            return new CompletedTaskModel(
-                $completedTask->getId(),
-                $completedTask->getStudent()->getId(),
-                $completedTask->getTask()->getId(),
-                $completedTask->getFinishedAt(),
-                $completedTask->getDescription(),
-                $completedTask->getGrade(),
-                $completedTask->getCreatedAt(),
-                $completedTask->getUpdatedAt()
-            );
-        else
-            return null;
+        return $this->completedTaskRepository->find($completedTaskId);
     }
 
     /**

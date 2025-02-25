@@ -2,7 +2,7 @@
 
 namespace App\Controller\Web\StudentsGrade\GetStudentsGradeForLessonInTimeRangeAsync\v1;
 
-use App\Controller\Web\StudentsGrade\GetStudentsGradeForLessonInTimeRange\v1\Input\TimeRangeDTO;
+use App\Controller\Web\StudentsGrade\GetStudentsGradeForLessonInTimeRangeAsync\v1\Input\TimeRangeDTO;
 use App\Controller\Web\StudentsGrade\GetStudentsGradeForLessonInTimeRangeAsync\v1\Output\StudentsGradeAsyncDTO;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;

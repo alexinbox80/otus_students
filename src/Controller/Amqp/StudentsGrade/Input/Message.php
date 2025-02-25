@@ -11,14 +11,13 @@ class Message
         #[Assert\NotNull]
         #[Assert\Type('numeric')]
         public readonly int $studentId,
-        #[Assert\NotNull]
-        #[Assert\Type('numeric')]
-        public readonly int $entityId,
-        public readonly ?DateTime $startDate = null,
-        public readonly ?DateTime $endDate = null,
         #[Assert\Type('string')]
         #[Assert\Length(max: 128)]
-        public readonly string $typeStudentsGrade
+        public readonly string $typeStudentsGrade,
+        #[Assert\Type('numeric')]
+        public readonly ?int $entityId = null,
+        public readonly ?DateTime $startDate = null,
+        public readonly ?DateTime $endDate = null,
     )
     {
     }

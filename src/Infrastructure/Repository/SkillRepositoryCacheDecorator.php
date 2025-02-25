@@ -55,21 +55,11 @@ class SkillRepositoryCacheDecorator implements SkillRepositoryInterface
 
     /**
      * @param int $skillId
-     * @return SkillModel|null
+     * @return Skill|null
      */
-    public function find(int $skillId): ?SkillModel
+    public function find(int $skillId): ?Skill
     {
-        $skill = $this->skillRepository->find($skillId);
-        if ($skill !== null) {
-            return new SkillModel(
-                $skill->getId(),
-                $skill->getName(),
-                $skill->getDescription(),
-                $skill->getCreatedAt(),
-                $skill->getUpdatedAt()
-            );
-        } else
-            return null;
+        return $this->skillRepository->find($skillId);
     }
 
     /**

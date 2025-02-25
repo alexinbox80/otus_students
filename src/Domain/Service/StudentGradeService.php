@@ -32,10 +32,10 @@ class StudentGradeService
         $this->studentsGradeBus->studentsGrade(
             new StudentsGradeDTO (
                 $studentId,
+                $typeStudentsGrade,
                 $entityId,
                 $startDate,
                 $endDate,
-                $typeStudentsGrade,
             )
         );
     }

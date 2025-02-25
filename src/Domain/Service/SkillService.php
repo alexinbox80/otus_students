@@ -18,9 +18,9 @@ class SkillService
 
     /**
      * @param int $skillId
-     * @return ?SkillModel
+     * @return ?Skill
      */
-    public function find(int $skillId): ?SkillModel
+    public function find(int $skillId): ?Skill
     {
         return $this->skillRepository->find($skillId);
     }

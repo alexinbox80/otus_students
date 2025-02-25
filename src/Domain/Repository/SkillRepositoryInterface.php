@@ -18,9 +18,9 @@ interface SkillRepositoryInterface
 
     /**
      * @param int $skillId
-     * @return SkillModel|null
+     * @return Skill|null
      */
-    public function find(int $skillId): ?SkillModel;
+    public function find(int $skillId): ?Skill;
 
     /**
      * @return SkillModel[]

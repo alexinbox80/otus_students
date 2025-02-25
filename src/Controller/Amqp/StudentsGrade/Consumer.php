@@ -4,6 +4,7 @@ namespace App\Controller\Amqp\StudentsGrade;
 
 use App\Application\RabbitMq\AbstractConsumer;
 use App\Controller\Amqp\StudentsGrade\Input\Message;
+use App\Domain\Service\CompletedTaskService;
 use App\Domain\Service\CourseService;
 use App\Domain\Service\LessonService;
 use App\Domain\Service\SkillService;
@@ -18,6 +19,7 @@ class Consumer extends AbstractConsumer
         private readonly LessonService $lessonService,
         private readonly SkillService $skillService,
         private readonly CourseService $courseService,
+        private readonly CompletedTaskService $completedTaskService,
         private readonly StudentGradeService $studentGradeService,
     ) {
     }
@@ -71,8 +73,8 @@ class Consumer extends AbstractConsumer
             $totalGrade[] = [
                 'id' => $student->getId(),
                 'userName' => $student->getLastName() . ' ' . $student->getFirstName() . ' ' . $student->getMiddleName(),
-                'skillName' => $skill->name,
-                //'totalGrade' => $this->studentGradeService->getTotalGradeForSkill($skill, $student)
+                'skillName' => $skill->getName(),
+                'totalGrade' => $this->studentGradeService->getTotalGradeForSkill($skill, $student)
             ];
         }
 
@@ -104,16 +106,16 @@ class Consumer extends AbstractConsumer
                 return $this->reject(sprintf('Student ID %s was not found! ', $message->studentId));
             }
 
-            $lesson = $this->lessonService->find($message->entityId);
+            $completedTask = $this->completedTaskService->find($message->entityId);
 
-            if ($lesson === null) {
-                return $this->reject(sprintf('Lesson ID %s was not found! ', $message->entityId));
+            if ($completedTask === null) {
+                return $this->reject(sprintf('Completed Task ID %s was not found! ', $message->entityId));
             }
 
             $totalGrade[] = [
                 'id' => $student->getId(),
                 'userName' => $student->getLastName() . ' ' . $student->getFirstName() . ' ' . $student->getMiddleName(),
-                'lessonName' => $lesson->getName(),
+                'lessonName' => $completedTask->getTask()->getLesson()->getName(),
                 'totalGrade' => $this->studentGradeService->getTotalGradeInTimeRange($message->startDate, $message->endDate, $student)
             ];
         }

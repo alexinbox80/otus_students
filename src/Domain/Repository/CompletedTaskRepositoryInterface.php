@@ -12,9 +12,9 @@ interface CompletedTaskRepositoryInterface
 {
     /**
      * @param int $completedTaskId
-     * @return CompletedTaskModel|null
+     * @return CompletedTask|null
      */
-    public function find(int $completedTaskId): ?CompletedTaskModel;
+    public function find(int $completedTaskId): ?CompletedTask;
 
     /**
      * @param Student $student
