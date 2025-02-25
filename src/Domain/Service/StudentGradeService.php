@@ -2,6 +2,8 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\Bus\StudentsGradeBusInterface;
+use App\Domain\DTO\StudentsGradeDTO;
 use App\Domain\Entity\Course;
 use App\Domain\Entity\Lesson;
 use App\Domain\Entity\Skill;
@@ -12,8 +14,30 @@ use DateTime;
 class StudentGradeService
 {
     public function __construct(
-        private readonly StudentGradeRepositoryInterface $studentGradeRepository
+        private readonly StudentGradeRepositoryInterface $studentGradeRepository,
+        private readonly StudentsGradeBusInterface $studentsGradeBus
     ) {
+    }
+
+    /**
+     * @param int $studentId
+     * @param int|null $entityId
+     * @param string $typeStudentsGrade
+     * @param DateTime|null $startDate
+     * @param DateTime|null $endDate
+     * @return void
+     */
+    public function getTotalGradeAsync(int $studentId, string $typeStudentsGrade, ?int $entityId = null,  ?DateTime $startDate = null, ?DateTime $endDate = null): void
+    {
+        $this->studentsGradeBus->studentsGrade(
+            new StudentsGradeDTO (
+                $studentId,
+                $entityId,
+                $startDate,
+                $endDate,
+                $typeStudentsGrade,
+            )
+        );
     }
 
     /**

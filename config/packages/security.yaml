@@ -61,9 +61,13 @@ security:
         - { path: ^/api/v1/teacher/email-confirmation, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
         - { path: ^/api/v1/teacher/phone-confirmation, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
         - { path: ^/api/v1/get-students-grade-for-course, roles: [ ROLE_MANAGER ], methods: [ GET ] }
+        - { path: ^/api/v1/get-students-grade-for-course-async, roles: [ ROLE_MANAGER ], methods: [ GET ] }
         - { path: ^/api/v1/get-students-grade-for-lesson, roles: [ ROLE_MANAGER ], methods: [ GET ] }
+        - { path: ^/api/v1/get-students-grade-for-lesson-async, roles: [ ROLE_MANAGER ], methods: [ GET ] }
         - { path: ^/api/v1/get-students-grade-for-lesson-in-time-range, roles: [ ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/get-students-grade-for-lesson-in-time-range-async, roles: [ ROLE_MANAGER ], methods: [ POST ] }
         - { path: ^/api/v1/get-students-grade-for-skill, roles: [ ROLE_MANAGER ], methods: [ GET ] }
+        - { path: ^/api/v1/get-students-grade-for-skill-async, roles: [ ROLE_MANAGER ], methods: [ GET ] }
 
     role_hierarchy:
             ROLE_ADMIN: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ]

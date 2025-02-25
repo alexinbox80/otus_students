@@ -73,3 +73,4 @@ services:
     App\Infrastructure\Bus\RabbitMqBus:
         calls:
             - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::SendNotification, '@old_sound_rabbit_mq.send_notification_producer' ] ]
+            - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::StudentsGrade, '@old_sound_rabbit_mq.students_grade_producer' ] ]
