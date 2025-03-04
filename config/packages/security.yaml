@@ -31,7 +31,7 @@ security:
             provider: app_user_provider
             stateless: true
             custom_authenticator: App\Application\Security\JwtAuthenticator
-            security: false
+            security: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -56,6 +56,18 @@ security:
         - { path: ^/api/v1/user, roles: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
         - { path: ^/api/v1/user, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ PATCH, DELETE ] }
         - { path: ^/api/v1/update-user-avatar-link/\d+$, roles: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/student/email-confirmation, roles: [ ROLE_STUDENT, ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/student/phone-confirmation, roles: [ ROLE_STUDENT, ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/teacher/email-confirmation, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/teacher/phone-confirmation, roles: [ ROLE_TEACHER, ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/get-students-grade-for-course, roles: [ ROLE_MANAGER ], methods: [ GET ] }
+        - { path: ^/api/v1/get-students-grade-for-course-async, roles: [ ROLE_MANAGER ], methods: [ GET ] }
+        - { path: ^/api/v1/get-students-grade-for-lesson, roles: [ ROLE_MANAGER ], methods: [ GET ] }
+        - { path: ^/api/v1/get-students-grade-for-lesson-async, roles: [ ROLE_MANAGER ], methods: [ GET ] }
+        - { path: ^/api/v1/get-students-grade-for-lesson-in-time-range, roles: [ ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/get-students-grade-for-lesson-in-time-range-async, roles: [ ROLE_MANAGER ], methods: [ POST ] }
+        - { path: ^/api/v1/get-students-grade-for-skill, roles: [ ROLE_MANAGER ], methods: [ GET ] }
+        - { path: ^/api/v1/get-students-grade-for-skill-async, roles: [ ROLE_MANAGER ], methods: [ GET ] }
 
     role_hierarchy:
             ROLE_ADMIN: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ]

@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Entity\Interfaces\SoftDeletableInterface;
+use App\Domain\Entity\Traits\ConfirmationTrait;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
@@ -23,7 +24,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ApiResource]
 class Teacher extends Person implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
-    use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
+    use ConfirmationTrait, CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
     #[ORM\Id]
@@ -34,6 +35,7 @@ class Teacher extends Person implements EntityInterface, HasMetaTimestampsInterf
     private User $user;
 
     public function __construct(
+        User $user,
         string $firstName,
         string $lastName,
         ?string $middleName,
@@ -42,6 +44,8 @@ class Teacher extends Person implements EntityInterface, HasMetaTimestampsInterf
     )
     {
         parent::__construct($firstName, $lastName, $middleName, $email, $phone);
+
+        $this->user = $user;
     }
 
     public function getId(): int
@@ -51,7 +55,13 @@ class Teacher extends Person implements EntityInterface, HasMetaTimestampsInterf
         return $this->id;
     }
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
     public function changeFields(
+        User $user,
         string $firstName,
         string $lastName,
         ?string $middleName,
@@ -59,6 +69,8 @@ class Teacher extends Person implements EntityInterface, HasMetaTimestampsInterf
         ?string $phone
     ): void
     {
+        $this->user = $user;
+
         $this->changeName($firstName, $lastName, $middleName);
         $this->changeContacts($email, $phone);
     }

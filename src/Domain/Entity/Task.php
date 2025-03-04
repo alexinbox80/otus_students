@@ -33,7 +33,7 @@ class Task implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
     private ?string $description;
 
-    #[ORM\ManyToOne(targetEntity: Lesson::class, inversedBy: 'tasks')]
+    #[ORM\ManyToOne(targetEntity: Lesson::class, cascade: ['all'], fetch: 'EAGER', inversedBy: 'tasks')]
     #[ORM\JoinColumn(name: 'lesson_id', referencedColumnName: 'id')]
     private ?Lesson $lesson = null;
 

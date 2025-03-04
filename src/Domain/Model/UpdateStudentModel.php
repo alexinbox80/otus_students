@@ -8,6 +8,8 @@ class UpdateStudentModel
 {
     public function __construct(
         #[Assert\NotBlank]
+        public readonly int $userId,
+        #[Assert\NotBlank]
         public readonly string $firstName,
         #[Assert\NotBlank]
         public readonly string $lastName,

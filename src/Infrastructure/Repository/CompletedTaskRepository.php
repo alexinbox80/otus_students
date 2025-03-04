@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\Entity\Student;
 use DateTime;
 use App\Domain\Entity\CompletedTask;
 use Doctrine\Common\Collections\Criteria;
@@ -19,6 +20,19 @@ class CompletedTaskRepository extends AbstractRepository
         $completedTask = $repository->find($completedTaskId);
 
         return $completedTask;
+    }
+
+    /**
+     * @param Student $student
+     * @return CompletedTask[]|null
+     */
+    public function findByStudent(Student $student): array|null
+    {
+        $criteria = Criteria::create();
+        $criteria->andWhere(Criteria::expr()?->eq('student', $student));
+        $repository = $this->entityManager->getRepository(CompletedTask::class);
+
+        return $repository->matching($criteria)->toArray();
     }
 
     /**
@@ -63,7 +77,7 @@ class CompletedTaskRepository extends AbstractRepository
     /**
      * @return CompletedTask[]
      */
-    public function getCompletedTasks(int $page, int $perPage): array
+    public function getCompletedTasksPaginated(int $page, int $perPage): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('c')

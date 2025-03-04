@@ -3,16 +3,23 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\Student;
+use App\Domain\Event\CompletedTaskEvent;
+use App\Domain\Model\CompletedTaskModel;
 use App\Domain\Model\CreateCompletedTaskModel;
 use App\Domain\Model\UpdateCompletedTaskModel;
+use App\Domain\Repository\CompletedTaskRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use DateTime;
 use App\Domain\Entity\CompletedTask;
-use App\Infrastructure\Repository\CompletedTaskRepository;
+use Psr\Cache\InvalidArgumentException;
 
 class CompletedTaskService
 {
     public function __construct(
-        private readonly CompletedTaskRepository $completedTaskRepository
+        private readonly StudentService $studentService,
+        private readonly TaskService $taskService,
+        private readonly CompletedTaskRepositoryInterface $completedTaskRepository,
+        private readonly EventDispatcherInterface $eventDispatcher
     )
     {
     }
@@ -27,7 +34,16 @@ class CompletedTaskService
     }
 
     /**
-     * @return CompletedTask[]
+     * @param Student $student
+     * @return CompletedTask[]|null
+     */
+    public function findByStudent(Student $student): array|null
+    {
+        return $this->completedTaskRepository->findByStudent($student);
+    }
+
+    /**
+     * @return CompletedTaskModel[]
      */
     public function findAll(): array
     {
@@ -36,7 +52,7 @@ class CompletedTaskService
 
     /**
      * @param int $grade
-     * @return CompletedTask[]
+     * @return CompletedTaskModel[]
      */
     public function findCompletedTasksByGrade(int $grade): array
     {
@@ -45,7 +61,7 @@ class CompletedTaskService
 
     /**
      * @param string $description
-     * @return CompletedTask[]
+     * @return CompletedTaskModel[]
      */
     public function findCompletedTasksByDescription(string $description): array
     {
@@ -54,7 +70,7 @@ class CompletedTaskService
 
     /**
      * @param DateTime $finishedAt
-     * @return CompletedTask[]
+     * @return CompletedTaskModel[]
      */
     public function findCompletedTasksByFinishedAt(DateTime $finishedAt): array
     {
@@ -62,19 +78,21 @@ class CompletedTaskService
     }
 
     /**
-     * @return CompletedTask[]
+     * @return CompletedTaskModel[]
+     * @throws InvalidArgumentException
      */
-    public function getCompletedTasks(int $page, int $perPage): array
+    public function getCompletedTasksPaginated(int $page, int $perPage): array
     {
-        return $this->completedTaskRepository->getCompletedTasks($page, $perPage);
+        return $this->completedTaskRepository->getCompletedTasksPaginated($page, $perPage);
     }
 
     /**
      * @param int $completedTaskId
      * @param int $grade
-     * @return CompletedTask|null
+     * @return CompletedTaskModel|null
+     * @throws InvalidArgumentException
      */
-    public function updateGrade(int $completedTaskId, int $grade): ?CompletedTask
+    public function updateGrade(int $completedTaskId, int $grade): ?CompletedTaskModel
     {
         $completedTask = $this->completedTaskRepository->find($completedTaskId);
         if (!($completedTask instanceof CompletedTask)) {
@@ -88,9 +106,10 @@ class CompletedTaskService
     /**
      * @param int $completedTaskId
      * @param string $description
-     * @return CompletedTask|null
+     * @return CompletedTaskModel|null
+     * @throws InvalidArgumentException
      */
-    public function updateDescription(int $completedTaskId, string $description): ?CompletedTask
+    public function updateDescription(int $completedTaskId, string $description): ?CompletedTaskModel
     {
         $completedTask = $this->completedTaskRepository->find($completedTaskId);
         if (!($completedTask instanceof CompletedTask)) {
@@ -104,9 +123,10 @@ class CompletedTaskService
     /**
      * @param int $completedTaskId
      * @param DateTime $finishedAt
-     * @return CompletedTask|null
+     * @return CompletedTaskModel|null
+     * @throws InvalidArgumentException
      */
-    public function updateFinishedAt(int $completedTaskId, DateTime $finishedAt): ?CompletedTask
+    public function updateFinishedAt(int $completedTaskId, DateTime $finishedAt): ?CompletedTaskModel
     {
         $completedTask = $this->completedTaskRepository->find($completedTaskId);
         if (!($completedTask instanceof CompletedTask)) {
@@ -120,11 +140,17 @@ class CompletedTaskService
     /**
      * @param CompletedTask $completedTask
      * @param UpdateCompletedTaskModel $updateCompletedTaskModel
-     * @return CompletedTask
+     * @return CompletedTaskModel
+     * @throws InvalidArgumentException
      */
-    public function update(CompletedTask $completedTask, UpdateCompletedTaskModel $updateCompletedTaskModel): CompletedTask
+    public function update(CompletedTask $completedTask, UpdateCompletedTaskModel $updateCompletedTaskModel): CompletedTaskModel
     {
+        $student = $this->studentService->find($updateCompletedTaskModel->studentId);
+        $task = $this->taskService->find($updateCompletedTaskModel->taskId);
+
         $completedTask->changeFields(
+            $student,
+            $task,
             $updateCompletedTaskModel->finishedAt,
             $updateCompletedTaskModel->description,
             $updateCompletedTaskModel->grade
@@ -132,20 +158,34 @@ class CompletedTaskService
 
         $this->completedTaskRepository->update();
 
-        return $completedTask;
+        return new CompletedTaskModel(
+            $completedTask->getId(),
+            $completedTask->getStudent()->getId(),
+            $completedTask->getTask()->getId(),
+            $completedTask->getFinishedAt(),
+            $completedTask->getDescription(),
+            $completedTask->getGrade(),
+            $completedTask->getCreatedAt(),
+            $completedTask->getUpdatedAt()
+        );
     }
 
     /**
-     //* @param Student $student
      * @param CreateCompletedTaskModel $createCompletedTaskModel
-     * @return CompletedTask
+     * @return CompletedTaskModel
+     * @throws InvalidArgumentException
      */
 
     public function create(
-        //Student $student,
-        CreateCompletedTaskModel $createCompletedTaskModel): CompletedTask
+        CreateCompletedTaskModel $createCompletedTaskModel
+    ): CompletedTaskModel
     {
+        $student = $this->studentService->find($createCompletedTaskModel->studentId);
+        $task = $this->taskService->find($createCompletedTaskModel->taskId);
+
         $completedTask = new CompletedTask(
+            $student,
+            $task,
             $createCompletedTaskModel->grade,
             $createCompletedTaskModel->description,
             $createCompletedTaskModel->finishedAt
@@ -155,7 +195,22 @@ class CompletedTaskService
 
         $this->completedTaskRepository->create($completedTask);
 
-        return $completedTask;
+        $event = new CompletedTaskEvent(
+            $createCompletedTaskModel,
+            $task
+        );
+        $event = $this->eventDispatcher->dispatch($event);
+
+        return new CompletedTaskModel(
+            $completedTask->getId(),
+            $completedTask->getStudent()->getId(),
+            $completedTask->getTask()->getId(),
+            $completedTask->getFinishedAt(),
+            $completedTask->getDescription(),
+            $completedTask->getGrade(),
+            $completedTask->getCreatedAt(),
+            $completedTask->getUpdatedAt()
+        );
     }
 
     /**
@@ -165,7 +220,7 @@ class CompletedTaskService
     public function removeById(int $completedTaskId): void
     {
         $completedTask = $this->completedTaskRepository->find($completedTaskId);
-        if ($completedTask instanceof CompletedTask) {
+        if ($completedTask !== null) {
             $this->completedTaskRepository->remove($completedTask);
         }
     }

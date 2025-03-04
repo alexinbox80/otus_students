@@ -2,8 +2,9 @@
 
 namespace App\Controller\Web\Teacher\GetTeachers\v1;
 
-use App\Domain\Entity\Teacher;
+use App\Domain\Model\TeacherModel;
 use App\Domain\Service\TeacherService;
+use Psr\Cache\InvalidArgumentException;
 
 class Manager
 {
@@ -12,10 +13,13 @@ class Manager
     }
 
     /**
-     * @return Teacher[]
+     * @return TeacherModel[]
+     * @throws InvalidArgumentException
      */
     public function getTeachers(?int $page, ?int $perPage): array
     {
-        return $this->teacherService->getTeachers($page, $perPage);
+        return [
+            'teachers' => $this->teacherService->getTeachersPaginated($page, $perPage)
+        ];
     }
 }

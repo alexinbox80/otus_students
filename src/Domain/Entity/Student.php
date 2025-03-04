@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Interfaces\HasMetaTimestampsInterface;
 use App\Domain\Entity\Interfaces\SoftDeletableInterface;
+use App\Domain\Entity\Traits\ConfirmationTrait;
 use App\Domain\Entity\Traits\CreatedAtTrait;
 use App\Domain\Entity\Traits\DeletedAtTrait;
 use App\Domain\Entity\Traits\UpdatedAtTrait;
@@ -31,14 +32,14 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ApiFilter(RangeFilter::class, properties: ['user.id'])]
 class Student extends Person implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
-    use CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
+    use ConfirmationTrait, CreatedAtTrait, UpdatedAtTrait, DeletedAtTrait;
 
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'student')]
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'student', cascade: ['all'], fetch: 'EAGER')]
     #[Groups(['student'])]
     private User $user;
 
@@ -52,6 +53,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     private Collection $unlockedAchievements;
 
     public function __construct(
+        User $user,
         string $firstName,
         string $lastName,
         ?string $middleName,
@@ -61,6 +63,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     {
         parent::__construct($firstName, $lastName, $middleName, $email, $phone);
 
+        $this->user = $user;
         $this->subscriptions = new ArrayCollection();
         $this->completedTasks = new ArrayCollection();
         $this->unlockedAchievements = new ArrayCollection();
@@ -148,6 +151,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     }
 
     public function changeFields(
+        User $user,
         string $firstName,
         string $lastName,
         ?string $middleName,
@@ -155,6 +159,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         ?string $phone
     ): void
     {
+        $this->user = $user;
         $this->changeName($firstName, $lastName, $middleName);
         $this->changeContacts($email, $phone);
     }

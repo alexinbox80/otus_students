@@ -7,6 +7,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UpdateTeacherDTO
 {
     public function __construct(
+        #[Assert\Type('integer')]
+        #[Assert\Positive]
+        public readonly int $userId,
         #[Assert\NotBlank]
         #[Assert\Length(min:2)]
         #[Assert\Length(max:64)]

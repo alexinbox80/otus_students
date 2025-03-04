@@ -13,7 +13,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert as WebmozartAssert;
 
-
 #[ORM\Table(name: 'course')]
 #[ORM\Entity]
 #[ORM\UniqueConstraint(name: 'course__name__uniq', fields: ['name'])]

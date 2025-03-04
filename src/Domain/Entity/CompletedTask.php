@@ -39,20 +39,24 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface, Soft
     #[Assert\Range(min: 1, max: 10)]
     private ?int $grade = null;
 
-    #[ORM\ManyToOne(targetEntity: Student::class, inversedBy: 'completedTasks')]
+    #[ORM\ManyToOne(targetEntity: Student::class, cascade: ['all'], fetch: 'EAGER', inversedBy: 'completedTasks')]
     #[ORM\JoinColumn(name: 'student_id', referencedColumnName: 'id')]
     private Student $student;
 
-    #[ORM\ManyToOne(targetEntity: Task::class, inversedBy: 'completedTasks')]
+    #[ORM\ManyToOne(targetEntity: Task::class, cascade: ['all'], fetch: 'EAGER', inversedBy: 'completedTasks')]
     #[ORM\JoinColumn(name: 'task_id', referencedColumnName: 'id')]
     private Task $task;
 
     public function __construct(
+        Student $student,
+        Task $task,
         int $grade,
         ?string $description,
         ?DateTime $finishedAt
     )
     {
+        $this->student = $student;
+        $this->task = $task;
         $this->grade = $grade;
         $this->description = $description;
         $this->finishedAt = $finishedAt;
@@ -123,12 +127,16 @@ class CompletedTask implements EntityInterface, HasMetaTimestampsInterface, Soft
     }
 
     public function changeFields(
+        Student $student,
+        Task $task,
         ?DateTime $finishedAt,
         ?string $description,
         ?int $grade
     ): void
     {
-        $this->setFinishedAt($finishedAt);
+        $this->student = $student;
+        $this->task = $task;
+        $this->setFinishedAt();
         $this->setDescription($description);
         $this->setGrade($grade);
     }

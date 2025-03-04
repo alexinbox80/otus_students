@@ -3,14 +3,15 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\Skill;
+use App\Domain\Model\SkillModel;
 use Doctrine\Common\Collections\Criteria;
 
 class SkillRepository extends AbstractRepository
 {
     /**
-     * @return Skill[]
+     * @return SkillModel[]
      */
-    public function getSkills(int $page, int $perPage): array
+    public function getSkillsPaginated(int $page, int $perPage): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('s')

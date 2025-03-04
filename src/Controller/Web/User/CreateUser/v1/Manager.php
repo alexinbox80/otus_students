@@ -15,7 +15,7 @@ class Manager
     public function __construct(
         /** @var ModelFactory<CreateUserModel> */
         private readonly ModelFactory $modelFactory,
-        private readonly UserService $userService
+        private readonly UserService $userService,
     ) {
     }
 

@@ -29,11 +29,11 @@ class Manager
         $skill = $this->skillService->update($skill, $updateSkillModel);
 
         return new UpdatedSkillDTO(
-            $skill->getId(),
-            $skill->getName(),
-            $skill->getDescription(),
-            $skill->getCreatedAt()->format('Y-m-d H:i:s'),
-            $skill->getUpdatedAt()->format('Y-m-d H:i:s')
+            $skill->id,
+            $skill->name,
+            $skill->description,
+            $skill->createdAt->format('Y-m-d H:i:s'),
+            $skill->updatedAt->format('Y-m-d H:i:s')
         );
     }
 }

@@ -12,21 +12,21 @@ services:
         networks:
             - net
 
-    symfony_caddy:
-        image: dunglas/frankenphp:1-builder-php8.3
-        build:
-            dockerfile: docker/caddy/Dockerfile
-        container_name: 'students_caddy'
-        ports:
-            - '6443:443'
-            - '6080:80'
-            - '6088:2019'
-        volumes:
-            - ./:/app
-            - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
-        working_dir: /app
-        networks:
-            - net
+#    symfony_caddy:
+#        image: dunglas/frankenphp:1-builder-php8.3
+#        build:
+#            dockerfile: docker/caddy/Dockerfile
+#        container_name: 'students_caddy'
+#        ports:
+#            - '6443:443'
+#            - '6080:80'
+#            - '6088:2019'
+#        volumes:
+#            - ./:/app
+#            - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+#        working_dir: /app
+#        networks:
+#            - net
 
     symfony_nginx:
         image: nginx
@@ -54,6 +54,40 @@ services:
         volumes:
             - dump:/app/dump
             - postgresql:/var/lib/postgresql/data
+        networks:
+            - net
+
+    symfony_redis:
+        container_name: 'students_redis'
+        image: redis:alpine
+        ports:
+            - 6379:6379
+        networks:
+            - net
+
+    symfony_rabbitmq:
+        image: rabbitmq:3-management
+        working_dir: /app
+        hostname: symfony_rabbit-mq
+        container_name: 'students_rabbit-mq'
+        ports:
+            - 15672:15672
+            - 5672:5672
+        environment:
+            RABBITMQ_DEFAULT_USER: user
+            RABBITMQ_DEFAULT_PASS: password
+        networks:
+            - net
+
+    symfony_supervisor:
+        image: php:8.3-cli-alpine
+        build: docker/supervisor
+        container_name: 'students_supervisor'
+        volumes:
+            - ./:/app
+            - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+        working_dir: /app
+        command: [ "supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
         networks:
             - net
 

@@ -4,12 +4,8 @@ namespace App\Application\EventListener;
 
 use App\Controller\DTO\Interfaces\OutputDTOInterface;
 use App\Controller\DTO\Interfaces\OutputDTONotFoundInterface;
-use App\Domain\Entity\Achievement;
-use App\Domain\Entity\CompletedTask;
-use App\Domain\Entity\Course;
-use App\Domain\Entity\Lesson;
-use App\Domain\Entity\Percentage;
-use App\Domain\Entity\User;
+use App\Controller\DTO\Interfaces\OutputEmailCodeConfirmedDTOInterface;
+use App\Controller\DTO\Interfaces\OutputPhoneCodeConfirmedDTOInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -29,6 +25,14 @@ class KernelViewEventListener
     {
         $dto = $event->getControllerResult();
 
+        if (is_object($dto) and $dto instanceof OutputEmailCodeConfirmedDTOInterface) {
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
+        }
+
+        if (is_object($dto) and $dto instanceof OutputPhoneCodeConfirmedDTOInterface) {
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
+        }
+
         if (is_object($dto) and $dto instanceof OutputDTOInterface) {
             $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
         }
@@ -47,9 +51,21 @@ class KernelViewEventListener
                 'code' => Response::HTTP_OK
             ], Response::HTTP_OK));
         } elseif (is_array($dto)) {
-            $successResponse = [];
-            foreach ($dto as $item) {
-                $successResponse[] = $item->toArray();
+            if (isset($dto['skills'])
+                || isset($dto['completed-tasks'])
+                || isset($dto['students'])
+                || isset($dto['teachers'])
+                || isset($dto['grade-for-course'])
+                || isset($dto['grade-for-lesson'])
+                || isset($dto['grade-for-lesson-in-time-range'])
+                || isset($dto['grade-for-skill'])
+            ) {
+                $successResponse = $dto;
+            } else {
+                $successResponse = [];
+                foreach ($dto as $item) {
+                    $successResponse[] = $item->toArray();
+                }
             }
 
             if(count($successResponse) > 0)

@@ -33,7 +33,7 @@ class Lesson implements EntityInterface, HasMetaTimestampsInterface, SoftDeletab
     #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
     private ?string $description;
 
-    #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'lessons')]
+    #[ORM\ManyToOne(targetEntity: Course::class, cascade: ['all'], fetch: 'EAGER', inversedBy: 'lessons')]
     #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'id')]
     private ?Course $course = null;
 
