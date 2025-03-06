@@ -38,13 +38,13 @@ final class StudentsGradeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->lock()) {
-            $output->writeln('<info>Command is already running.</info>');
+//        if (!$this->lock()) {
+//            $output->writeln('<info>Command is already running.</info>');
+//
+//            return self::SUCCESS;
+//        }
 
-            return self::SUCCESS;
-        }
-
-        $output->write("<info>Started: </info>");
+        //$output->write("<info>Started: </info>");
 
         $course = $input->getOption('course');
         if ($course) {
@@ -62,32 +62,37 @@ final class StudentsGradeCommand extends Command
         }
 
         $time = $input->getOption('time');
-        if (count($time) === 2) {
+        if ($time) {
+            if (count($time) === 2) {
 
-            $startDateTime = DateTime::createFromFormat(self::DATE_TIME_FORMAT, $time[0]);
-            if(!$startDateTime) {
-                $output->writeln("<error>Invalid date or time format: </error> $time[0] Actual format is " . self::DATE_TIME_FORMAT . "\n");
-                exit(1);
-            }
+                $startDateTime = DateTime::createFromFormat(self::DATE_TIME_FORMAT, $time[0]);
+                if(!$startDateTime) {
+                    $output->writeln("<error>Invalid date or time format: </error> $time[0] Actual format is " . self::DATE_TIME_FORMAT . "\n");
+                    return self::FAILURE;
+                }
 
-            $endDateTime = DateTime::createFromFormat(self::DATE_TIME_FORMAT, $time[1]);
-            if(!$endDateTime) {
-                $output->writeln("<error>Invalid date or time format: </error> $time[1] Actual format is " . self::DATE_TIME_FORMAT . "\n");
-                exit(1);
-            }
+                $endDateTime = DateTime::createFromFormat(self::DATE_TIME_FORMAT, $time[1]);
+                if(!$endDateTime) {
+                    $output->writeln("<error>Invalid date or time format: </error> $time[1] Actual format is " . self::DATE_TIME_FORMAT . "\n");
+                    return self::FAILURE;
+                }
 
-            if ($startDateTime && $endDateTime) {
-                //dd($startDateTime, $endDateTime);
-                // call service here
+                if ($startDateTime && $endDateTime) {
+                    //dd($startDateTime, $endDateTime);
+                    // call service here
+                }
+            } else {
+                $output->write("<error>Invalid number of dates</error>\n");
+                return self::FAILURE;
             }
-        } else {
-            $output->write("<error>Invalid number of dates</error>\n");
         }
-//
-//        $output->write('<info>Started</info>');
-//        $result = $this->followerService->addFollowersSync($user, $login.$authorId, $count);
 
-        $output->write("<info>Success</info>\n");
+        $output->write("<info>Started: </info>");
+        if (!$course && !$lesson && !$skill && !count($time)) {
+            $output->write("<error>Options are empty</error>\n");
+            //return self::FAILURE;
+        } else
+            $output->write("<info>Success</info>\n");
 
         return self::SUCCESS;
     }
