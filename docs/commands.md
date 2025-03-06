@@ -36,3 +36,8 @@ php bin/console doctrine:schema:validate
 
 #Executes (or dumps) the SQL needed to update the database schema to match the current mapping metadata \
 php bin/console doctrine:schema:update --dump-sql
+
+#test environment \
+php bin/console doctrine:schema:drop --full-database --force --env=test \
+php bin/console doctrine:database:create --env=test \
+php bin/console doctrine:migrations:migrate --env=test

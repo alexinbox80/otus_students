@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Tests\Support;
 
 /**
@@ -27,4 +25,46 @@ class AcceptanceTester extends \Codeception\Actor
     /**
      * Define custom actions here
      */
+
+    public function amAdmin(AcceptanceTester $I, string $login, string $password): void
+    {
+        $token = $this->getToken($I, $login, $password);
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $token);
+    }
+
+    public function amManager(AcceptanceTester $I, string $login, string $password): void
+    {
+        $token = $this->getToken($I, $login, $password);
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $token);
+    }
+
+    public function amTeacher(AcceptanceTester $I, string $login, string $password): void
+    {
+        $token = $this->getToken($I, $login, $password);
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $token);
+    }
+
+    public function amStudent(AcceptanceTester $I, string $login, string $password): void
+    {
+        $token = $this->getToken($I, $login, $password);
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $token);
+    }
+
+    private function getToken(AcceptanceTester $I, string $username, string $password)
+    {
+        $authHeader = 'Basic ' . base64_encode($username . ':' . $password);
+        $I->haveHttpHeader('Authorization', $authHeader);
+        $I->sendPost('/api/v1/get-token');
+
+        return json_decode($I->grabResponse())->token;
+    }
+
+    private function getRefreshToken(AcceptanceTester $I, string $token)
+    {
+        $authHeader = 'Bearer ' . $token;
+        $I->haveHttpHeader('Authorization', $authHeader);
+        $I->sendPost('/api/v1/refresh-token');
+
+        return json_decode($I->grabResponse())->token;
+    }
 }
