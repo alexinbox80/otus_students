@@ -70,7 +70,7 @@ class ControllerCest
                     'isActive' => false,
                 ],
                 'httpCode' => HttpCode::OK,
-            ],
+            ]
         ];
     }
 }
