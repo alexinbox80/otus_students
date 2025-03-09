@@ -26,24 +26,6 @@ class ControllerCest
     protected function executeDataProvider(): array
     {
         return [
-            'isActiveTrue' => [
-                'user' => ['login' => 'manager', 'password' => '12345678'],
-                'data' => [
-                    'login' => 'testLogin' . AutoIncrementImitator::nextId(),
-                    'password' => 'testLogin',
-                    'isActive' => true,
-                ],
-                'httpCode' => HttpCode::OK,
-            ],
-            'isActiveFalse' => [
-                'user' => ['login' => 'manager', 'password' => '12345678'],
-                'data' => [
-                    'login' => 'testLogin' . AutoIncrementImitator::nextId(),
-                    'password' => 'testLogin',
-                    'isActive' => false,
-                ],
-                'httpCode' => HttpCode::OK,
-            ],
             'isActiveNull' => [
                 'user' => ['login' => 'manager', 'password' => '12345678'],
                 'data' => [
@@ -70,6 +52,24 @@ class ControllerCest
                     'isActive' => null,
                 ],
                 'httpCode' => HttpCode::BAD_REQUEST,
+            ],
+            'isActiveTrue' => [
+                'user' => ['login' => 'manager', 'password' => '12345678'],
+                'data' => [
+                    'login' => 'testLogin' . AutoIncrementImitator::nextId(),
+                    'password' => 'testLogin',
+                    'isActive' => true,
+                ],
+                'httpCode' => HttpCode::OK,
+            ],
+            'isActiveFalse' => [
+                'user' => ['login' => 'manager', 'password' => '12345678'],
+                'data' => [
+                    'login' => 'testLogin' . AutoIncrementImitator::nextId(),
+                    'password' => 'testLogin',
+                    'isActive' => false,
+                ],
+                'httpCode' => HttpCode::OK,
             ],
         ];
     }
