@@ -3,7 +3,6 @@
 namespace AcceptanceTests\Controller\Web\Student\CreateStudent\v1;
 
 use App\Tests\Support\AcceptanceTester;
-use Codeception\Attribute\Skip;
 use Codeception\Example;
 use Codeception\Util\HttpCode;
 use Support\Helper\AutoIncrementImitator;
@@ -13,7 +12,6 @@ class ControllerCest
     /**
      * @dataProvider executeDataProvider
      */
-    #[Skip]
     public function testCreateStudentAction(AcceptanceTester $I, Example $example): void
     {
         $I->amStudent($I, $example['user']['login'], $example['user']['password']);

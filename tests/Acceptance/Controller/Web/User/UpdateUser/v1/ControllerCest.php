@@ -12,7 +12,6 @@ class ControllerCest
     private static int $entityId;
     private const AUTH_LOGIN = 'manager';
     private const AUTH_PASSWORD = '12345678';
-
     private const LOGIN = 'test_create';
     private const PASSWORD = 'test_create';
     private const ROLE_MANAGER = 'ROLE_MANAGER';
@@ -38,7 +37,7 @@ class ControllerCest
     /**
      * @dataProvider executeDataProvider
      */
-    public function testUpdateUsersAction(AcceptanceTester $I, Example $example): void
+    public function testUpdateUserAction(AcceptanceTester $I, Example $example): void
     {
         $I->amStudent($I, $example['user']['login'], $example['user']['password']);
         $I->haveHttpHeader('Content-Type', 'application/json');
