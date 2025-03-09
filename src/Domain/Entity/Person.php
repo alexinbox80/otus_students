@@ -30,8 +30,8 @@ class Person
     private ?string $email;
 
     public function __construct(
-        string $lastName,
         string $firstName,
+        string $lastName,
         ?string $middleName,
         ?string $email,
         ?string $phone

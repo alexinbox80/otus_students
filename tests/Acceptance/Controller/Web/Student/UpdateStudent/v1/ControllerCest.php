@@ -15,7 +15,7 @@ class ControllerCest
     private const AUTH_PASSWORD = '12345678';
     private const LOGIN = 'test_st_create';
     private const PASSWORD = 'test_st_create';
-    private const ROLE_MANAGER = 'ROLE_STUDENT';
+    private const ROLE_STUDENT = 'ROLE_STUDENT';
     private const FIRST_NAME = 'StudentFirstName';
     private const LAST_NAME = 'StudentLastName';
     private const MIDDLE_NAME = 'StudentMiddleName';
@@ -34,7 +34,7 @@ class ControllerCest
                 'login' => self::LOGIN . '-'. self::LOGIN,
                 'password' => self::PASSWORD . '-' . self::PASSWORD,
                 'isActive' => false,
-                'roles' => [self::ROLE_MANAGER],
+                'roles' => [self::ROLE_STUDENT],
             ]);
         $userId = $I->grabDataFromResponseByJsonPath('$..id');
         self::$userId = $userId[0];
@@ -42,9 +42,9 @@ class ControllerCest
         $I->sendPost('/api/v1/student',
             [
                 'userId' => self::$userId ,
-                'firstName' => self::FIRST_NAME . 'test',
-                'lastName' => self::LAST_NAME . 'test',
-                'middleName' => self::MIDDLE_NAME . 'test',
+                'firstName' => self::FIRST_NAME . 'Test',
+                'lastName' => self::LAST_NAME . 'Test',
+                'middleName' => self::MIDDLE_NAME . 'Test',
                 'email' => self::EMAIL,
                 'phone' => self::PHONE,
             ]);

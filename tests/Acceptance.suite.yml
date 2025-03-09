@@ -6,6 +6,11 @@
 actor: AcceptanceTester
 modules:
     enabled:
+        - Db:
+              dsn: 'pgsql:host=students_postgres;dbname=students_test'
+              user: 'user'
+              password: 'password'
+              dump: 'tests/Support/Data/dump.sql'
         - REST:
               url: http://students_nginx:80
               depends: PhpBrowser
