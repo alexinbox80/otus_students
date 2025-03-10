@@ -6,12 +6,9 @@ use App\Tests\Support\AcceptanceTester;
 use Codeception\Example;
 use Codeception\Util\HttpCode;
 use Exception;
-use Support\Helper\AutoIncrementImitator;
 
 class ControllerCest
 {
-    private static int $userId;
-    private static int $emailCode;
     private const AUTH_LOGIN = 'ivanov';
     private const AUTH_PASSWORD = '12345678';
     private const LOGIN = 'test_student_em_confirm';
@@ -24,46 +21,32 @@ class ControllerCest
     private const PHONE = '79113456789';
 
     /**
-     * @throws Exception
-     */
-    public function _before(AcceptanceTester $I): void
-    {
-        $I->amStudent($I, self::AUTH_LOGIN, self::AUTH_PASSWORD);
-        $I->haveHttpHeader('Content-Type', 'application/json');
-        $I->sendPost('/api/v1/user',
-            [
-                'login' => self::LOGIN,
-                'password' => self::PASSWORD,
-                'isActive' => false,
-                'roles' => [self::ROLE_STUDENT],
-            ]);
-        $userId = $I->grabDataFromResponseByJsonPath('$..id');
-        self::$userId = $userId[0];
-
-        $I->sendPost('/api/v1/student',
-            [
-                'userId' => self::$userId,
-                'firstName' => self::FIRST_NAME . 'Test',
-                'lastName' => self::LAST_NAME . 'Test',
-                'middleName' => self::MIDDLE_NAME . 'Test',
-                'email' => self::EMAIL,
-                'phone' => self::PHONE,
-            ]);
-        $userId = $I->grabDataFromResponseByJsonPath('$..id');
-        $row = $I->grabEntryFromDatabase('student', ['id' => $userId[0]]);
-
-        self::$emailCode = $row['email_code'];
-    }
-
-    /**
      * @dataProvider executeDataProvider
+     * @throws Exception
      */
     public function testStudentConfirmationEmailCodeAction(AcceptanceTester $I, Example $example): void
     {
+        $manager = [
+            'login' => self::AUTH_LOGIN,
+            'password' => self::AUTH_PASSWORD,
+        ];
+        $user = [
+            'login' => self::LOGIN,
+            'password' => self::PASSWORD,
+            'firstName' => self::FIRST_NAME . 'emTest',
+            'lastName' => self::LAST_NAME . 'emTest',
+            'middleName' => self::MIDDLE_NAME . 'emTest',
+            'roles' => [self::ROLE_STUDENT],
+            'email' => self::EMAIL,
+            'phone' => self::PHONE,
+        ];
+        $emailCode = $I->getCode($I, $manager, $user);
+
         $I->amStudent($I, $example['user']['login'], $example['user']['password']);
         $I->haveHttpHeader('Content-Type', 'application/json');
+
         $I->sendPost('/api/v1/student/email-confirmation', [
-            'emailCode' => self::$emailCode
+            'emailCode' => $emailCode,
         ]);
 
         if ($example['httpCode'] === HttpCode::OK) {
@@ -82,25 +65,28 @@ class ControllerCest
         }
     }
 
+    /**
+     * @throws Exception
+     */
     protected function executeDataProvider(): array
     {
         return [
-//            'positive' => [
+//            'negative' => [
 //                'user' => [
-//                    'login' => self::AUTH_LOGIN,
-//                    'password' => self::AUTH_PASSWORD
+//                    'login' => self::LOGIN,
+//                    'password' => self::PASSWORD
 //                ],
-//                'message' => 'Email confirmation code is correct!',
-//                'httpCode' => HttpCode::OK,
+//                'message' => 'Email confirmation code is mismatched!',
+//                'httpCode' => HttpCode::BAD_REQUEST,
 //            ],
-            'negative' => [
+            'positive' => [
                 'user' => [
                     'login' => self::LOGIN,
                     'password' => self::PASSWORD
                 ],
-                'message' => 'This value should be of type null|string.',
-                'httpCode' => HttpCode::BAD_REQUEST,
-            ]
+                'message' => 'Email confirmation code is correct!',
+                'httpCode' => HttpCode::OK
+            ],
         ];
     }
 }

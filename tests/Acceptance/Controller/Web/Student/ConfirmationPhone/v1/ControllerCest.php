@@ -10,8 +10,6 @@ use Support\Helper\AutoIncrementImitator;
 
 class ControllerCest
 {
-    private static int $userId;
-    private static int $phoneCode;
     private const AUTH_LOGIN = 'ivanov';
     private const AUTH_PASSWORD = '12345678';
     private const LOGIN = 'test_student_ph_confirm';
@@ -24,46 +22,31 @@ class ControllerCest
     private const PHONE = '79114456789';
 
     /**
-     * @throws Exception
-     */
-    public function _before(AcceptanceTester $I): void
-    {
-        $I->amStudent($I, self::AUTH_LOGIN, self::AUTH_PASSWORD);
-        $I->haveHttpHeader('Content-Type', 'application/json');
-        $I->sendPost('/api/v1/user',
-            [
-                'login' => self::LOGIN,
-                'password' => self::PASSWORD,
-                'isActive' => false,
-                'roles' => [self::ROLE_STUDENT],
-            ]);
-        $userId = $I->grabDataFromResponseByJsonPath('$..id');
-        self::$userId = $userId[0];
-
-        $I->sendPost('/api/v1/student',
-            [
-                'userId' => self::$userId,
-                'firstName' => self::FIRST_NAME . 'Test',
-                'lastName' => self::LAST_NAME . 'Test',
-                'middleName' => self::MIDDLE_NAME . 'Test',
-                'email' => self::EMAIL,
-                'phone' => self::PHONE,
-            ]);
-        $userId = $I->grabDataFromResponseByJsonPath('$..id');
-        $row = $I->grabEntryFromDatabase('student', ['id' => $userId[0]]);
-
-        self::$phoneCode = $row['phone_code'];
-    }
-
-    /**
      * @dataProvider executeDataProvider
+     * @throws Exception
      */
     public function testStudentConfirmationPhoneCodeAction(AcceptanceTester $I, Example $example): void
     {
+        $manager = [
+            'login' => self::AUTH_LOGIN,
+            'password' => self::AUTH_PASSWORD,
+        ];
+        $user = [
+            'login' => self::LOGIN,
+            'password' => self::PASSWORD,
+            'firstName' => self::FIRST_NAME . 'phTest',
+            'lastName' => self::LAST_NAME . 'phTest',
+            'middleName' => self::MIDDLE_NAME . 'phTest',
+            'roles' => [self::ROLE_STUDENT],
+            'email' => self::EMAIL,
+            'phone' => self::PHONE,
+        ];
+        $phoneCode = $I->getCode($I, $manager, $user, 'phone');
+
         $I->amStudent($I, $example['user']['login'], $example['user']['password']);
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendPost('/api/v1/student/phone-confirmation', [
-            'phoneCode' => self::$phoneCode
+            'phoneCode' => $phoneCode
         ]);
 
         if ($example['httpCode'] === HttpCode::OK) {
@@ -85,22 +68,22 @@ class ControllerCest
     protected function executeDataProvider(): array
     {
         return [
-//            'positive' => [
-//                'user' => [
-//                    'login' => self::AUTH_LOGIN,
-//                    'password' => self::AUTH_PASSWORD
-//                ],
-//                'message' => 'Phone confirmation code is correct!',
-//                'httpCode' => HttpCode::OK,
-//            ],
-            'negative' => [
+            'positive' => [
                 'user' => [
                     'login' => self::LOGIN,
                     'password' => self::PASSWORD
                 ],
-                'message' => 'This value should be of type null|string.',
-                'httpCode' => HttpCode::BAD_REQUEST,
-            ]
+                'message' => 'Phone confirmation code is correct!',
+                'httpCode' => HttpCode::OK,
+            ],
+//            'negative' => [
+//                'user' => [
+//                    'login' => self::LOGIN,
+//                    'password' => self::PASSWORD
+//                ],
+//                'message' => 'This value should be of type null|string.',
+//                'httpCode' => HttpCode::BAD_REQUEST,
+//            ]
         ];
     }
 }

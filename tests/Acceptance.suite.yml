@@ -6,8 +6,14 @@
 actor: AcceptanceTester
 modules:
     enabled:
+        -  Symfony:
+              app_path: 'src'
+              environment: 'test'
+              debug: true
+        - Doctrine:
+              depends: Symfony
         - Db:
-              dsn: 'pgsql:host=students_postgres;dbname=students_test'
+              dsn: 'pgsql:host=students_postgres;dbname=students'
               user: 'user'
               password: 'password'
               dump: 'tests/Support/Data/dump.sql'
