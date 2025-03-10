@@ -11,7 +11,7 @@ use Mockery;
 use Codeception\Attribute\DataProvider;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class CreateTest extends Unit
+class UserServiceCreateTest extends Unit
 {
     private static UserService $userService;
     private const PASSWORD_HASH = 'my_hash';

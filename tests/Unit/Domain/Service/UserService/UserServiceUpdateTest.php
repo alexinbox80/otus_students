@@ -12,7 +12,7 @@ use Mockery;
 use Generator;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UpdateTest extends Unit
+class UserServiceUpdateTest extends Unit
 {
     private static UserService $userService;
     private const PASSWORD_HASH = 'my_hash';
