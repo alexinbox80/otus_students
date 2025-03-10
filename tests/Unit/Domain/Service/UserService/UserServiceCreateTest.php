@@ -28,6 +28,7 @@ class UserServiceCreateTest extends Unit
 
         self::$userService = new UserService($userRepository, $userPasswordHasher);
     }
+
     #[DataProvider('createTestCases')]
     public function testCreate(CreateUserModel $createUserModel, array $expectedData): void
     {
