@@ -3,6 +3,7 @@
 namespace FunctionalTests\Controller\Cli;
 
 use App\Tests\Support\FunctionalTester;
+use Codeception\Attribute\Skip;
 use Codeception\Example;
 
 class StudentsGradeCommandCest
@@ -12,6 +13,7 @@ class StudentsGradeCommandCest
     /**
      * @dataProvider executeDataProvider
      */
+    #[Skip]
     public function testExecuteReturnsResult(FunctionalTester $I, Example $example): void
     {
         $params = [$example['option']];

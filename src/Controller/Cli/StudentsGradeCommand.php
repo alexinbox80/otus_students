@@ -44,6 +44,15 @@ final class StudentsGradeCommand extends Command
 //            return self::SUCCESS;
 //        }
 
+//        $totalGrade = $this->studentGradeService->getStudentGradeForCourse();
+//        $this->studentGradeService->getStudentGradeForCourseAsync();
+//        $totalGrade = $this->studentGradeService->getStudentGradeForLesson();
+//        $this->studentGradeService->getStudentGradeForLessonAsync();
+//        $totalGrade = $this->studentGradeService->getStudentGradeForLessonInTimeRange($timeRangeDTO->startDate, $timeRangeDTO->endDate);
+//        $this->studentGradeService->getStudentGradeForLessonInTimeRangeAsync($timeRangeDTO->startDate, $timeRangeDTO->endDate);
+//        $totalGrade = $this->studentGradeService->getStudentGradeForSkill();
+//        $this->studentGradeService->getStudentGradeForSkillAsync();
+
         //$output->write("<info>Started: </info>");
 
         $course = $input->getOption('course');
