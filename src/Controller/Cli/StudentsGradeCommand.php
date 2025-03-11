@@ -2,15 +2,14 @@
 
 namespace App\Controller\Cli;
 
+use App\Domain\Service\StudentGradeService;
 use DateTime;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 
 #[AsCommand(name: self::STUDENTS_GRADE_COMMAND_NAME, description: 'Calculate students scores', hidden: false)]
 final class StudentsGradeCommand extends Command
@@ -21,7 +20,7 @@ final class StudentsGradeCommand extends Command
     public const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
 
     public function __construct(
-
+        private readonly StudentGradeService $studentGradeService,
     ) {
         parent::__construct();
     }
@@ -44,30 +43,31 @@ final class StudentsGradeCommand extends Command
 //            return self::SUCCESS;
 //        }
 
-//        $totalGrade = $this->studentGradeService->getStudentGradeForCourse();
-//        $this->studentGradeService->getStudentGradeForCourseAsync();
-//        $totalGrade = $this->studentGradeService->getStudentGradeForLesson();
-//        $this->studentGradeService->getStudentGradeForLessonAsync();
-//        $totalGrade = $this->studentGradeService->getStudentGradeForLessonInTimeRange($timeRangeDTO->startDate, $timeRangeDTO->endDate);
-//        $this->studentGradeService->getStudentGradeForLessonInTimeRangeAsync($timeRangeDTO->startDate, $timeRangeDTO->endDate);
-//        $totalGrade = $this->studentGradeService->getStudentGradeForSkill();
-//        $this->studentGradeService->getStudentGradeForSkillAsync();
-
-        //$output->write("<info>Started: </info>");
-
         $course = $input->getOption('course');
         if ($course) {
             // call service here
+            $totalGrade = $this->studentGradeService->getStudentGradeForCourse();
+            $this->studentGradeService->getStudentGradeForCourseAsync();
+            $output->write("<info>Success : </info>\n");
+            $output->write("<info>Course :: " . json_encode($totalGrade) . "</info>\n");
         }
 
         $lesson = $input->getOption('lesson');
         if ($lesson) {
             // call service here
+            $totalGrade = $this->studentGradeService->getStudentGradeForLesson();
+            $this->studentGradeService->getStudentGradeForLessonAsync();
+            $output->write("<info>Success : </info>\n");
+            $output->write("<info>Lesson :: " . json_encode($totalGrade) . "</info>\n");
         }
 
         $skill = $input->getOption('skill');
         if ($skill) {
             // call service here
+            $totalGrade = $this->studentGradeService->getStudentGradeForSkill();
+            $this->studentGradeService->getStudentGradeForSkillAsync();
+            $output->write("<info>Success : </info>\n");
+            $output->write("<info>Skill :: " . json_encode($totalGrade) . "</info>\n");
         }
 
         $time = $input->getOption('time');
@@ -87,8 +87,11 @@ final class StudentsGradeCommand extends Command
                 }
 
                 if ($startDateTime && $endDateTime) {
-                    //dd($startDateTime, $endDateTime);
                     // call service here
+                    $totalGrade = $this->studentGradeService->getStudentGradeForLessonInTimeRange($startDateTime, $endDateTime);
+                    $this->studentGradeService->getStudentGradeForLessonInTimeRangeAsync($startDateTime, $endDateTime);
+                    $output->write("<info>Success : </info>\n");
+                    $output->write("<info>Lesson in time range :: " . json_encode($totalGrade) . "</info>\n");
                 }
             } else {
                 $output->write("<error>Invalid number of dates</error>\n");
@@ -96,13 +99,10 @@ final class StudentsGradeCommand extends Command
             }
         }
 
-        $output->write("<info>Started: </info>");
         if (!$course && !$lesson && !$skill && !count($time)) {
             $output->write("<error>Options are empty</error>\n");
-            //return self::FAILURE;
-        } else
-            $output->write("<info>Success</info>\n");
-
+            return self::FAILURE;
+        }
         return self::SUCCESS;
     }
 }
