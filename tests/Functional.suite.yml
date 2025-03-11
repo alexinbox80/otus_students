@@ -10,6 +10,3 @@ modules:
         - Symfony:
               app_path: 'src'
               environment: 'test'
-        - Doctrine:
-              depends: Symfony
-              cleanup: true

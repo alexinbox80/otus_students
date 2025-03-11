@@ -3,7 +3,6 @@
 namespace FunctionalTests\Controller\Cli;
 
 use App\Tests\Support\FunctionalTester;
-use Codeception\Attribute\Skip;
 use Codeception\Example;
 
 class StudentsGradeCommandCest
@@ -13,22 +12,23 @@ class StudentsGradeCommandCest
     /**
      * @dataProvider executeDataProvider
      */
-    #[Skip]
     public function testExecuteReturnsResult(FunctionalTester $I, Example $example): void
     {
+
         $params = [$example['option']];
         $inputs = [];
-        $output = $I->runSymfonyConsoleCommand(self::COMMAND, $params, $inputs);
-        $I->assertStringEndsWith($example['expected'], $output);
+
+        $output = $I->runSymfonyConsoleCommand(self::COMMAND, $params, $inputs, $example['exitCode']);
+        $I->assertStringStartsWith($example['expected'], $output);
     }
 
     protected function executeDataProvider(): array
     {
         return [
-            'positive' => ['option' => '--course', 'expected' => "Started: Success\n"],
-            'zero' => ['option' => null, 'expected' => "Started: Options are empty\n"],
-//            'default' => ['followersCount' => null, 'option' => 'login3', 'expected' => "10 followers were created\n"],
-//            'negative' => ['followersCount' => -1, 'option' => 'login_too', 'expected' => "Count should be positive integer\n"],
+            'negative' => ['option' => '','expected' => "Options are empty\n", 'exitCode' => 1],
+            'course' => ['option' => '--course', 'expected' => "Success : \n", 'exitCode' => 0],
+            'lesson' => ['option' => '--lesson', 'expected' => "Success : \n", 'exitCode' => 0],
+            'skill' => ['option' => '--skill', 'expected' => "Success : \n", 'exitCode' => 0],
         ];
     }
 }

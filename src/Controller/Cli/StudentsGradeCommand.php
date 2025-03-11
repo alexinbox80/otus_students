@@ -37,11 +37,11 @@ final class StudentsGradeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-//        if (!$this->lock()) {
-//            $output->writeln('<info>Command is already running.</info>');
-//
-//            return self::SUCCESS;
-//        }
+        if (!$this->lock()) {
+            $output->writeln('<info>Command is already running.</info>');
+
+            return self::SUCCESS;
+        }
 
         $course = $input->getOption('course');
         if ($course) {
@@ -103,6 +103,7 @@ final class StudentsGradeCommand extends Command
             $output->write("<error>Options are empty</error>\n");
             return self::FAILURE;
         }
+
         return self::SUCCESS;
     }
 }
