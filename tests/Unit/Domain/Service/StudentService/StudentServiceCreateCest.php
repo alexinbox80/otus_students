@@ -7,22 +7,21 @@ use App\Domain\Model\CreateStudentModel;
 use App\Domain\Repository\StudentRepositoryInterface;
 use App\Domain\Service\StudentService;
 use App\Domain\Service\UserService;
+use App\Tests\Support\UnitTester;
 use ReflectionException;
 use Codeception\Attribute\DataProvider;
-use Codeception\Test\Unit;
-use Generator;
+use Codeception\Example;
+use Traversable;
 use Mockery;
 use Psr\Cache\InvalidArgumentException;
 use Support\Helper\SetEntityId;
 
-class StudentServiceCreateTest extends Unit
+class StudentServiceCreateCest
 {
-    private static StudentService $studentService;
-
     /**
      * @throws ReflectionException
      */
-    protected function _before(): void
+    protected function make(): StudentService
     {
         $createUser = new User;
         $createUser->changeFields(
@@ -49,17 +48,17 @@ class StudentServiceCreateTest extends Unit
         $userService = Mockery::mock(UserService::class);
         $userService->shouldReceive('find')->andReturn($createUser);
 
-        self::$studentService = new StudentService($studentRepository, $userService);
+        return new StudentService($studentRepository, $userService);
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException|ReflectionException
      */
-    #[DataProvider('createTestCases')]
-    public function testCreate(CreateStudentModel $createStudentModel, array $expectedData): void
+    #[DataProvider('createStudentCases')]
+    public function testCreate(UnitTester $I, Example $example): void
     {
-        $studentService = self::$studentService;
-        $student = $studentService->create($createStudentModel);
+        $studentService = $this->make();
+        $student = $studentService->create($example['createStudentModel']);
 
         $actualData = [
             'userId' => $student->getUserId(),
@@ -70,15 +69,15 @@ class StudentServiceCreateTest extends Unit
             'phone' => $student->getPhone(),
         ];
 
-        $this->assertEquals($expectedData, $actualData);
+        $I->assertEquals($example['studentData'], $actualData);
     }
 
-    public static function createTestCases(): Generator
+    public static function createStudentCases(): Traversable
     {
         yield [
-            new CreateStudentModel(
+            'createStudentModel' => new CreateStudentModel(
                 1,
-                'FirstNameName',
+                'FirstName',
                 'LastName',
                 'MiddleName',
                 'email@email.ru',
@@ -86,9 +85,9 @@ class StudentServiceCreateTest extends Unit
                 '123456',
                 '654321'
             ),
-            [
+            'studentData' => [
                 'userId' => 1,
-                'firstName' => 'FirstNameName',
+                'firstName' => 'FirstName',
                 'lastName' => 'LastName',
                 'middleName' => 'MiddleName',
                 'email' => 'email@email.ru',
@@ -97,9 +96,9 @@ class StudentServiceCreateTest extends Unit
         ];
 
         yield [
-            new CreateStudentModel(
+            'createStudentModel' => new CreateStudentModel(
                 1,
-                'FirstNameName',
+                'FirstName',
                 'LastName',
                 null,
                 'email@email.ru',
@@ -107,9 +106,9 @@ class StudentServiceCreateTest extends Unit
                 '123456',
                 '654321'
             ),
-            [
+            'studentData' => [
                 'userId' => 1,
-                'firstName' => 'FirstNameName',
+                'firstName' => 'FirstName',
                 'lastName' => 'LastName',
                 'middleName' => null,
                 'email' => 'email@email.ru',
@@ -118,9 +117,9 @@ class StudentServiceCreateTest extends Unit
         ];
 
         yield [
-            new CreateStudentModel(
+            'createStudentModel' => new CreateStudentModel(
                 1,
-                'FirstNameName',
+                'FirstName',
                 'LastName',
                 'MiddleName',
                 null,
@@ -128,9 +127,9 @@ class StudentServiceCreateTest extends Unit
                 '123456',
                 '654321'
             ),
-            [
+            'studentData' => [
                 'userId' => 1,
-                'firstName' => 'FirstNameName',
+                'firstName' => 'FirstName',
                 'lastName' => 'LastName',
                 'middleName' => 'MiddleName',
                 'email' => null,
@@ -139,9 +138,9 @@ class StudentServiceCreateTest extends Unit
         ];
 
         yield [
-            new CreateStudentModel(
+            'createStudentModel' => new CreateStudentModel(
                 1,
-                'FirstNameName',
+                'FirstName',
                 'LastName',
                 'MiddleName',
                 'email@email.ru',
@@ -149,9 +148,9 @@ class StudentServiceCreateTest extends Unit
                 '123456',
                 '654321'
             ),
-            [
+            'studentData' => [
                 'userId' => 1,
-                'firstName' => 'FirstNameName',
+                'firstName' => 'FirstName',
                 'lastName' => 'LastName',
                 'middleName' => 'MiddleName',
                 'email' => 'email@email.ru',
@@ -160,9 +159,9 @@ class StudentServiceCreateTest extends Unit
         ];
 
         yield [
-            new CreateStudentModel(
+            'createStudentModel' => new CreateStudentModel(
                 1,
-                'FirstNameName',
+                'FirstName',
                 'LastName',
                 null,
                 null,
@@ -170,9 +169,9 @@ class StudentServiceCreateTest extends Unit
                 '',
                 ''
             ),
-            [
+            'studentData' => [
                 'userId' => 1,
-                'firstName' => 'FirstNameName',
+                'firstName' => 'FirstName',
                 'lastName' => 'LastName',
                 'middleName' => null,
                 'email' => null,
