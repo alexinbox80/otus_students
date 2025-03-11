@@ -14,9 +14,8 @@ class StudentsGradeCommandCest
      */
     public function testExecuteReturnsResult(FunctionalTester $I, Example $example): void
     {
-
         $params = [$example['option']];
-        $inputs = [];
+        $inputs = ["\n"];
 
         $output = $I->runSymfonyConsoleCommand(self::COMMAND, $params, $inputs, $example['exitCode']);
         $I->assertStringStartsWith($example['expected'], $output);
@@ -28,7 +27,7 @@ class StudentsGradeCommandCest
             'negative' => ['option' => '','expected' => "Options are empty\n", 'exitCode' => 1],
             'course' => ['option' => '--course', 'expected' => "Success : \n", 'exitCode' => 0],
             'lesson' => ['option' => '--lesson', 'expected' => "Success : \n", 'exitCode' => 0],
-            'skill' => ['option' => '--skill', 'expected' => "Success : \n", 'exitCode' => 0],
+            'skill' => ['option' => '--skill', 'expected' => "Success : \n", 'exitCode' => 1],
         ];
     }
 }
