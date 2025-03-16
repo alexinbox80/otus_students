@@ -41,3 +41,5 @@ php bin/console doctrine:schema:update --dump-sql
 php bin/console doctrine:schema:drop --full-database --force --env=test \
 php bin/console doctrine:database:create --env=test \
 php bin/console doctrine:migrations:migrate --env=test
+
+php bin/console debug:dotenv

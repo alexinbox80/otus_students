@@ -4,6 +4,7 @@ stages:
     - rollback
     - testsUnit
     - testsFunctional
+    - testsAcceptance
 
 before_script:
     - eval $(ssh-agent -s)
@@ -59,3 +60,11 @@ testsFunctional:
     stage: testsFunctional
     script:
         - ssh $SSH_USER@$SERVER1 "cd $WWWROOT/current && sudo -u www-data php ./vendor/bin/codecept run Functional"
+
+testsAcceptance:
+    stage: testsAcceptance
+    script:
+        - ssh $SSH_USER@$SERVER1 "cd $WWWROOT/current 
+          && sudo -u www-data php ./vendor/bin/codecept build
+          && sudo -u www-data php ./vendor/bin/codecept run Acceptance"
+    when: manual
