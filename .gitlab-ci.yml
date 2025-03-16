@@ -2,6 +2,7 @@ stages:
     - install
     - deploy
     - rollback
+    - testsUnit
 
 before_script:
     - eval $(ssh-agent -s)
@@ -49,6 +50,8 @@ install:
         - ssh $SSH_USER@$SERVER1 "sh $WWWROOT/current/deploy/install.sh"
     when: manual
 
-tests:
+testsUnit:
+    stage: testsUnit
     script:
         - php vendor/bin/codecept run Unit
+    when: manual
