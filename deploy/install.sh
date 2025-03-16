@@ -11,6 +11,11 @@ sudo -u postgres bash -c "psql -c \"CREATE USER dbuser WITH PASSWORD 'password'\
 sudo -u postgres bash -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE students TO dbuser\""
 sudo -u postgres bash -c "psql -c \"ALTER DATABASE students OWNER TO dbuser\""
 
+sudo -u postgres bash -c "psql -c \"CREATE DATABASE students_test ENCODING 'UTF8' TEMPLATE = template0\""
+sudo -u postgres bash -c "psql -c \"CREATE USER dbuser WITH PASSWORD 'password'\""
+sudo -u postgres bash -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE students_test TO dbuser\""
+sudo -u postgres bash -c "psql -c \"ALTER DATABASE students_test OWNER TO dbuser\""
+
 sudo rabbitmq-plugins enable rabbitmq_management
 sudo rabbitmq-plugins enable rabbitmq_consistent_hash_exchange
 sudo rabbitmqctl add_user user password
