@@ -3,6 +3,7 @@ stages:
     - deploy
     - rollback
     - testsUnit
+    - testsFunctional
 
 before_script:
     - eval $(ssh-agent -s)
@@ -53,5 +54,11 @@ install:
 testsUnit:
     stage: testsUnit
     script:
-        - ssh $SSH_USER@$SERVER1 "cd $WWWROOT/current && sudo -u www-data php ./vendor/bin/codecept run unit"
+        - ssh $SSH_USER@$SERVER1 "cd $WWWROOT/current && sudo -u www-data php ./vendor/bin/codecept run Unit"
+    when: manual
+
+testsFunctional:
+    stage: testsFunctional
+    script:
+        - ssh $SSH_USER@$SERVER1 "cd $WWWROOT/current && sudo -u www-data php ./vendor/bin/codecept run Functional"
     when: manual
