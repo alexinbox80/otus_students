@@ -5,8 +5,8 @@
 #sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 sudo -u postgres bash -c "psql -c \"CREATE DATABASE students ENCODING 'UTF8' TEMPLATE = template0\""
-sudo -u postgres bash -c "psql -c \"CREATE USER user WITH PASSWORD 'password'\""
-sudo -u postgres bash -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE course TO user\""
+sudo -u postgres bash -c "psql -c \"CREATE USER dbuser WITH PASSWORD 'password'\""
+sudo -u postgres bash -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE course TO dbuser\""
 
 #sudo rabbitmq-plugins enable rabbitmq_management
 #sudo rabbitmq-plugins enable rabbitmq_consistent_hash_exchange
