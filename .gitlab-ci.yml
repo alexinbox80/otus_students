@@ -1,6 +1,6 @@
 stages:
-    - install
     - deploy
+    - install
     - rollback
 
 before_script:
