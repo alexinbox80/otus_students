@@ -18,7 +18,7 @@ deploy_server1:
         url: $SERVER1
     script:
         - ssh $SSH_USER@$SERVER1 "cd $WWWROOT
-          && git clone -b lesson-24 https://github.com/alexinbox80/otus_project.git $DIR
+          && git clone -b master https://github.com/alexinbox80/otus_students.git $DIR
           && sudo chown www-data:www-data $DIR -R
           && cd $DIR
           && sh ./deploy/deploy.sh $SERVER1 $DATABASE_HOST $DATABASE_USER $DATABASE_PASSWORD $DATABASE_NAME $RABBITMQ_HOST $RABBITMQ_USER $RABBITMQ_PASSWORD
