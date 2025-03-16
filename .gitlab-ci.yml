@@ -6,6 +6,7 @@ stages:
 before_script:
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 -d)
+    - echo "$SSH_PRIVATE_KEY" | base64 -d
     - mkdir -p ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - export DIR=$(date +%Y%m%d_%H%M%S)
