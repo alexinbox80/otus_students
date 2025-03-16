@@ -9,6 +9,7 @@ sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 sudo -u postgres bash -c "psql -c \"CREATE DATABASE students ENCODING 'UTF8' TEMPLATE = template0\""
 sudo -u postgres bash -c "psql -c \"CREATE USER dbuser WITH PASSWORD 'password'\""
 sudo -u postgres bash -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE students TO dbuser\""
+sudo -u postgres bash -c "psql -c \"ALTER DATABASE students OWNER TO dbuser\""
 
 sudo rabbitmq-plugins enable rabbitmq_management
 sudo rabbitmq-plugins enable rabbitmq_consistent_hash_exchange
@@ -22,6 +23,7 @@ sudo rabbitmqctl set_permissions -p / user ".*" ".*" ".*"
 #cat ~/.ssh/id_rsa.pub | cat >> ~/.ssh/authorized_keys
 #cat ~/.ssh/id_rsa | base64 -w0
 
+sudo service postgresql restart
 sudo service redis-server restart
 sudo service php8.3-fpm restart
 sudo service supervisor restart
