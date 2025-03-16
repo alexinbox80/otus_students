@@ -1,5 +1,7 @@
 sudo apt update
-sudo apt install curl git unzip nginx redis-server postgresql postgresql-contrib rabbitmq-server supervisor php-cli php-fpm php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-pgsql
+sudo apt install curl git unzip nginx redis-server postgresql \
+postgresql-contrib rabbitmq-server supervisor php-cli php-fpm php-json \
+php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-pgsql
 
 curl -sS https://getcomposer.org/installer -o composer-setup.php
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
