@@ -42,5 +42,5 @@ rollback:
 install:
     stage: install
     script:
-        - ssh $SSH_USER@$SERVER1 "sh ./deploy/install.sh"
+        - ssh $SSH_USER@$SERVER1 "sh $WWWROOT/current/deploy/install.sh"
     when: manual
