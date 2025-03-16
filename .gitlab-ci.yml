@@ -1,4 +1,5 @@
 stages:
+    - install
     - deploy
     - rollback
 
@@ -36,4 +37,10 @@ rollback:
           && mv -Tf $WWWROOT/previous $WWWROOT/current 
           && cd $WWWROOT/current 
           && sh ./deploy/rollback.sh $SERVER1"
+    when: manual
+
+install:
+    stage: install
+    script:
+        - ssh $SSH_USER@$SERVER1 sh ./deploy/install.sh $SERVER1"
     when: manual
