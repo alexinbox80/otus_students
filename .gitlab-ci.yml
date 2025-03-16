@@ -53,5 +53,5 @@ install:
 testsUnit:
     stage: testsUnit
     script:
-        - php vendor/bin/codecept run Unit
+        - sudo -u www-data php vendor/bin/codecept run Unit
     when: manual
