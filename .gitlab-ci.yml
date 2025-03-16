@@ -53,5 +53,5 @@ install:
 testsUnit:
     stage: testsUnit
     script:
-        - sudo -u www-data php vendor/bin/codecept run Unit
+        - ssh $SSH_USER@$SERVER1 "cd $WWWROOT/current && sudo -u www-data php ./vendor/bin/codecept run unit"
     when: manual
