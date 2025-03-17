@@ -2,8 +2,8 @@ stages:
     - install
     - deploy
     - testsUnit
-    - testsAcceptance
     - testsFunctional
+    - testsAcceptance
     - rollback
 
 before_script:
