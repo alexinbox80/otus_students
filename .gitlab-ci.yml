@@ -65,7 +65,7 @@ testsFunctional:
 testsAcceptance:
     stage: testsAcceptance
     script:
-        - ssh $SSH_USER@$SERVER1 "cd $WWWROOT/current 
+        - ssh $SSH_USER@$SERVER1 "cd $WWWROOT/current
+          && sudo -u www-data php bin/console cache:warmup --env=dev
           && sudo -u www-data php ./vendor/bin/codecept build
           && sudo -u www-data php ./vendor/bin/codecept run Acceptance"
-    when: manual
