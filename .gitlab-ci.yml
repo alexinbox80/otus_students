@@ -1,0 +1,71 @@
+stages:
+    - install
+    - deploy
+    - testsUnit
+    - testsFunctional
+    - testsAcceptance
+    - rollback
+
+before_script:
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 -d)
+    - mkdir -p ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - export DIR=$(date +%Y%m%d_%H%M%S)
+    - export WWWROOT=/var/www/students
+
+deploy_server1:
+    stage: deploy
+    environment:
+        name: server1
+        url: $SERVER1
+    script:
+        - ssh $SSH_USER@$SERVER1 "cd $WWWROOT
+          && git clone -b AS/hw7 https://github.com/alexinbox80/otus_students.git $DIR
+          && sudo chown www-data:www-data $DIR -R
+          && cd $DIR
+          && sh ./deploy/deploy.sh $SERVER1 $JWT_PASSPHRASE $DATABASE_HOST $DATABASE_USER $DATABASE_PASSWORD $DATABASE_NAME $RABBITMQ_HOST $RABBITMQ_USER $RABBITMQ_PASSWORD
+          && mkdir -p config/jwt
+          && sudo -u www-data php bin/console cache:warmup --env=dev
+          && openssl genpkey -out config/jwt/private.pem -aes256 -pass pass:$JWT_PASSPHRASE -algorithm rsa -pkeyopt rsa_keygen_bits:4096
+          && openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout -passin pass:$JWT_PASSPHRASE
+          && sudo chown www-data:www-data config/jwt -R
+          && cd ..
+          && rm -rf $WWWROOT/$DIR/var/log
+          && ln -s $WWWROOT/shared/log $WWWROOT/$DIR/var/log
+          && ( [ ! -d $WWWROOT/current ] || mv -Tf $WWWROOT/current $WWWROOT/previous )
+          && ln -s $WWWROOT/$DIR $WWWROOT/current"
+    only:
+        - master
+
+rollback:
+    stage: rollback
+    script:
+        - ssh $SSH_USER@$SERVER1 "unlink $WWWROOT/current 
+          && mv -Tf $WWWROOT/previous $WWWROOT/current 
+          && cd $WWWROOT/current 
+          && sh ./deploy/rollback.sh $SERVER1"
+    when: manual
+
+install:
+    stage: install
+    script:
+        - ssh $SSH_USER@$SERVER1 "sh $WWWROOT/current/deploy/install.sh"
+
+testsUnit:
+    stage: testsUnit
+    script:
+        - ssh $SSH_USER@$SERVER1 "cd $WWWROOT/current && sudo -u www-data php ./vendor/bin/codecept run Unit"
+
+testsFunctional:
+    stage: testsFunctional
+    script:
+        - ssh $SSH_USER@$SERVER1 "cd $WWWROOT/current && sudo -u www-data php ./vendor/bin/codecept run Functional"
+
+testsAcceptance:
+    stage: testsAcceptance
+    script:
+        - ssh $SSH_USER@$SERVER1 "cd $WWWROOT/current
+          && sudo -u www-data php bin/console cache:warmup --env=dev
+          && sudo -u www-data php ./vendor/bin/codecept build
+          && sudo -u www-data php ./vendor/bin/codecept run Acceptance"
