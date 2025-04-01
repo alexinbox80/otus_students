@@ -1,4 +1,7 @@
 {
+    "alexinbox80/students-sales-bundle": {
+        "version": "0.0.1"
+    },
     "api-platform/core": {
         "version": "4.0",
         "recipe": {
@@ -213,6 +216,15 @@
             "config/packages/twig.yaml",
             "templates/base.html.twig"
         ]
+    },
+    "symfony/uid": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.0",
+            "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
+        }
     },
     "symfony/validator": {
         "version": "7.1",

@@ -7,6 +7,7 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "alexinbox80/students-sales-bundle": "^0.0.1",
         "api-platform/core": "^4.0",
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.3",
@@ -29,6 +30,7 @@
         "symfony/security-bundle": "7.1.*",
         "symfony/serializer": "7.1.*",
         "symfony/twig-bundle": "7.1.*",
+        "symfony/uid": "7.1.*",
         "symfony/validator": "7.1.*",
         "symfony/yaml": "7.1.*",
         "webmozart/assert": "^1.11",
@@ -44,7 +46,9 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "alexinbox80\\Shared\\": "sharedKernel/src/",
+            "alexinbox80\\StudentsSalesBundle\\": "studentsSalesBundle/src/"
         }
     },
     "autoload-dev": {
@@ -52,7 +56,9 @@
             "UnitTests\\": "tests/Unit",
             "FunctionalTests\\": "tests/Functional",
             "AcceptanceTests\\": "tests/Acceptance",
-            "Support\\": "tests/Support"
+            "Support\\": "tests/Support",
+            "alexinbox80\\Shared\\Tests\\": "sharedKernel/tests/",
+            "alexinbox80\\StudentsSalesBundle\\Tests\\": "studentsSalesBundle/tests/"
         }
     },
     "replace": {
@@ -95,7 +101,14 @@
         "codeception/module-phpbrowser": "^3.0",
         "codeception/module-rest": "^3.4",
         "codeception/module-symfony": "^3.5",
+        "deptrac/deptrac": "^3.0",
         "mockery/mockery": "^1.6",
         "symfony/phpunit-bridge": "^7.2"
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./studentsSalesBundle"
+        }
+    ]
 }

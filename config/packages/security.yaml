@@ -68,6 +68,8 @@ security:
         - { path: ^/api/v1/get-students-grade-for-lesson-in-time-range-async, roles: [ ROLE_MANAGER ], methods: [ POST ] }
         - { path: ^/api/v1/get-students-grade-for-skill, roles: [ ROLE_MANAGER ], methods: [ GET ] }
         - { path: ^/api/v1/get-students-grade-for-skill-async, roles: [ ROLE_MANAGER ], methods: [ GET ] }
+        - { path: ^/api/v1/generate-payment-link/\d+$, roles: [ ROLE_STUDENT ], methods: [ GET ] }
+        - { path: ^/api/v1/create-paid-subscription, roles: [ ROLE_STUDENT ], methods: [ POST ] }
 
     role_hierarchy:
             ROLE_ADMIN: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ]
