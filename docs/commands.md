@@ -50,3 +50,7 @@ php bin/console doctrine:database:create --env=test \
 php bin/console doctrine:migrations:migrate --env=test
 
 php bin/console debug:dotenv
+
+#executes arbitrary SQL directly from the command line \
+php bin/console dbal:run-sql "SELECT * FROM \"user\""
+php bin/console doctrine:query:sql "SELECT * FROM \"user\""

@@ -1,5 +1,5 @@
 COMPOSE := docker compose -f docker-compose.yml --env-file .env.local
-DOCKER_EXEC := docker exec --env-file .env.local
+DOCKER_EXEC := docker exec --env .env.local
 
 php:
 	${DOCKER_EXEC} -it --user=www-data students_php bash
