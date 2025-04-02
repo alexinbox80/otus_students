@@ -7,6 +7,13 @@ php bin/console make:entity
 #create migrations \
 php bin/console doctrine:migrations:diff
 
+#displays actual config values \
+php bin/console debug:config doctrine
+php bin/console config:dump-reference doctrine
+
+#show information about mapped entities \
+php bin/console doctrine:mapping:info
+
 #migrate migrations \
 php bin/console doctrine:migrations:migrate
 
