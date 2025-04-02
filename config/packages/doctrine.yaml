@@ -27,12 +27,6 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Domain/Entity'
                 prefix: 'App\Domain\Entity'
                 alias: App
-            alexinbox80\StudentsSalesBundle:
-                type: attribute
-                is_bundle: false
-                dir: '%kernel.project_dir%/studentsSalesBundle/src/Domain/Model'
-                prefix: 'alexinbox80\StudentsSalesBundle\Domain\Model'
-                alias: alexinbox80\StudentsSalesBundle
             alexinbox80\Shared:
                 type: attribute
                 is_bundle: false
