@@ -54,3 +54,12 @@ php bin/console debug:dotenv
 #executes arbitrary SQL directly from the command line \
 php bin/console dbal:run-sql "SELECT * FROM \"user\""
 php bin/console doctrine:query:sql "SELECT * FROM \"user\""
+
+#migrations lists \
+php bin/console d:m:list
+
+#rollback to prev migration \
+php bin/console doctrine:migrations:migrate prev
+
+php bin/console doctrine:migrations:execute --up DoctrineMigrations\\Version20250402090731 --no-interaction
+php bin/console doctrine:migrations:execute --down DoctrineMigrations\\Version20250402090731 --no-interaction
