@@ -89,7 +89,11 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.1.*"
+            "require": "7.1.*",
+            "endpoint": [
+                "https://api.github.com/repos/alexinbox80/symfony-recipes/contents/index.json",
+                "flex://defaults"
+            ]
         }
     },
     "require-dev": {

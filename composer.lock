@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6cf4ef5b31e0e406079ec26a43ad8938",
+    "content-hash": "21bdd2fd78819ad7108be10b1cb8b2c0",
     "packages": [
         {
             "name": "alexinbox80/students-sales-bundle",
@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "./studentsSalesBundle",
-                "reference": "2e9f0e61dc3549c6adfb26c00c48d81478216363"
+                "reference": "7a7c17c01974675c94a6931c7903b638b789186c"
             },
             "require": {
                 "php": ">=8.3"

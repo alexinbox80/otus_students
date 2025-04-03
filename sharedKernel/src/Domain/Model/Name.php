@@ -8,10 +8,10 @@ use Webmozart\Assert\Assert;
 #[ORM\Embeddable]
 final readonly class Name
 {
-    #[ORM\Column(name: 'first', type: 'string', length: 255)]
+    #[ORM\Column(name: 'first_name', type: 'string', length: 255)]
     private string $first;
 
-    #[ORM\Column(name: 'last', type: 'string', length: 255)]
+    #[ORM\Column(name: 'last_name', type: 'string', length: 255)]
     private string $last;
 
     public function __construct(string $first, string $last)

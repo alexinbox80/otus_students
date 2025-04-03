@@ -26,3 +26,5 @@
 
 /JwtAuthBundle/
 /studentsSalesBundle/
+/symfonyRecipes/
+/auth.json
