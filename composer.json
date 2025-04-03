@@ -111,8 +111,8 @@
     },
     "repositories": [
         {
-            "type": "path",
-            "url": "./studentsSalesBundle"
+            "type": "vcs",
+            "url": "git@github.com:alexinbox80/students-sales-bundle.git"
         }
     ]
 }
