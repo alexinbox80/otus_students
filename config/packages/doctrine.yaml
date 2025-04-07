@@ -11,6 +11,7 @@ doctrine:
         use_savepoints: true
         types:
             shared__oid: alexinbox80\Shared\Infrastructure\Doctrine\Types\OIdType
+            shared__email: alexinbox80\Shared\Infrastructure\Doctrine\Types\EmailType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true

@@ -2,8 +2,12 @@
 
 namespace App\Domain\Service;
 
+use alexinbox80\Shared\Domain\Model\OId;
 use App\Domain\Entity\Person;
 use App\Domain\Entity\Student;
+use App\Domain\Event\Customer\CreateStudentEvent;
+use App\Domain\Event\Customer\DeleteStudentEvent;
+use App\Domain\Event\Customer\UpdateStudentEvent;
 use App\Domain\Model\CreateEmailConfirmationCodeModel;
 use App\Domain\Model\CreatePhoneConfirmationCodeModel;
 use App\Domain\Model\CreateStudentModel;
@@ -11,12 +15,14 @@ use App\Domain\Model\StudentModel;
 use App\Domain\Model\UpdateStudentModel;
 use App\Domain\Repository\StudentRepositoryInterface;
 use Psr\Cache\InvalidArgumentException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class StudentService
 {
     public function __construct(
         private readonly StudentRepositoryInterface $studentRepository,
-        private readonly UserService $userService
+        private readonly UserService $userService,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -149,6 +155,7 @@ class StudentService
         $user = $this->userService->find($createStudentModel->userId);
 
         $student = new Student(
+            OId::next(),
             $user,
             $createStudentModel->firstName,
             $createStudentModel->lastName,
@@ -160,6 +167,12 @@ class StudentService
         $student->setPhoneCode($createStudentModel->phoneCode);
 
         $this->studentRepository->create($student);
+
+        $event = new CreateStudentEvent(
+            $student->getId(),
+            $student->getOId(),
+        );
+        $this->eventDispatcher->dispatch($event);
 
         return new StudentModel(
             $student->getId(),
@@ -195,6 +208,12 @@ class StudentService
 
         $this->studentRepository->update();
 
+        $event = new UpdateStudentEvent(
+            $student->getId(),
+            $student->getOId(),
+        );
+        $this->eventDispatcher->dispatch($event);
+
         return new StudentModel(
             $student->getId(),
             $student->getUser()->getId(),
@@ -228,6 +247,12 @@ class StudentService
      */
     public function removeStudent(Student $student): void
     {
+        $event = new DeleteStudentEvent(
+            $student->getId(),
+            $student->getOId(),
+        );
+        $this->eventDispatcher->dispatch($event);
+
         $this->studentRepository->remove($student);
     }
 }

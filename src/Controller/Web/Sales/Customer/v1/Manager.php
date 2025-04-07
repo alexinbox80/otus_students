@@ -15,17 +15,17 @@ class Manager
 
     public function customer(CustomerDTO $customerDTO): IsCustomerDTO
     {
-//        try {
-            $customerId = $this->sales->customer(
+        try {
+            $customerId = $this->sales->createCustomer(
                 $customerDTO->studentId,
                 $customerDTO->firstName,
                 $customerDTO->lastName,
                 $customerDTO->email
             );
-//        } catch (\Exception $e) {
-//            // TODO Handle
-//            throw new $e;
-//        }
+        } catch (\Exception $e) {
+            // TODO Handle
+            throw new $e;
+        }
 
         return new IsCustomerDTO(
             true,
