@@ -2,6 +2,7 @@
 
 namespace alexinbox80\Shared\Domain\Model;
 
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Uid\UuidV4;
 use Webmozart\Assert\Assert;
 
@@ -10,9 +11,12 @@ use Webmozart\Assert\Assert;
  */
 final readonly class OId
 {
+    private UuidV4 $value;
+
     final private function __construct(
-        private UuidV4 $value
+        UuidV4 $value
     ) {
+        $this->value = $value;
     }
 
     public function __toString(): string

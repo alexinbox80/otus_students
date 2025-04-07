@@ -5,6 +5,7 @@ namespace App\Controller\Web\Sales\Subscribe\v1;
 use alexinbox80\StudentsSalesBundle\Presentation\Contract\SalesInterface;
 use App\Controller\Web\Sales\Subscribe\v1\Input\SubscribeDTO;
 use App\Controller\Web\Sales\Subscribe\v1\Output\SubscribedDTO;
+use DateTimeImmutable;
 
 class Manager
 {
@@ -19,7 +20,7 @@ class Manager
             $subscriptionId = $this->sales->subscribe(
                 $subscribeDTO->userId,
                 $subscribeDTO->productId,
-                new \DateTimeImmutable()
+                new DateTimeImmutable()
             );
         } catch (\Exception $e) {
             // TODO Handle

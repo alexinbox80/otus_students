@@ -29,8 +29,7 @@ final class OIdType extends Type
         Assert::isInstanceOf($value, OId::class);
 
         /** @var OId $value */
-
-        return $value->toBinary();
+        return $value;
     }
 
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?OId

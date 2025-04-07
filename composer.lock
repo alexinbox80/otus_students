@@ -4,21 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c34a86a852c2e8883b3fbff45df0270",
+    "content-hash": "21bdd2fd78819ad7108be10b1cb8b2c0",
     "packages": [
         {
             "name": "alexinbox80/students-sales-bundle",
             "version": "0.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/alexinbox80/students-sales-bundle.git",
-                "reference": "c7a1199801c98c79ceb8804fa5db88c8c2e91d04"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/alexinbox80/students-sales-bundle/zipball/c7a1199801c98c79ceb8804fa5db88c8c2e91d04",
-                "reference": "c7a1199801c98c79ceb8804fa5db88c8c2e91d04",
-                "shasum": ""
+                "type": "path",
+                "url": "./studentsSalesBundle",
+                "reference": "c7a1199801c98c79ceb8804fa5db88c8c2e91d04"
             },
             "require": {
                 "php": ">=8.3"
@@ -44,11 +38,9 @@
                 }
             ],
             "description": "Bundle for sales in students project",
-            "support": {
-                "source": "https://github.com/alexinbox80/students-sales-bundle/tree/v0.0.1",
-                "issues": "https://github.com/alexinbox80/students-sales-bundle/issues"
-            },
-            "time": "2025-04-03T20:14:15+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "api-platform/core",
