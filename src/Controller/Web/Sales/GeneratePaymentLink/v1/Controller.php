@@ -17,7 +17,7 @@ class Controller
 
     #[Route(
         path: 'api/v1/generate-payment-link/{subscriptionId}',
-        name: 'web_generate_payment_link_v1_invoke',
+        name: 'sales_generate_payment_link_v1_invoke',
         methods: ['GET']
     )]
     public function generatePaymentLink(string $subscriptionId): GeneratedPaymentLinkDTO

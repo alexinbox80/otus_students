@@ -18,7 +18,7 @@ final readonly class Controller
 
     #[Route(
         path: 'api/v1/create-customer',
-        name: 'web_create_customer_v1_invoke',
+        name: 'sales_create_customer_v1_invoke',
         methods: ['POST']
     )]
     public function __invoke(#[MapRequestPayload] CustomerDTO $customerDTO): IsCustomerDTO

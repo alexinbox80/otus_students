@@ -8,6 +8,7 @@ use App\Controller\DTO\Interfaces\OutputEmailCodeConfirmedDTOInterface;
 use App\Controller\DTO\Interfaces\OutputPhoneCodeConfirmedDTOInterface;
 use App\Controller\DTO\Interfaces\OutputSalesGeneratedPaymentLinkDTOInterface;
 use App\Controller\DTO\Interfaces\OutputSalesIsCustomerDTOInterface;
+use App\Controller\DTO\Interfaces\OutputSalesIsProductDTOInterface;
 use App\Controller\DTO\Interfaces\OutputSalesSubscribedDTOInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +38,10 @@ class KernelViewEventListener
         }
 
         if (is_object($dto) and $dto instanceof OutputSalesIsCustomerDTOInterface) {
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
+        }
+
+        if (is_object($dto) and $dto instanceof OutputSalesIsProductDTOInterface) {
             $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
         }
 

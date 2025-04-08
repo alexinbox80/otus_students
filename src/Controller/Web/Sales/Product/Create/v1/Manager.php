@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Controller\Web\Sales\Product\Create\v1;
+
+use alexinbox80\StudentsSalesBundle\Presentation\Contract\SalesInterface;
+use App\Controller\Web\Sales\Product\Create\v1\Input\ProductDTO;
+use App\Controller\Web\Sales\Product\Create\v1\Output\IsProductDTO;
+
+class Manager
+{
+    public function __construct(
+        private SalesInterface $sales,
+    ) {
+    }
+
+    public function product(ProductDTO $productDTO): IsProductDTO
+    {
+        try {
+            $productId = $this->sales->createProduct(
+                $productDTO->name,
+                $productDTO->amount,
+                $productDTO->currency
+            );
+        } catch (\Exception $e) {
+            // TODO Handle
+            throw new $e;
+        }
+
+        return new IsProductDTO(
+            true,
+            $productId
+        );
+    }
+}

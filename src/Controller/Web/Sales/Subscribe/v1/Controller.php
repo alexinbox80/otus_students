@@ -18,7 +18,7 @@ final readonly class Controller
 
     #[Route(
         path: 'api/v1/create-paid-subscription',
-        name: 'web_create_paid_subscription_v1_invoke',
+        name: 'sales_create_paid_subscription_v1_invoke',
         methods: ['POST']
     )]
     public function __invoke(#[MapRequestPayload] SubscribeDTO $subscribeDTO): SubscribedDTO
