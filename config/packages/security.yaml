@@ -74,6 +74,8 @@ security:
         - { path: ^/api/v1/create-product, roles: [ ROLE_MANAGER ], methods: [ POST ] }
         - { path: ^/api/v1/delete-product/\d+$, roles: [ ROLE_MANAGER ], methods: [ DELETE ] }
         - { path: ^/api/v1/update-product/\d+$, roles: [ ROLE_MANAGER ], methods: [ PATCH ] }
+        - { path: ^/api/v1/create-invoice, roles: [ ROLE_STUDENT ], methods: [ POST ] }
+        - { path: ^/api/v1/expire-invoice, roles: [ ROLE_STUDENT ], methods: [ POST ] }
 
     role_hierarchy:
             ROLE_ADMIN: [ ROLE_STUDENT, ROLE_TEACHER, ROLE_MANAGER ]
