@@ -6,6 +6,11 @@ use App\Controller\DTO\Interfaces\OutputDTOInterface;
 use App\Controller\DTO\Interfaces\OutputDTONotFoundInterface;
 use App\Controller\DTO\Interfaces\OutputEmailCodeConfirmedDTOInterface;
 use App\Controller\DTO\Interfaces\OutputPhoneCodeConfirmedDTOInterface;
+use App\Controller\DTO\Interfaces\OutputSalesGeneratedPaymentLinkDTOInterface;
+use App\Controller\DTO\Interfaces\OutputSalesIsCustomerDTOInterface;
+use App\Controller\DTO\Interfaces\OutputSalesIsInvoiceDTOInterface;
+use App\Controller\DTO\Interfaces\OutputSalesIsProductDTOInterface;
+use App\Controller\DTO\Interfaces\OutputSalesSubscribedDTOInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -24,6 +29,26 @@ class KernelViewEventListener
     public function onKernelView(ViewEvent $event): void
     {
         $dto = $event->getControllerResult();
+
+        if (is_object($dto) and $dto instanceof OutputSalesGeneratedPaymentLinkDTOInterface) {
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
+        }
+
+        if (is_object($dto) and $dto instanceof OutputSalesSubscribedDTOInterface) {
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
+        }
+
+        if (is_object($dto) and $dto instanceof OutputSalesIsCustomerDTOInterface) {
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
+        }
+
+        if (is_object($dto) and $dto instanceof OutputSalesIsProductDTOInterface) {
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
+        }
+
+        if (is_object($dto) and $dto instanceof OutputSalesIsInvoiceDTOInterface) {
+            $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));
+        }
 
         if (is_object($dto) and $dto instanceof OutputEmailCodeConfirmedDTOInterface) {
             $event->setResponse($this->getDTOResponse($dto, Response::HTTP_OK));

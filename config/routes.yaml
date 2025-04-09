@@ -3,3 +3,9 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+sales_webhooks_invoices_pay:
+    resource:
+        path: ../studentsSalesBundle/src/Presentation/Http/
+        namespace: alexinbox80\StudentsSalesBundle\Presentation\Http
+    type: attribute

@@ -9,6 +9,9 @@ doctrine:
 #        schema_filter: ~^(?!doctrine_)~
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        types:
+            shared__oid: alexinbox80\Shared\Infrastructure\Doctrine\Types\OIdType
+            shared__email: alexinbox80\Shared\Infrastructure\Doctrine\Types\EmailType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
@@ -25,6 +28,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Domain/Entity'
                 prefix: 'App\Domain\Entity'
                 alias: App
+            alexinbox80\Shared:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/sharedKernel/src/Domain/Model'
+                prefix: 'alexinbox80\Shared\Domain\Model'
+                alias: alexinbox80\Shared
         controller_resolver:
             auto_mapping: false
         filters:

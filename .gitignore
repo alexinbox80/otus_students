@@ -23,3 +23,8 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+/JwtAuthBundle/
+/studentsSalesBundle/
+/symfonyRecipes/
+/auth.json

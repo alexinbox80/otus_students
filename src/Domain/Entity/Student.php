@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entity;
 
+use alexinbox80\Shared\Domain\Model\OId;
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -26,6 +27,7 @@ use Webmozart\Assert\Assert as WebmozartAssert;
 #[ORM\Index(name: 'student__first_name__last_name__middle_name__ind', columns: ['first_name', 'last_name', 'middle_name'])]
 #[ORM\Index(name: 'student__phone__ind', columns: ['phone'])]
 #[ORM\Index(name: 'student__email__ind', columns: ['email'])]
+#[ORM\UniqueConstraint(name: 'student__oid__ind', columns: ['oid'], options: ['where' => '(deleted_at IS NULL)'])]
 #[ORM\UniqueConstraint(name: 'student__user_id__uniq', fields: ['user'], options: ['where' => '(deleted_at IS NULL)'])]
 #[ApiResource(normalizationContext: ['groups' => ['student']])]
 #[ApiFilter(SearchFilter::class, properties: ['user.login' => 'partial'])]
@@ -38,6 +40,9 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
+
+    #[ORM\Column(type: 'shared__oid', unique: true)]
+    private ?OId $oid = null;
 
     #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'student', cascade: ['all'], fetch: 'EAGER')]
     #[Groups(['student'])]
@@ -53,6 +58,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     private Collection $unlockedAchievements;
 
     public function __construct(
+        OId $oid,
         User $user,
         string $firstName,
         string $lastName,
@@ -63,6 +69,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
     {
         parent::__construct($firstName, $lastName, $middleName, $email, $phone);
 
+        $this->oid = $oid;
         $this->user = $user;
         $this->subscriptions = new ArrayCollection();
         $this->completedTasks = new ArrayCollection();
@@ -74,6 +81,13 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
         WebmozartAssert::notNull($this->id, sprintf('Id of Entity %s is null.', get_class($this)));
 
         return $this->id;
+    }
+
+    public function getOId(): OId
+    {
+        WebmozartAssert::notNull($this->oid, sprintf('oid of Entity %s is null.', get_class($this)));
+
+        return $this->oid;
     }
 
     public function getUser(): ?User
@@ -171,6 +185,7 @@ class Student extends Person implements EntityInterface, HasMetaTimestampsInterf
                 parent::toArray(),
                 [
                     'id' => $this->id,
+                    'oid' => $this->oid,
                     'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
                     'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
                     'courses' => array_map(
