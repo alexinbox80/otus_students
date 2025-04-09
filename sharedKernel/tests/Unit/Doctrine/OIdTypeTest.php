@@ -20,7 +20,7 @@ final class OIdTypeTest extends TestCase
         $type = OId::next();
 
         self::assertSame(
-            $type->toBinary(),
+            $type->toString(),
             self::getType()->convertToDatabaseValue($type, $this->getPlatform())
         );
     }

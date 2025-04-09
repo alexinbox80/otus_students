@@ -1,5 +1,6 @@
 COMPOSE := docker compose -f docker-compose.yml --env-file .env.local
 DOCKER_EXEC := docker exec --env .env.local
+DOCKER_EXEC_TEST := docker exec --env .env.test
 
 php:
 	${DOCKER_EXEC} -it --user=www-data students_php bash
@@ -26,8 +27,8 @@ rsupervisor:
 	${COMPOSE} restart students_supervisor
 
 test:
-	${DOCKER_EXEC} students_php ./vendor/bin/phpunit -c sharedKernel/tests/phpunit.xml --testsuite=unit --testdox
-	${DOCKER_EXEC} students_php ./vendor/bin/phpunit -c studentsSalesBundle/tests/phpunit.xml --testsuite=unit --testdox
+	${DOCKER_EXEC_TEST} students_php ./vendor/bin/phpunit -c sharedKernel/tests/phpunit.xml --testsuite=unit --testdox
+	${DOCKER_EXEC_TEST} students_php ./vendor/bin/phpunit -c studentsSalesBundle/tests/phpunit.xml --testsuite=unit --testdox
 
 deptrac:
 	${DOCKER_EXEC} students_php ./vendor/bin/deptrac analyze --config-file=studentsSalesBundle/deptrac-layers.yaml --fail-on-uncovered --report-uncovered

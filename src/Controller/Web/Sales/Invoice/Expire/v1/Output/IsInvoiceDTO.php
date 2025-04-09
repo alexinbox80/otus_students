@@ -2,13 +2,17 @@
 
 namespace App\Controller\Web\Sales\Invoice\Expire\v1\Output;
 
-use App\Controller\DTO\Interfaces\OutputSalesIsInvoiceDTOInterface;
+use App\Controller\Common\ResultTrait;
+use App\Controller\DTO\Interfaces\OutputDTOInterface;
+use Symfony\Component\HttpFoundation\Response;
 
-class IsInvoiceDTO implements OutputSalesIsInvoiceDTOInterface
+class IsInvoiceDTO implements OutputDTOInterface
 {
+    use ResultTrait;
+
     public function __construct(
-        public readonly bool $success,
-        public readonly string $invoiceId
     ) {
+        $this->setSuccess(true);
+        $this->setCode(Response::HTTP_OK);
     }
 }

@@ -16,7 +16,7 @@ class Manager
     public function invoice(InvoiceDTO $productDTO): IsInvoiceDTO
     {
         try {
-            $invoiceId = $this->sales->expireInvoice(
+            $this->sales->expireInvoice(
                 $productDTO->invoiceId
             );
         } catch (\Exception $e) {
@@ -24,9 +24,6 @@ class Manager
             throw new $e;
         }
 
-        return new IsInvoiceDTO(
-            true,
-            $invoiceId
-        );
+        return new IsInvoiceDTO();
     }
 }
