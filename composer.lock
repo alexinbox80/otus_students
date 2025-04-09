@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "./studentsSalesBundle",
-                "reference": "c7a1199801c98c79ceb8804fa5db88c8c2e91d04"
+                "reference": "a20bb7b9c2dab11c9ab44ad4f6b424b873da5919"
             },
             "require": {
                 "php": ">=8.3"
