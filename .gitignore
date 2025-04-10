@@ -28,3 +28,5 @@
 /studentsSalesBundle/
 /symfonyRecipes/
 /auth.json
+
+.deptrac.cache
