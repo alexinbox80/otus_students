@@ -2,6 +2,7 @@
 
 namespace UnitTests\Domain\Service\StudentService;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use App\Domain\Entity\User;
 use App\Domain\Model\CreateStudentModel;
 use App\Domain\Repository\StudentRepositoryInterface;
@@ -48,7 +49,10 @@ class StudentServiceCreateCest
         $userService = Mockery::mock(UserService::class);
         $userService->shouldReceive('find')->andReturn($createUser);
 
-        return new StudentService($studentRepository, $userService);
+        $eventDispatcher = Mockery::mock(EventDispatcherInterface::class);
+        $eventDispatcher->shouldIgnoreMissing();
+
+        return new StudentService($studentRepository, $userService, $eventDispatcher);
     }
 
     /**

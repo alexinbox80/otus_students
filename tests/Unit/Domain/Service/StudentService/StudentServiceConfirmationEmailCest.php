@@ -2,6 +2,7 @@
 
 namespace UnitTests\Domain\Service\StudentService;
 
+use alexinbox80\Shared\Domain\Model\OId;
 use App\Domain\Entity\Student;
 use App\Domain\Entity\User;
 use App\Domain\Model\CreateEmailConfirmationCodeModel;
@@ -15,6 +16,7 @@ use Mockery;
 use Psr\Cache\InvalidArgumentException;
 use Support\Helper\SetEntityField;
 use Support\Helper\SetEntityId;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Traversable;
 
 class StudentServiceConfirmationEmailCest
@@ -34,6 +36,7 @@ class StudentServiceConfirmationEmailCest
         SetEntityId::updateEntityId($createUser, 1);
 
         $createStudent = new Student(
+            Oid::next(),
             $createUser,
             'firstNameUpdate',
             'lastNameUpdate',
@@ -57,7 +60,10 @@ class StudentServiceConfirmationEmailCest
             ->shouldReceive('findUserByLogin')
             ->andReturn($createUser);
 
-        return new StudentService($studentRepository, $userService);
+        $eventDispatcher = Mockery::mock(EventDispatcherInterface::class);
+        $eventDispatcher->shouldIgnoreMissing();
+
+        return new StudentService($studentRepository, $userService, $eventDispatcher);
     }
 
     /**

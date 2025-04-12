@@ -2,6 +2,7 @@
 
 namespace UnitTests\Domain\Service\StudentService;
 
+use alexinbox80\Shared\Domain\Model\OId;
 use App\Domain\Entity\Student;
 use App\Domain\Entity\User;
 use App\Domain\Model\UpdateStudentModel;
@@ -12,6 +13,7 @@ use App\Tests\Support\UnitTester;
 use ReflectionException;
 use Codeception\Attribute\DataProvider;
 use Codeception\Example;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Traversable;
 use Mockery;
 use Psr\Cache\InvalidArgumentException;
@@ -41,7 +43,10 @@ class StudentServiceUpdateCest
         $userService = Mockery::mock(UserService::class);
         $userService->shouldReceive('find')->andReturn($createUser);
 
-        return new StudentService($studentRepository, $userService);
+        $eventDispatcher = Mockery::mock(EventDispatcherInterface::class);
+        $eventDispatcher->shouldIgnoreMissing();
+
+        return new StudentService($studentRepository, $userService, $eventDispatcher);
     }
 
     /**
@@ -78,6 +83,7 @@ class StudentServiceUpdateCest
         SetEntityId::updateEntityId($user, 1);
 
         $student = new Student(
+            OId::next(),
             $user,
             'firstNameUpdate',
             'lastNameUpdate',
