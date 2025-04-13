@@ -49,7 +49,7 @@ final class StudentsGradeCommand extends Command
             $totalGrade = $this->studentGradeService->getStudentGradeForCourse();
             $this->studentGradeService->getStudentGradeForCourseAsync();
             $output->write("<info>Success : </info>\n");
-            $output->write("<info>Course :: " . json_encode($totalGrade) . "</info>\n");
+            $output->write("<info>Course :: " . json_encode($totalGrade, JSON_UNESCAPED_UNICODE) . "</info>\n");
         }
 
         $lesson = $input->getOption('lesson');
@@ -58,7 +58,7 @@ final class StudentsGradeCommand extends Command
             $totalGrade = $this->studentGradeService->getStudentGradeForLesson();
             $this->studentGradeService->getStudentGradeForLessonAsync();
             $output->write("<info>Success : </info>\n");
-            $output->write("<info>Lesson :: " . json_encode($totalGrade) . "</info>\n");
+            $output->write("<info>Lesson :: " . json_encode($totalGrade, JSON_UNESCAPED_UNICODE) . "</info>\n");
         }
 
         $skill = $input->getOption('skill');
@@ -67,7 +67,7 @@ final class StudentsGradeCommand extends Command
             $totalGrade = $this->studentGradeService->getStudentGradeForSkill();
             $this->studentGradeService->getStudentGradeForSkillAsync();
             $output->write("<info>Success : </info>\n");
-            $output->write("<info>Skill :: " . json_encode($totalGrade) . "</info>\n");
+            $output->write("<info>Skill :: " . json_encode($totalGrade, JSON_UNESCAPED_UNICODE) . "</info>\n");
         }
 
         $time = $input->getOption('time');
@@ -91,7 +91,7 @@ final class StudentsGradeCommand extends Command
                     $totalGrade = $this->studentGradeService->getStudentGradeForLessonInTimeRange($startDateTime, $endDateTime);
                     $this->studentGradeService->getStudentGradeForLessonInTimeRangeAsync($startDateTime, $endDateTime);
                     $output->write("<info>Success : </info>\n");
-                    $output->write("<info>Lesson in time range :: " . json_encode($totalGrade) . "</info>\n");
+                    $output->write("<info>Lesson in time range :: " . json_encode($totalGrade, JSON_UNESCAPED_UNICODE) . "</info>\n");
                 }
             } else {
                 $output->write("<error>Invalid number of dates</error>\n");

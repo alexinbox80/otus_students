@@ -26,6 +26,10 @@ stop:
 rsupervisor:
 	${COMPOSE} restart students_supervisor
 
+codecept:
+	${DOCKER_EXEC_TEST} students_php ./vendor/bin/codecept run tests/Unit --env test
+	${DOCKER_EXEC_TEST} students_php ./vendor/bin/codecept run tests/Acceptance --env test
+
 test:
 	${DOCKER_EXEC_TEST} students_php ./vendor/bin/phpunit -c sharedKernel/tests/phpunit.xml --testsuite=unit --testdox
 	${DOCKER_EXEC_TEST} students_php ./vendor/bin/phpunit -c studentsSalesBundle/tests/phpunit.xml --testsuite=unit --testdox
