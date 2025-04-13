@@ -15,6 +15,8 @@ use DateTime;
 
 class StudentGradeRepositoryCacheDecorator implements StudentGradeRepositoryInterface
 {
+    public const DATE_TIME_FORMAT = 'Y-m-d_H-i-s';
+
     public function __construct(
         private readonly StudentGradeRepository $studentGradeRepository,
         private readonly TagAwareCacheInterface $cache,
@@ -105,7 +107,13 @@ class StudentGradeRepositoryCacheDecorator implements StudentGradeRepositoryInte
     public function getTotalGradeInTimeRange(DateTime $startDate, DateTime $endDate, Student $student): float
     {
         return $this->cache->get(
-            $this->getCacheKey(RedisCacheTagEnum::CACHE_TAG_GET_TOTAL_GRADE_IN_TIME_RANGE->value, -1, $student->getId()),
+            $this->getCacheKeyInTimeRange(
+                RedisCacheTagEnum::CACHE_TAG_GET_TOTAL_GRADE_IN_TIME_RANGE->value,
+                -1,
+                $student->getId(),
+                $startDate,
+                $endDate
+            ),
             function (ItemInterface $item) use ($startDate, $endDate, $student) {
                 $totalGrade = $this->studentGradeRepository->getTotalGradeInTimeRangeWithCriteria($startDate, $endDate, $student);
                 $item->set($totalGrade);
@@ -125,5 +133,18 @@ class StudentGradeRepositoryCacheDecorator implements StudentGradeRepositoryInte
     private function getCacheKey(string $name, int $itemId, int $studentId): string
     {
         return $name . "_{$itemId}_$studentId";
+    }
+
+    /**
+     * @param string $name
+     * @param int $itemId
+     * @param int $studentId
+     * @param DateTime $startDate
+     * @param DateTime $endDate
+     * @return string
+     */
+    private function getCacheKeyInTimeRange(string $name, int $itemId, int $studentId, DateTime $startDate, DateTime $endDate): string
+    {
+        return $name . "_{$itemId}_{$studentId}_{$startDate->format(self::DATE_TIME_FORMAT)}_{$endDate->format(self::DATE_TIME_FORMAT)}";
     }
 }
