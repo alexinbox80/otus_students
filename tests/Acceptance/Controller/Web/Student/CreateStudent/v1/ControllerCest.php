@@ -31,21 +31,21 @@ class ControllerCest
                     'firstName' => 'FirstName',
                     'lastName' => 'LastName',
                     'middleName' => 'MiddleName',
-                    'email' => 'email@email.ru',
+                    'email' => 'email@emailcreate.ru',
                     'phone' => '79123456789'
                 ]
             ],
-            'emptyContacts' => [
-                'user' => ['login' => 'ivanov', 'password' => '12345678'],
-                'student' => [
-                    'userId' => AutoIncrementImitator::nextId(),
-                    'firstName' => 'FirstName',
-                    'lastName' => 'LastName',
-                    'middleName' => 'MiddleName',
-                    'email' => null,
-                    'phone' => null
-                ]
-            ],
+//            'emptyContacts' => [
+//                'user' => ['login' => 'ivanov', 'password' => '12345678'],
+//                'student' => [
+//                    'userId' => AutoIncrementImitator::nextId(),
+//                    'firstName' => 'FirstName',
+//                    'lastName' => 'LastName',
+//                    'middleName' => 'MiddleName',
+//                    'email' => null,
+//                    'phone' => null
+//                ]
+//            ],
             'emptyMiddleName' => [
                 'user' => ['login' => 'ivanov', 'password' => '12345678'],
                 'student' => [
@@ -53,7 +53,7 @@ class ControllerCest
                     'firstName' => 'FirstName',
                     'lastName' => 'LastName',
                     'middleName' => null,
-                    'email' => 'email@email.ru',
+                    'email' => 'email@emailcre.ru',
                     'phone' => '79123456789'
                 ]
             ],

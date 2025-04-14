@@ -28,7 +28,7 @@ class ControllerCest
             'positive' => [
                 'user' => ['login' => 'ivanov', 'password' => '12345678'],
                 'data' => [
-                    'id' => 4,
+                    'id' => 1,
                 ],
                 'httpCode' => HttpCode::OK,
             ]

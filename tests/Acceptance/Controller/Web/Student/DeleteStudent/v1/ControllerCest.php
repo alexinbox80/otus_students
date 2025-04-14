@@ -19,7 +19,7 @@ class ControllerCest
     private const FIRST_NAME = 'StudentFirstName';
     private const LAST_NAME = 'StudentLastName';
     private const MIDDLE_NAME = 'StudentMiddleName';
-    private const EMAIL = 'student@email.ru';
+    private const EMAIL = 'student@emailemail.ru';
     private const PHONE = '79113456789';
 
     /**

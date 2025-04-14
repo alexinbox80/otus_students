@@ -13,12 +13,12 @@ modules:
         - Doctrine:
               depends: Symfony
         - Db:
-              dsn: 'pgsql:host=localhost;dbname=students'
-              user: 'dbuser'
+              dsn: 'pgsql:host=students_postgres;dbname=students_test'
+              user: 'user'
               password: 'password'
               dump: 'tests/Support/Data/dump.sql'
         - REST:
-              url: http://ubuntu:80
+              url: http://students_nginx:80
               depends: PhpBrowser
               part: Json
 # Add Codeception\Step\Retry trait to AcceptanceTester to enable retries
